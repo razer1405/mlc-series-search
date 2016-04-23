@@ -1,0 +1,9 @@
+L:\DEV\mlc-series-search\mlc-series-search\bin\Debug\mlc-series-search.exe.config
+L:\DEV\mlc-series-search\mlc-series-search\obj\Debug\mlc-series-search.csprojResolveAssemblyReference.cache
+L:\DEV\mlc-series-search\mlc-series-search\obj\Debug\mlc_series_search.Form1.resources
+L:\DEV\mlc-series-search\mlc-series-search\obj\Debug\mlc_series_search.Properties.Resources.resources
+L:\DEV\mlc-series-search\mlc-series-search\obj\Debug\mlc-series-search.csproj.GenerateResource.Cache
+L:\DEV\mlc-series-search\mlc-series-search\bin\Debug\mlc-series-search.exe
+L:\DEV\mlc-series-search\mlc-series-search\bin\Debug\mlc-series-search.pdb
+L:\DEV\mlc-series-search\mlc-series-search\obj\Debug\mlc-series-search.exe
+L:\DEV\mlc-series-search\mlc-series-search\obj\Debug\mlc-series-search.pdb
