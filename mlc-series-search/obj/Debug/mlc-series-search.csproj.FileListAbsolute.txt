@@ -7,3 +7,5 @@ L:\DEV\mlc-series-search\mlc-series-search\bin\Debug\mlc-series-search.exe
 L:\DEV\mlc-series-search\mlc-series-search\bin\Debug\mlc-series-search.pdb
 L:\DEV\mlc-series-search\mlc-series-search\obj\Debug\mlc-series-search.exe
 L:\DEV\mlc-series-search\mlc-series-search\obj\Debug\mlc-series-search.pdb
+L:\DEV\mlc-series-search\mlc-series-search\bin\Debug\Newtonsoft.Json.dll
+L:\DEV\mlc-series-search\mlc-series-search\bin\Debug\Newtonsoft.Json.xml

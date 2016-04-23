@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+
 namespace mlc_series_search
 {
     static class Program
@@ -14,9 +15,13 @@ namespace mlc_series_search
         [STAThread]
         static void Main()
         {
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
+            
+            //string name = stuff.Name;
+            //string address = stuff.Address.City;
         }
     }
 }
