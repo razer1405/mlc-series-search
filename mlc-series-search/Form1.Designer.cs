@@ -170,6 +170,7 @@
             this.SearchResultList.Name = "SearchResultList";
             this.SearchResultList.Size = new System.Drawing.Size(317, 186);
             this.SearchResultList.TabIndex = 19;
+            this.SearchResultList.Click += new System.EventHandler(this.SearchResultList_Click);
             // 
             // button2
             // 
