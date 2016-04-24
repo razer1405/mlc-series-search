@@ -52,6 +52,7 @@
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(317, 20);
             this.textBox1.TabIndex = 0;
+            this.textBox1.Validated += new System.EventHandler(this.textBox1_Validated);
             // 
             // comboBox1
             // 
@@ -148,9 +149,9 @@
             // 
             // treeView1
             // 
-            this.treeView1.Location = new System.Drawing.Point(338, 71);
+            this.treeView1.Location = new System.Drawing.Point(335, 85);
             this.treeView1.Name = "treeView1";
-            this.treeView1.Size = new System.Drawing.Size(703, 525);
+            this.treeView1.Size = new System.Drawing.Size(706, 511);
             this.treeView1.TabIndex = 17;
             // 
             // button1
@@ -172,11 +173,11 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(629, 2);
+            this.button2.Location = new System.Drawing.Point(897, 2);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(144, 24);
             this.button2.TabIndex = 20;
-            this.button2.Text = "button2";
+            this.button2.Text = "JSON TEST";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
