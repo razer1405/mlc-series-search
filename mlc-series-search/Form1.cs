@@ -26,22 +26,45 @@ namespace mlc_series_search
 
         }
 
-        DataTable SearchResultData = new DataTable();
+        DataTable EpisodeData = new DataTable();
+        DataTable SeriesData = new DataTable();
 
-        public void initDataTable(DataTable dt)
+        public void initSeasonDB(DataTable dt)
         {
             dt.Columns.Add("Serie", typeof(String));
             dt.Columns.Add("ID", typeof(String));
             dt.Columns.Add("Sprache", typeof(String));
         }
 
-        public void fillDataTable(DataTable dt, string name, string id, string sprache)
+        public void fillSeasonDB(DataTable dt, string name, string id, string sprache)
         {
             DataRow workRow = dt.NewRow();
             workRow["Serie"] = name;
             workRow["ID"] = id;
             workRow["Sprache"] = sprache;
             dt.Rows.Add(workRow);
+        }
+
+        public void XMLtoSeasonDB(DataTable dt, string XML)
+        {
+            XmlReader Reader = XmlReader.Create(new StringReader(XML));
+            while (Reader.Read())
+            {
+                if (Reader.Name.Equals("Series") && (Reader.NodeType == XmlNodeType.Element))
+                {
+                    Reader.ReadToFollowing("seriesid");
+                    string id = Reader.ReadElementContentAsString();
+                    Reader.ReadToFollowing("language");
+                    string sprache = Reader.ReadElementContentAsString();
+                    Reader.ReadToFollowing("SeriesName");
+                    string name = Reader.ReadElementContentAsString();
+
+                    if (sprache == "de")
+                    {
+                        fillSeasonDB(dt, name, id, sprache);
+                    }
+                }
+            }
         }
 
         public string HTTPtoString(string http)
@@ -85,7 +108,6 @@ namespace mlc_series_search
                 }
 
 
-
                 var o = JObject.Parse(jsonText);
 
                 foreach (JToken child in o.Children())
@@ -127,53 +149,28 @@ namespace mlc_series_search
                 MessageBox.Show(ex.Message, "ERROR");
             }
 
-
         }
 
         private void textBox1_Validated(object sender, EventArgs e)
         {
-            /* try
-            { */
-
-            string xmlString = HTTPtoString("http://thetvdb.com/api/GetSeries.php?language=DE&seriesname=" + this.textBox1.Text);
-            List<String> searchResult = new List<String>();
-            initDataTable(this.SearchResultData);
-
-            int i = 0;
-            XmlReader Reader = XmlReader.Create(new StringReader(xmlString));
-            while (Reader.Read())
+            try
             {
-                if (Reader.Name.Equals("Series") && (Reader.NodeType == XmlNodeType.Element))
-                {
-                    i = +1;
-                    string listid = i.ToString();
-                    Reader.ReadToFollowing("seriesid");
-                    string id = Reader.ReadElementContentAsString();
-                    Reader.ReadToFollowing("language");
-                    string sprache = Reader.ReadElementContentAsString();
-                    Reader.ReadToFollowing("SeriesName");
-                    string name = Reader.ReadElementContentAsString();
-                    // Reader.ReadToFollowing("FirstAired");
-                    // string airtime = Reader.ReadElementContentAsString();
-                    if (sprache == "de")
-                    {
-                        fillDataTable(SearchResultData, name, id, sprache);
-                    }
 
-                    SearchResultList.DataSource = SearchResultData;
-                    SearchResultList.DisplayMember = "Serie";
-                    SearchResultList.ValueMember = "ID";
+                string xmlString = HTTPtoString("http://thetvdb.com/api/GetSeries.php?language=DE&seriesname=" + this.textBox1.Text);
 
+                initSeasonDB(SeriesData);
 
-                }
+                XMLtoSeasonDB(SeriesData, xmlString);
+
+                SearchResultList.DataSource = SeriesData;
+                SearchResultList.DisplayMember = "Serie";
+                SearchResultList.ValueMember = "ID";
+
             }
-            this.SearchResultList.DataSource = SearchResultData;
-
-            /*         }
-                     catch (Exception ex)
-                     {
-                         MessageBox.Show(ex.Message, "ERROR");
-                     } */
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "ERROR");
+            }
 
         }
 
@@ -181,8 +178,20 @@ namespace mlc_series_search
         {
             MessageBox.Show(SearchResultList.GetItemText(SearchResultList.SelectedItem));
             MessageBox.Show(SearchResultList.SelectedValue.ToString());
-            string xmlString = HTTPtoString("http://thetvdb.com/api/1D62F2F90030C444/series/"+ SearchResultList.SelectedValue.ToString() + "/all/de.xml");
-           // MessageBox.Show(xmlString);
+
+
+            try
+            {
+
+                string xmlString = HTTPtoString("http://thetvdb.com/api/1D62F2F90030C444/series/" + SearchResultList.SelectedValue.ToString() + "/all/de.xml");
+
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "ERROR");
+            }
+
         }
     }
 }
