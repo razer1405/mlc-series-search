@@ -40,10 +40,11 @@
             this.comboBox3 = new System.Windows.Forms.ComboBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.treeView1 = new System.Windows.Forms.TreeView();
             this.button1 = new System.Windows.Forms.Button();
             this.SearchResultList = new System.Windows.Forms.ListBox();
             this.button2 = new System.Windows.Forms.Button();
+            this.treeView1 = new System.Windows.Forms.TreeView();
+            this.listBox1 = new System.Windows.Forms.ListBox();
             this.SuspendLayout();
             // 
             // textBox1
@@ -147,13 +148,6 @@
             this.label6.TabIndex = 16;
             this.label6.Text = "Zusatzfilter:";
             // 
-            // treeView1
-            // 
-            this.treeView1.Location = new System.Drawing.Point(335, 85);
-            this.treeView1.Name = "treeView1";
-            this.treeView1.Size = new System.Drawing.Size(706, 511);
-            this.treeView1.TabIndex = 17;
-            // 
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(933, 42);
@@ -182,11 +176,27 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
+            // treeView1
+            // 
+            this.treeView1.Location = new System.Drawing.Point(854, 85);
+            this.treeView1.Name = "treeView1";
+            this.treeView1.Size = new System.Drawing.Size(187, 511);
+            this.treeView1.TabIndex = 17;
+            // 
+            // listBox1
+            // 
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.Location = new System.Drawing.Point(338, 84);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(510, 511);
+            this.listBox1.TabIndex = 21;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1053, 607);
+            this.Controls.Add(this.listBox1);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.SearchResultList);
             this.Controls.Add(this.button1);
@@ -224,10 +234,11 @@
         private System.Windows.Forms.ComboBox comboBox3;
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TreeView treeView1;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.ListBox SearchResultList;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.TreeView treeView1;
+        private System.Windows.Forms.ListBox listBox1;
     }
 }
 

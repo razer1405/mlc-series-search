@@ -23,20 +23,37 @@ namespace mlc_series_search
         public Form1()
         {
             InitializeComponent();
+            initSeasonDB(SeasonData);
+            initSeriesDB(SeriesData);
+        }
+
+        DataTable SeasonData = new DataTable();
+        DataTable SeriesData = new DataTable();
+
+        private void ClearTable(DataTable table)
+        {
+            try
+            {
+                table.Clear();
+            }
+            catch (DataException e)
+            {
+                // Process exception and return.
+                Console.WriteLine("Exception of type {0} occurred.",
+                    e.GetType());
+            }
 
         }
 
-        DataTable EpisodeData = new DataTable();
-        DataTable SeriesData = new DataTable();
 
-        public void initSeasonDB(DataTable dt)
-        {
+        public void initSeriesDB(DataTable dt)
+        { 
             dt.Columns.Add("Serie", typeof(String));
             dt.Columns.Add("ID", typeof(String));
             dt.Columns.Add("Sprache", typeof(String));
         }
 
-        public void fillSeasonDB(DataTable dt, string name, string id, string sprache)
+        public void fillSeriesDB(DataTable dt, string name, string id, string sprache)
         {
             DataRow workRow = dt.NewRow();
             workRow["Serie"] = name;
@@ -45,7 +62,7 @@ namespace mlc_series_search
             dt.Rows.Add(workRow);
         }
 
-        public void XMLtoSeasonDB(DataTable dt, string XML)
+        public void XMLtoSeriesDB(DataTable dt, string XML)
         {
             XmlReader Reader = XmlReader.Create(new StringReader(XML));
             while (Reader.Read())
@@ -61,8 +78,80 @@ namespace mlc_series_search
 
                     if (sprache == "de")
                     {
-                        fillSeasonDB(dt, name, id, sprache);
+                        fillSeriesDB(dt, name, id, sprache);
                     }
+                }
+            }
+        }
+
+        public void initSeasonDB(DataTable dt)
+        {
+            dt.Columns.Add("Status", typeof(String));
+            dt.Columns.Add("SerienID", typeof(String));
+            dt.Columns.Add("StaffelID", typeof(String));
+            dt.Columns.Add("EpisodeID", typeof(String));
+            dt.Columns.Add("Staffel", typeof(int));
+            dt.Columns.Add("Episode", typeof(int));
+            dt.Columns.Add("Name", typeof(String));
+            dt.Columns.Add("Sprache", typeof(String));
+        }
+
+        public void fillSeasonDB(DataTable dt, string status, string Serienid, string Staffelid, string epid, int staffel, int episode,string EPName, string sprache)
+        {
+            DataRow workRow = dt.NewRow();
+            workRow["Status"] = status;
+            workRow["SerienID"] = Serienid;
+            workRow["StaffelID"] = Staffelid;
+            workRow["EpisodeID"] = epid;
+            workRow["Staffel"] = staffel;
+            workRow["Episode"] = episode;
+            workRow["Name"] = EPName;
+            workRow["Sprache"] = sprache;
+            dt.Rows.Add(workRow);
+        }
+
+        public void XMLtoSeasonDB(DataTable dt, string XML)
+        {
+
+
+            XmlReader Reader = XmlReader.Create(new StringReader(XML));
+            while (Reader.Read())
+            {
+
+                string seriesid;
+                string sprache;
+                string status;
+
+                if (Reader.Name.Equals("Series") && (Reader.NodeType == XmlNodeType.Element))
+                {
+                    Reader.ReadToFollowing("id");
+                    seriesid = Reader.ReadElementContentAsString();
+                    Reader.ReadToFollowing("Language");
+                    sprache = Reader.ReadElementContentAsString();
+                    Reader.ReadToFollowing("Status");
+                    status = Reader.ReadElementContentAsString();
+                }
+
+                if (Reader.Name.Equals("Episode") && (Reader.NodeType == XmlNodeType.Element))
+                {
+                    Reader.ReadToFollowing("id");
+                    string id = Reader.ReadElementContentAsString();
+                    Reader.ReadToFollowing("EpisodeName");
+                    string epname = Reader.ReadElementContentAsString();
+                    Reader.ReadToFollowing("EpisodeNumber");
+                    string epnr = Reader.ReadElementContentAsString();
+                    Reader.ReadToFollowing("Language");
+                    string sprache2 = Reader.ReadElementContentAsString();
+                    Reader.ReadToFollowing("SeasonNumber");
+                    string seasnr = Reader.ReadElementContentAsString();
+                    Reader.ReadToFollowing("seasonid");
+                    string seasonid = Reader.ReadElementContentAsString();
+                    status = "";
+                    seriesid = "";
+                    
+
+                    fillSeasonDB(dt, status, seriesid, seasonid, id, Int32.Parse(seasnr), Int32.Parse(epnr),epname,sprache2);
+                    
                 }
             }
         }
@@ -158,9 +247,10 @@ namespace mlc_series_search
 
                 string xmlString = HTTPtoString("http://thetvdb.com/api/GetSeries.php?language=DE&seriesname=" + this.textBox1.Text);
 
-                initSeasonDB(SeriesData);
+                ClearTable(SeriesData);
 
-                XMLtoSeasonDB(SeriesData, xmlString);
+                XMLtoSeriesDB(SeriesData, xmlString);
+
 
                 SearchResultList.DataSource = SeriesData;
                 SearchResultList.DisplayMember = "Serie";
@@ -176,21 +266,29 @@ namespace mlc_series_search
 
         private void SearchResultList_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(SearchResultList.GetItemText(SearchResultList.SelectedItem));
-            MessageBox.Show(SearchResultList.SelectedValue.ToString());
+           // MessageBox.Show(SearchResultList.GetItemText(SearchResultList.SelectedItem));
+           // MessageBox.Show(SearchResultList.SelectedValue.ToString());
 
 
-            try
+            /*try
             {
+            */
 
                 string xmlString = HTTPtoString("http://thetvdb.com/api/1D62F2F90030C444/series/" + SearchResultList.SelectedValue.ToString() + "/all/de.xml");
 
+            ClearTable(SeasonData);
 
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "ERROR");
-            }
+                XMLtoSeasonDB(SeasonData, xmlString);
+
+            listBox1.DataSource = SeasonData;
+            listBox1.DisplayMember = "Name";
+            listBox1.ValueMember = "Episode";
+
+            /* }
+             catch (Exception ex)
+             {
+                 MessageBox.Show(ex.Message, "ERROR");
+             } */
 
         }
     }
