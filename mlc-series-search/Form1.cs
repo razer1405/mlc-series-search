@@ -29,6 +29,7 @@ namespace mlc_series_search
 
         DataTable SeasonData = new DataTable();
         DataTable SeriesData = new DataTable();
+        DataView EpisodenView;
 
         private void ClearTable(DataTable table)
         {
@@ -47,7 +48,7 @@ namespace mlc_series_search
 
 
         public void initSeriesDB(DataTable dt)
-        { 
+        {
             dt.Columns.Add("Serie", typeof(String));
             dt.Columns.Add("ID", typeof(String));
             dt.Columns.Add("Sprache", typeof(String));
@@ -94,9 +95,10 @@ namespace mlc_series_search
             dt.Columns.Add("Episode", typeof(int));
             dt.Columns.Add("Name", typeof(String));
             dt.Columns.Add("Sprache", typeof(String));
+            dt.Columns.Add("Display", typeof(String));
         }
 
-        public void fillSeasonDB(DataTable dt, string status, string Serienid, string Staffelid, string epid, int staffel, int episode,string EPName, string sprache)
+        public void fillSeasonDB(DataTable dt, string status, string Serienid, string Staffelid, string epid, int staffel, int episode, string EPName, string sprache)
         {
             DataRow workRow = dt.NewRow();
             workRow["Status"] = status;
@@ -107,6 +109,7 @@ namespace mlc_series_search
             workRow["Episode"] = episode;
             workRow["Name"] = EPName;
             workRow["Sprache"] = sprache;
+            workRow["Display"] = "S" + staffel.ToString("D2") + "E" + episode.ToString("D2") + " " + EPName;
             dt.Rows.Add(workRow);
         }
 
@@ -148,11 +151,49 @@ namespace mlc_series_search
                     string seasonid = Reader.ReadElementContentAsString();
                     status = "";
                     seriesid = "";
-                    
 
-                    fillSeasonDB(dt, status, seriesid, seasonid, id, Int32.Parse(seasnr), Int32.Parse(epnr),epname,sprache2);
-                    
+
+                    fillSeasonDB(dt, status, seriesid, seasonid, id, Int32.Parse(seasnr), Int32.Parse(epnr), epname, sprache2);
+
                 }
+            }
+        }
+
+        public void setEpisodeSeason(DataView dv, string staffel, bool filter)
+        {
+            if (staffel != "System.Data.DataRowView")
+            {
+                dv = new DataView(SeasonData);
+                if (filter)
+                {
+                    dv.RowFilter = "Staffel >= " + staffel;
+                }
+                else
+                {
+                    dv.RowFilter = "Staffel = " + staffel;
+                }
+
+                listBox1.DataSource = dv;
+                listBox1.DisplayMember = "Display";
+            }
+        }
+
+        public void setEpisodeFilter(DataView dv, string staffel, string episode, bool filter)
+        {
+            if (staffel != "System.Data.DataRowView" && episode != "System.Data.DataRowView")
+            {
+                dv = new DataView(SeasonData);
+                if (filter)
+                {
+                    dv.RowFilter = "Staffel = " + staffel + " AND Episode >= " + episode;
+                }
+                else
+                {
+                    dv.RowFilter = "Staffel = " + staffel + " AND Episode = " + episode;
+                }
+
+                listBox1.DataSource = dv;
+                listBox1.DisplayMember = "Display";
             }
         }
 
@@ -266,30 +307,67 @@ namespace mlc_series_search
 
         private void SearchResultList_Click(object sender, EventArgs e)
         {
-           // MessageBox.Show(SearchResultList.GetItemText(SearchResultList.SelectedItem));
-           // MessageBox.Show(SearchResultList.SelectedValue.ToString());
+            // MessageBox.Show(SearchResultList.GetItemText(SearchResultList.SelectedItem));
+            // MessageBox.Show(SearchResultList.SelectedValue.ToString());
 
 
             /*try
             {
             */
-
-                string xmlString = HTTPtoString("http://thetvdb.com/api/1D62F2F90030C444/series/" + SearchResultList.SelectedValue.ToString() + "/all/de.xml");
+            if (SearchResultList.SelectedValue != null) { 
+            string xmlString = HTTPtoString("http://thetvdb.com/api/1D62F2F90030C444/series/" + SearchResultList.SelectedValue.ToString() + "/all/de.xml");
 
             ClearTable(SeasonData);
 
-                XMLtoSeasonDB(SeasonData, xmlString);
+            XMLtoSeasonDB(SeasonData, xmlString);
 
-            listBox1.DataSource = SeasonData;
-            listBox1.DisplayMember = "Name";
-            listBox1.ValueMember = "Episode";
+            //   listBox1.DataSource = SeasonData;
+            //    listBox1.DisplayMember = "Name";
+            //    listBox1.ValueMember = "Episode";
 
+            DataTable StaffelnDB;
+            StaffelnDB = SeasonData.DefaultView.ToTable(true, "Staffel");
+
+            comboBox1.DataSource = StaffelnDB;
+            comboBox1.DisplayMember = "Staffel";
+
+            DataTable EpisodenDB;
+            EpisodenDB = SeasonData.DefaultView.ToTable(true, "Episode");
+
+            comboBox2.DataSource = EpisodenDB;
+            comboBox2.DisplayMember = "Episode";
+            }
             /* }
              catch (Exception ex)
              {
                  MessageBox.Show(ex.Message, "ERROR");
              } */
 
+        }
+
+        private void Season_Change(object sender, EventArgs e)
+        {
+            if (comboBox1.Text != "")
+            {
+                setEpisodeSeason(EpisodenView, comboBox1.Text, checkBox1.Checked);
+
+                if (comboBox2.Text != "")
+                {
+                    if (!checkBox2.Checked)
+                    {
+                            setEpisodeFilter(EpisodenView, comboBox1.Text, comboBox2.Text, checkBox2.Checked);
+                    }
+                }
+            }
+        }
+
+        private void Episode_Change(object sender, EventArgs e)
+        {
+            if (comboBox1.Text != "" && comboBox2.Text != "")
+            {
+                checkBox1.Checked = false;
+                setEpisodeFilter(EpisodenView, comboBox1.Text, comboBox2.Text, checkBox2.Checked);
+            }
         }
     }
 }
