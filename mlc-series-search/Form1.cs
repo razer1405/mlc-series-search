@@ -25,10 +25,12 @@ namespace mlc_series_search
             InitializeComponent();
             initSeasonDB(SeasonData);
             initSeriesDB(SeriesData);
+            initReleaseDB(ReleaseData);
         }
 
         DataTable SeasonData = new DataTable();
         DataTable SeriesData = new DataTable();
+        DataTable ReleaseData = new DataTable();
         DataView EpisodenView;
 
         private void ClearTable(DataTable table)
@@ -175,6 +177,7 @@ namespace mlc_series_search
 
                 listBox1.DataSource = dv;
                 listBox1.DisplayMember = "Display";
+                listBox1.ValueMember = "Display";
             }
         }
 
@@ -194,6 +197,7 @@ namespace mlc_series_search
 
                 listBox1.DataSource = dv;
                 listBox1.DisplayMember = "Display";
+                listBox1.ValueMember = "Display";
             }
         }
 
@@ -217,6 +221,55 @@ namespace mlc_series_search
             reader.Close();
             response.Close();
             return httpString;
+        }
+
+        public void initReleaseDB(DataTable dt)
+        {
+            dt.Columns.Add("release", typeof(String));
+            dt.Columns.Add("video_type", typeof(String));
+            dt.Columns.Add("audio_type", typeof(String));
+            dt.Columns.Add("rid", typeof(String));
+            dt.Columns.Add("time", typeof(String));
+            dt.Columns.Add("link", typeof(String));
+        }
+
+        public void fillReleaseDB(DataTable dt, string Release, string vid, string aud, string id, string time, string link)
+        {
+            DataRow workRow = dt.NewRow();
+            workRow["release"] = Release;
+            workRow["video_type"] = vid;
+            workRow["audio_type"] = aud;
+            workRow["rid"] = id;
+            workRow["time"] = time;
+            workRow["link"] = link;
+            dt.Rows.Add(workRow);
+        }
+
+        public void XMLtoReleaseDB(DataTable dt, string XML)
+        {
+            XmlReader Reader = XmlReader.Create(new StringReader(XML));
+            while (Reader.Read())
+            {
+                if (Reader.Name.Equals("release") && (Reader.NodeType == XmlNodeType.Element))
+                {
+                    
+                    Reader.ReadToFollowing("id");
+                    string id = Reader.ReadElementContentAsString();
+                    Reader.ReadToFollowing("dirname");
+                    string reln = Reader.ReadElementContentAsString();
+                    Reader.ReadToFollowing("link_href");
+                    string link = Reader.ReadElementContentAsString();
+                    Reader.ReadToFollowing("time");
+                    string time = Reader.ReadElementContentAsString();
+                    Reader.ReadToFollowing("video_type");
+                    string vid = Reader.ReadElementContentAsString();
+                    string aud = "";
+
+
+                    fillReleaseDB(dt, reln, vid, aud, id, time, link);
+
+                }
+            }
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -314,28 +367,29 @@ namespace mlc_series_search
             /*try
             {
             */
-            if (SearchResultList.SelectedValue != null) { 
-            string xmlString = HTTPtoString("http://thetvdb.com/api/1D62F2F90030C444/series/" + SearchResultList.SelectedValue.ToString() + "/all/de.xml");
+            if (SearchResultList.SelectedValue != null)
+            {
+                string xmlString = HTTPtoString("http://thetvdb.com/api/1D62F2F90030C444/series/" + SearchResultList.SelectedValue.ToString() + "/all/de.xml");
 
-            ClearTable(SeasonData);
+                ClearTable(SeasonData);
 
-            XMLtoSeasonDB(SeasonData, xmlString);
+                XMLtoSeasonDB(SeasonData, xmlString);
 
-            //   listBox1.DataSource = SeasonData;
-            //    listBox1.DisplayMember = "Name";
-            //    listBox1.ValueMember = "Episode";
+                 //  listBox1.DataSource = SeasonData;
+                 //   listBox1.DisplayMember = "Name";
+                 //   listBox1.ValueMember = "Episode";
 
-            DataTable StaffelnDB;
-            StaffelnDB = SeasonData.DefaultView.ToTable(true, "Staffel");
+                DataTable StaffelnDB;
+                StaffelnDB = SeasonData.DefaultView.ToTable(true, "Staffel");
 
-            comboBox1.DataSource = StaffelnDB;
-            comboBox1.DisplayMember = "Staffel";
+                comboBox1.DataSource = StaffelnDB;
+                comboBox1.DisplayMember = "Staffel";
 
-            DataTable EpisodenDB;
-            EpisodenDB = SeasonData.DefaultView.ToTable(true, "Episode");
+                DataTable EpisodenDB;
+                EpisodenDB = SeasonData.DefaultView.ToTable(true, "Episode");
 
-            comboBox2.DataSource = EpisodenDB;
-            comboBox2.DisplayMember = "Episode";
+                comboBox2.DataSource = EpisodenDB;
+                comboBox2.DisplayMember = "Episode";
             }
             /* }
              catch (Exception ex)
@@ -355,7 +409,7 @@ namespace mlc_series_search
                 {
                     if (!checkBox2.Checked)
                     {
-                            setEpisodeFilter(EpisodenView, comboBox1.Text, comboBox2.Text, checkBox2.Checked);
+                        setEpisodeFilter(EpisodenView, comboBox1.Text, comboBox2.Text, checkBox2.Checked);
                     }
                 }
             }
@@ -367,6 +421,24 @@ namespace mlc_series_search
             {
                 checkBox1.Checked = false;
                 setEpisodeFilter(EpisodenView, comboBox1.Text, comboBox2.Text, checkBox2.Checked);
+            }
+        }
+
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+            if (listBox1.SelectedValue != null && listBox1.SelectedValue.ToString() != "System.Data.DataRowView")
+            {
+
+               string xmlString = HTTPtoString("https://api.xrel.to/v2/search/releases.xml?q="+SearchResultList.Text+"&scene=1");
+
+                ClearTable(ReleaseData);
+
+                XMLtoReleaseDB(ReleaseData, xmlString);
+
+                listBox2.DataSource = ReleaseData;
+                listBox2.DisplayMember = "release";
+                
             }
         }
     }
