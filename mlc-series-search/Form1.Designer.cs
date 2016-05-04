@@ -45,6 +45,9 @@
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.listBox2 = new System.Windows.Forms.ListBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.SuspendLayout();
             // 
             // textBox1
@@ -166,9 +169,9 @@
             // listBox1
             // 
             this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(338, 84);
+            this.listBox1.Location = new System.Drawing.Point(338, 100);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(290, 511);
+            this.listBox1.Size = new System.Drawing.Size(243, 290);
             this.listBox1.TabIndex = 21;
             this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             // 
@@ -199,16 +202,46 @@
             // listBox2
             // 
             this.listBox2.FormattingEnabled = true;
-            this.listBox2.Location = new System.Drawing.Point(634, 84);
+            this.listBox2.Location = new System.Drawing.Point(596, 100);
             this.listBox2.Name = "listBox2";
-            this.listBox2.Size = new System.Drawing.Size(290, 511);
+            this.listBox2.Size = new System.Drawing.Size(444, 290);
             this.listBox2.TabIndex = 24;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(593, 84);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(51, 13);
+            this.label5.TabIndex = 25;
+            this.label5.Text = "Releases";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(335, 84);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(39, 13);
+            this.label7.TabIndex = 26;
+            this.label7.Text = "Folgen";
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Location = new System.Drawing.Point(338, 396);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(702, 200);
+            this.groupBox1.TabIndex = 27;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Info";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1053, 607);
+            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.listBox2);
             this.Controls.Add(this.checkBox2);
             this.Controls.Add(this.checkBox1);
@@ -252,6 +285,9 @@
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.CheckBox checkBox2;
         private System.Windows.Forms.ListBox listBox2;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.GroupBox groupBox1;
     }
 }
 

@@ -48,6 +48,16 @@ namespace mlc_series_search
 
         }
 
+        public Stream GenerateStreamFromString(string s)
+        {
+            MemoryStream stream = new MemoryStream();
+            StreamWriter writer = new StreamWriter(stream);
+            writer.Write(s);
+            writer.Flush();
+            stream.Position = 0;
+            return stream;
+        }
+
 
         public void initSeriesDB(DataTable dt)
         {
@@ -203,24 +213,48 @@ namespace mlc_series_search
 
         public string HTTPtoString(string http)
         {
-            // Create a request for the URL. 
-            WebRequest request = WebRequest.Create(http);
-            // If required by the server, set the credentials.
-            request.Credentials = CredentialCache.DefaultCredentials;
-            // Get the response.
-            WebResponse response = request.GetResponse();
-            // Display the status.
-            Console.WriteLine(((HttpWebResponse)response).StatusDescription);
-            // Get the stream containing content returned by the server.
-            Stream dataStream = response.GetResponseStream();
-            // Open the stream using a StreamReader for easy access.
-            StreamReader reader = new StreamReader(dataStream);
-            // Read the content.
-            string httpString = reader.ReadToEnd();
-            // Clean up the streams and the response.
-            reader.Close();
-            response.Close();
-            return httpString;
+            try
+            {
+                // Create a request for the URL. 
+                WebRequest request = WebRequest.Create(http);
+                // If required by the server, set the credentials.
+                request.Credentials = CredentialCache.DefaultCredentials;
+                // Get the response.
+                WebResponse response = request.GetResponse();
+                // Display the status.
+                Console.WriteLine(((HttpWebResponse)response).StatusDescription);
+                // Get the stream containing content returned by the server.
+                Stream dataStream = response.GetResponseStream();
+                // Open the stream using a StreamReader for easy access.
+                StreamReader reader = new StreamReader(dataStream);
+                // Read the content.
+                string httpString = reader.ReadToEnd();
+                // Clean up the streams and the response.
+                reader.Close();
+                response.Close();
+                return httpString;
+            }
+            catch (WebException webExcp)
+            {
+                // If you reach this point, an exception has been caught.
+                MessageBox.Show("A WebException has been caught.");
+                // Write out the WebException message.
+                MessageBox.Show(webExcp.ToString());
+                // Get the WebException status code.
+                WebExceptionStatus status = webExcp.Status;
+                // If status is WebExceptionStatus.ProtocolError, 
+                //   there has been a protocol error and a WebResponse 
+                //   should exist. Display the protocol error.
+                if (status == WebExceptionStatus.ProtocolError)
+                {
+                    MessageBox.Show("The server returned protocol error ");
+                    // Get HttpWebResponse so that you can check the HTTP status code.
+                    HttpWebResponse httpResponse = (HttpWebResponse)webExcp.Response;
+                    MessageBox.Show((int)httpResponse.StatusCode + " - "
+                       + httpResponse.StatusCode);
+                }
+                return "";
+            }
         }
 
         public void initReleaseDB(DataTable dt)
@@ -430,15 +464,14 @@ namespace mlc_series_search
             if (listBox1.SelectedValue != null && listBox1.SelectedValue.ToString() != "System.Data.DataRowView")
             {
 
-               string xmlString = HTTPtoString("https://api.xrel.to/v2/search/releases.xml?q="+SearchResultList.Text+"&scene=1");
+               string xmlString = HTTPtoString("https://api.xrel.to/v2/search/releases.xml?q="+ SearchResultList.Text +" "+ listBox1.Text.Substring(0,6) + "&scene=1");
+            
+                DataSet newt = new DataSet();
+                newt.ReadXml(GenerateStreamFromString(xmlString));
 
-                ClearTable(ReleaseData);
+                listBox2.DataSource = newt.Tables[2].DefaultView;
+                listBox2.DisplayMember = "dirname";
 
-                XMLtoReleaseDB(ReleaseData, xmlString);
-
-                listBox2.DataSource = ReleaseData;
-                listBox2.DisplayMember = "release";
-                
             }
         }
     }
