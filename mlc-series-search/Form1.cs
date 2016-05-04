@@ -468,9 +468,10 @@ namespace mlc_series_search
             
                 DataSet newt = new DataSet();
                 newt.ReadXml(GenerateStreamFromString(xmlString));
-
+               if (newt.Tables.Count >= 2) { 
                 listBox2.DataSource = newt.Tables[2].DefaultView;
                 listBox2.DisplayMember = "dirname";
+                }
 
             }
         }
