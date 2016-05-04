@@ -23,14 +23,12 @@ namespace mlc_series_search
         public Form1()
         {
             InitializeComponent();
-            initSeasonDB(SeasonData);
-            initSeriesDB(SeriesData);
-            initReleaseDB(ReleaseData);
         }
 
         DataTable SeasonData = new DataTable();
         DataTable SeriesData = new DataTable();
         DataTable ReleaseData = new DataTable();
+        DataSet xRel1 = new DataSet();
         DataView EpisodenView;
 
         private void ClearTable(DataTable table)
@@ -56,159 +54,6 @@ namespace mlc_series_search
             writer.Flush();
             stream.Position = 0;
             return stream;
-        }
-
-
-        public void initSeriesDB(DataTable dt)
-        {
-            dt.Columns.Add("Serie", typeof(String));
-            dt.Columns.Add("ID", typeof(String));
-            dt.Columns.Add("Sprache", typeof(String));
-        }
-
-        public void fillSeriesDB(DataTable dt, string name, string id, string sprache)
-        {
-            DataRow workRow = dt.NewRow();
-            workRow["Serie"] = name;
-            workRow["ID"] = id;
-            workRow["Sprache"] = sprache;
-            dt.Rows.Add(workRow);
-        }
-
-        public void XMLtoSeriesDB(DataTable dt, string XML)
-        {
-            XmlReader Reader = XmlReader.Create(new StringReader(XML));
-            while (Reader.Read())
-            {
-                if (Reader.Name.Equals("Series") && (Reader.NodeType == XmlNodeType.Element))
-                {
-                    Reader.ReadToFollowing("seriesid");
-                    string id = Reader.ReadElementContentAsString();
-                    Reader.ReadToFollowing("language");
-                    string sprache = Reader.ReadElementContentAsString();
-                    Reader.ReadToFollowing("SeriesName");
-                    string name = Reader.ReadElementContentAsString();
-
-                    if (sprache == "de")
-                    {
-                        fillSeriesDB(dt, name, id, sprache);
-                    }
-                }
-            }
-        }
-
-        public void initSeasonDB(DataTable dt)
-        {
-            dt.Columns.Add("Status", typeof(String));
-            dt.Columns.Add("SerienID", typeof(String));
-            dt.Columns.Add("StaffelID", typeof(String));
-            dt.Columns.Add("EpisodeID", typeof(String));
-            dt.Columns.Add("Staffel", typeof(int));
-            dt.Columns.Add("Episode", typeof(int));
-            dt.Columns.Add("Name", typeof(String));
-            dt.Columns.Add("Sprache", typeof(String));
-            dt.Columns.Add("Display", typeof(String));
-        }
-
-        public void fillSeasonDB(DataTable dt, string status, string Serienid, string Staffelid, string epid, int staffel, int episode, string EPName, string sprache)
-        {
-            DataRow workRow = dt.NewRow();
-            workRow["Status"] = status;
-            workRow["SerienID"] = Serienid;
-            workRow["StaffelID"] = Staffelid;
-            workRow["EpisodeID"] = epid;
-            workRow["Staffel"] = staffel;
-            workRow["Episode"] = episode;
-            workRow["Name"] = EPName;
-            workRow["Sprache"] = sprache;
-            workRow["Display"] = "S" + staffel.ToString("D2") + "E" + episode.ToString("D2") + " " + EPName;
-            dt.Rows.Add(workRow);
-        }
-
-        public void XMLtoSeasonDB(DataTable dt, string XML)
-        {
-
-
-            XmlReader Reader = XmlReader.Create(new StringReader(XML));
-            while (Reader.Read())
-            {
-
-                string seriesid;
-                string sprache;
-                string status;
-
-                if (Reader.Name.Equals("Series") && (Reader.NodeType == XmlNodeType.Element))
-                {
-                    Reader.ReadToFollowing("id");
-                    seriesid = Reader.ReadElementContentAsString();
-                    Reader.ReadToFollowing("Language");
-                    sprache = Reader.ReadElementContentAsString();
-                    Reader.ReadToFollowing("Status");
-                    status = Reader.ReadElementContentAsString();
-                }
-
-                if (Reader.Name.Equals("Episode") && (Reader.NodeType == XmlNodeType.Element))
-                {
-                    Reader.ReadToFollowing("id");
-                    string id = Reader.ReadElementContentAsString();
-                    Reader.ReadToFollowing("EpisodeName");
-                    string epname = Reader.ReadElementContentAsString();
-                    Reader.ReadToFollowing("EpisodeNumber");
-                    string epnr = Reader.ReadElementContentAsString();
-                    Reader.ReadToFollowing("Language");
-                    string sprache2 = Reader.ReadElementContentAsString();
-                    Reader.ReadToFollowing("SeasonNumber");
-                    string seasnr = Reader.ReadElementContentAsString();
-                    Reader.ReadToFollowing("seasonid");
-                    string seasonid = Reader.ReadElementContentAsString();
-                    status = "";
-                    seriesid = "";
-
-
-                    fillSeasonDB(dt, status, seriesid, seasonid, id, Int32.Parse(seasnr), Int32.Parse(epnr), epname, sprache2);
-
-                }
-            }
-        }
-
-        public void setEpisodeSeason(DataView dv, string staffel, bool filter)
-        {
-            if (staffel != "System.Data.DataRowView")
-            {
-                dv = new DataView(SeasonData);
-                if (filter)
-                {
-                    dv.RowFilter = "Staffel >= " + staffel;
-                }
-                else
-                {
-                    dv.RowFilter = "Staffel = " + staffel;
-                }
-
-                listBox1.DataSource = dv;
-                listBox1.DisplayMember = "Display";
-                listBox1.ValueMember = "Display";
-            }
-        }
-
-        public void setEpisodeFilter(DataView dv, string staffel, string episode, bool filter)
-        {
-            if (staffel != "System.Data.DataRowView" && episode != "System.Data.DataRowView")
-            {
-                dv = new DataView(SeasonData);
-                if (filter)
-                {
-                    dv.RowFilter = "Staffel = " + staffel + " AND Episode >= " + episode;
-                }
-                else
-                {
-                    dv.RowFilter = "Staffel = " + staffel + " AND Episode = " + episode;
-                }
-
-                listBox1.DataSource = dv;
-                listBox1.DisplayMember = "Display";
-                listBox1.ValueMember = "Display";
-            }
         }
 
         public string HTTPtoString(string http)
@@ -257,54 +102,51 @@ namespace mlc_series_search
             }
         }
 
-        public void initReleaseDB(DataTable dt)
-        {
-            dt.Columns.Add("release", typeof(String));
-            dt.Columns.Add("video_type", typeof(String));
-            dt.Columns.Add("audio_type", typeof(String));
-            dt.Columns.Add("rid", typeof(String));
-            dt.Columns.Add("time", typeof(String));
-            dt.Columns.Add("link", typeof(String));
+        public void xmltodataset(DataSet newt,string xmlString) { 
+        newt.ReadXml(GenerateStreamFromString(xmlString));
         }
 
-        public void fillReleaseDB(DataTable dt, string Release, string vid, string aud, string id, string time, string link)
+        public void setEpisodeSeason(DataView dv, string staffel, bool filter)
         {
-            DataRow workRow = dt.NewRow();
-            workRow["release"] = Release;
-            workRow["video_type"] = vid;
-            workRow["audio_type"] = aud;
-            workRow["rid"] = id;
-            workRow["time"] = time;
-            workRow["link"] = link;
-            dt.Rows.Add(workRow);
-        }
-
-        public void XMLtoReleaseDB(DataTable dt, string XML)
-        {
-            XmlReader Reader = XmlReader.Create(new StringReader(XML));
-            while (Reader.Read())
+            if (staffel != "System.Data.DataRowView")
             {
-                if (Reader.Name.Equals("release") && (Reader.NodeType == XmlNodeType.Element))
+                dv = new DataView(SeasonData);
+                if (filter)
                 {
-                    
-                    Reader.ReadToFollowing("id");
-                    string id = Reader.ReadElementContentAsString();
-                    Reader.ReadToFollowing("dirname");
-                    string reln = Reader.ReadElementContentAsString();
-                    Reader.ReadToFollowing("link_href");
-                    string link = Reader.ReadElementContentAsString();
-                    Reader.ReadToFollowing("time");
-                    string time = Reader.ReadElementContentAsString();
-                    Reader.ReadToFollowing("video_type");
-                    string vid = Reader.ReadElementContentAsString();
-                    string aud = "";
-
-
-                    fillReleaseDB(dt, reln, vid, aud, id, time, link);
-
+                    dv.RowFilter = "Staffel >= " + staffel;
                 }
+                else
+                {
+                    dv.RowFilter = "Staffel = " + staffel;
+                }
+
+                listBox1.DataSource = dv;
+                listBox1.DisplayMember = "Display";
+                listBox1.ValueMember = "Display";
             }
         }
+
+        public void setEpisodeFilter(DataView dv, string staffel, string episode, bool filter)
+        {
+            if (staffel != "System.Data.DataRowView" && episode != "System.Data.DataRowView")
+            {
+                dv = new DataView(SeasonData);
+                if (filter)
+                {
+                    dv.RowFilter = "Staffel = " + staffel + " AND Episode >= " + episode;
+                }
+                else
+                {
+                    dv.RowFilter = "Staffel = " + staffel + " AND Episode = " + episode;
+                }
+
+                listBox1.DataSource = dv;
+                listBox1.DisplayMember = "Display";
+                listBox1.ValueMember = "Display";
+            }
+        }
+
+
 
         private void button2_Click(object sender, EventArgs e)
         {
@@ -375,14 +217,6 @@ namespace mlc_series_search
 
                 string xmlString = HTTPtoString("http://thetvdb.com/api/GetSeries.php?language=DE&seriesname=" + this.textBox1.Text);
 
-                ClearTable(SeriesData);
-
-                XMLtoSeriesDB(SeriesData, xmlString);
-
-
-                SearchResultList.DataSource = SeriesData;
-                SearchResultList.DisplayMember = "Serie";
-                SearchResultList.ValueMember = "ID";
 
             }
             catch (Exception ex)
@@ -394,9 +228,6 @@ namespace mlc_series_search
 
         private void SearchResultList_Click(object sender, EventArgs e)
         {
-            // MessageBox.Show(SearchResultList.GetItemText(SearchResultList.SelectedItem));
-            // MessageBox.Show(SearchResultList.SelectedValue.ToString());
-
 
             /*try
             {
@@ -405,13 +236,7 @@ namespace mlc_series_search
             {
                 string xmlString = HTTPtoString("http://thetvdb.com/api/1D62F2F90030C444/series/" + SearchResultList.SelectedValue.ToString() + "/all/de.xml");
 
-                ClearTable(SeasonData);
 
-                XMLtoSeasonDB(SeasonData, xmlString);
-
-                 //  listBox1.DataSource = SeasonData;
-                 //   listBox1.DisplayMember = "Name";
-                 //   listBox1.ValueMember = "Episode";
 
                 DataTable StaffelnDB;
                 StaffelnDB = SeasonData.DefaultView.ToTable(true, "Staffel");
@@ -437,13 +262,13 @@ namespace mlc_series_search
         {
             if (comboBox1.Text != "")
             {
-                setEpisodeSeason(EpisodenView, comboBox1.Text, checkBox1.Checked);
+               // setEpisodeSeason(EpisodenView, comboBox1.Text, checkBox1.Checked);
 
                 if (comboBox2.Text != "")
                 {
                     if (!checkBox2.Checked)
                     {
-                        setEpisodeFilter(EpisodenView, comboBox1.Text, comboBox2.Text, checkBox2.Checked);
+                       // setEpisodeFilter(EpisodenView, comboBox1.Text, comboBox2.Text, checkBox2.Checked);
                     }
                 }
             }
@@ -453,8 +278,8 @@ namespace mlc_series_search
         {
             if (comboBox1.Text != "" && comboBox2.Text != "")
             {
-                checkBox1.Checked = false;
-                setEpisodeFilter(EpisodenView, comboBox1.Text, comboBox2.Text, checkBox2.Checked);
+               // checkBox1.Checked = false;
+               // setEpisodeFilter(EpisodenView, comboBox1.Text, comboBox2.Text, checkBox2.Checked);
             }
         }
 
@@ -465,11 +290,10 @@ namespace mlc_series_search
             {
 
                string xmlString = HTTPtoString("https://api.xrel.to/v2/search/releases.xml?q="+ SearchResultList.Text +" "+ listBox1.Text.Substring(0,6) + "&scene=1");
-            
-                DataSet newt = new DataSet();
-                newt.ReadXml(GenerateStreamFromString(xmlString));
-               if (newt.Tables.Count >= 2) { 
-                listBox2.DataSource = newt.Tables[2].DefaultView;
+
+                xmltodataset(xRel1, xmlString);
+               if (xRel1.Tables.Count >= 2) { 
+                listBox2.DataSource = xRel1.Tables[2].DefaultView;
                 listBox2.DisplayMember = "dirname";
                 }
 
