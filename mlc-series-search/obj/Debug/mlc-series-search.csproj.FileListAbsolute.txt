@@ -17,6 +17,6 @@ E:\git\mlc-series-search\mlc-series-search\bin\Debug\mlc-series-search.pdb
 E:\git\mlc-series-search\mlc-series-search\bin\Debug\Newtonsoft.Json.dll
 E:\git\mlc-series-search\mlc-series-search\bin\Debug\Newtonsoft.Json.xml
 E:\git\mlc-series-search\mlc-series-search\obj\Debug\mlc-series-search.csprojResolveAssemblyReference.cache
-E:\git\mlc-series-search\mlc-series-search\obj\Debug\mlc_series_search.Form1.resources
 E:\git\mlc-series-search\mlc-series-search\obj\Debug\mlc_series_search.Properties.Resources.resources
 E:\git\mlc-series-search\mlc-series-search\obj\Debug\mlc-series-search.csproj.GenerateResource.Cache
+E:\git\mlc-series-search\mlc-series-search\obj\Debug\mlc_series_search.mlcseriessearch.resources

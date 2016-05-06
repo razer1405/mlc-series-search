@@ -12,30 +12,51 @@ using System.IO;
 using Newtonsoft.Json.Linq;
 using System.Xml;
 using System.Net;
+using System.Diagnostics;
 
 namespace mlc_series_search
 {
-    public partial class Form1 : Form
+    public partial class mlcseriessearch : Form
     {
 
-
-
-        public Form1()
+        public mlcseriessearch()
         {
             InitializeComponent();
         }
 
-        DataTable SeasonData = new DataTable();
-        DataTable SeriesData = new DataTable();
-        DataTable ReleaseData = new DataTable();
+        Stopwatch sw = new Stopwatch();
+        
+        DataSet TVDBSearch = new DataSet();
+        DataSet TVDBSeries = new DataSet();
         DataSet xRel1 = new DataSet();
-        DataView EpisodenView;
+        DataView EpisodeView = new DataView();
+
+        string xRelURL;
+        bool xRel_Timeout = false;
+
 
         private void ClearTable(DataTable table)
         {
             try
             {
                 table.Clear();
+            }
+            catch (DataException e)
+            {
+                // Process exception and return.
+                Console.WriteLine("Exception of type {0} occurred.",
+                    e.GetType());
+            }
+
+        }
+
+        private void ClearDataSet(DataSet data)
+        {
+            try
+            {
+                data.Clear();
+                data.Reset();
+
             }
             catch (DataException e)
             {
@@ -58,8 +79,11 @@ namespace mlc_series_search
 
         public string HTTPtoString(string http)
         {
+
             try
             {
+
+                string xrels = http.Substring(0, 19);
                 // Create a request for the URL. 
                 WebRequest request = WebRequest.Create(http);
                 // If required by the server, set the credentials.
@@ -77,7 +101,10 @@ namespace mlc_series_search
                 // Clean up the streams and the response.
                 reader.Close();
                 response.Close();
+
                 return httpString;
+
+
             }
             catch (WebException webExcp)
             {
@@ -97,56 +124,65 @@ namespace mlc_series_search
                     HttpWebResponse httpResponse = (HttpWebResponse)webExcp.Response;
                     MessageBox.Show((int)httpResponse.StatusCode + " - "
                        + httpResponse.StatusCode);
+                    return "";
                 }
                 return "";
             }
         }
 
-        public void xmltodataset(DataSet newt,string xmlString) { 
-        newt.ReadXml(GenerateStreamFromString(xmlString));
+        public void xmltodataset(DataSet newt, string xmlString)
+        {
+            newt.ReadXml(GenerateStreamFromString(xmlString));
         }
 
-        public void setEpisodeSeason(DataView dv, string staffel, bool filter)
+        public DataView getDataView(DataTable data)
         {
-            if (staffel != "System.Data.DataRowView")
+            DataView dv = new DataView(data);
+            return dv;
+        }
+
+        public void setFilter(DataView dv, string staffel, string episode, bool abseason, bool abepisode)
+        {
+            if (staffel != "System.Data.DataRowView" && staffel != "")
             {
-                dv = new DataView(SeasonData);
-                if (filter)
+                if (abseason)
                 {
-                    dv.RowFilter = "Staffel >= " + staffel;
+                    dv.RowFilter = "SeasonNumber >= " + staffel + " AND language = 'de'";
                 }
                 else
                 {
-                    dv.RowFilter = "Staffel = " + staffel;
+                    if (episode != "System.Data.DataRowView" && episode != "")
+                    {
+                        if (abepisode)
+                        {
+                            dv.RowFilter = "SeasonNumber = " + staffel + "AND EpisodeNumber >=" + episode + " AND language = 'de'";
+                        }
+                        else
+                        {
+                            dv.RowFilter = "SeasonNumber = " + staffel + "AND EpisodeNumber =" + episode + " AND language = 'de'";
+                        }
+                    }
+                    else
+                    {
+                        dv.RowFilter = "SeasonNumber = " + staffel + " AND language = 'de'";
+                    }
                 }
-
-                listBox1.DataSource = dv;
-                listBox1.DisplayMember = "Display";
-                listBox1.ValueMember = "Display";
             }
         }
 
-        public void setEpisodeFilter(DataView dv, string staffel, string episode, bool filter)
+        public void setSeriesInfo(DataTable data)
         {
-            if (staffel != "System.Data.DataRowView" && episode != "System.Data.DataRowView")
-            {
-                dv = new DataView(SeasonData);
-                if (filter)
-                {
-                    dv.RowFilter = "Staffel = " + staffel + " AND Episode >= " + episode;
-                }
-                else
-                {
-                    dv.RowFilter = "Staffel = " + staffel + " AND Episode = " + episode;
-                }
+            DataView Series = getDataView(data);
+            SeriesPic.Load("http://thetvdb.com/banners/" + Series.Table.Rows[0]["poster"].ToString());
+            BeschreibungText.Text = Series.Table.Rows[0]["overview"].ToString();
+            SeriesNameLabel.Text = Series.Table.Rows[0]["SeriesName"].ToString();
+            AirDateLabel.Text = Series.Table.Rows[0]["FirstAired"].ToString();
+            GerneLabel.Text = Series.Table.Rows[0]["Genre"].ToString();
+            LaufzeitLabel.Text = Series.Table.Rows[0]["Runtime"].ToString() + " min";
+            StatusLabel.Text = Series.Table.Rows[0]["Status"].ToString();
 
-                listBox1.DataSource = dv;
-                listBox1.DisplayMember = "Display";
-                listBox1.ValueMember = "Display";
-            }
+
         }
-
-
 
         private void button2_Click(object sender, EventArgs e)
         {
@@ -210,13 +246,23 @@ namespace mlc_series_search
 
         }
 
-        private void textBox1_Validated(object sender, EventArgs e)
+        private void SearchText_Validated(object sender, EventArgs e)
         {
             try
             {
 
-                string xmlString = HTTPtoString("http://thetvdb.com/api/GetSeries.php?language=DE&seriesname=" + this.textBox1.Text);
+                string xmlString = HTTPtoString("http://thetvdb.com/api/GetSeries.php?language=DE&seriesname=" + this.SearchText.Text);
 
+                ClearDataSet(TVDBSearch);
+                xmltodataset(TVDBSearch, xmlString);
+
+                if (TVDBSearch.Tables.Count >= 0)
+                {
+                    TVDBSearch.Tables[0].DefaultView.RowFilter = "Language = 'DE'";
+                    SearchResultList.DataSource = TVDBSearch.Tables[0].DefaultView;
+                    SearchResultList.DisplayMember = "SeriesName";
+                    SearchResultList.ValueMember = "seriesid";
+                }
 
             }
             catch (Exception ex)
@@ -236,19 +282,23 @@ namespace mlc_series_search
             {
                 string xmlString = HTTPtoString("http://thetvdb.com/api/1D62F2F90030C444/series/" + SearchResultList.SelectedValue.ToString() + "/all/de.xml");
 
+                ClearDataSet(TVDBSeries);
+                xmltodataset(TVDBSeries, xmlString);
+
+                if (TVDBSeries.Tables.Count >= 1)
+                {
+                    TVDBSeries.Tables[1].Columns.Add("Display", typeof(string), "SeasonNumber+'.'+EpisodeNumber + ' ' + EpisodeName");
 
 
-                DataTable StaffelnDB;
-                StaffelnDB = SeasonData.DefaultView.ToTable(true, "Staffel");
+                    DataTable StaffelnDB;
+                    StaffelnDB = TVDBSeries.Tables[1].DefaultView.ToTable(true, "SeasonNumber");
 
-                comboBox1.DataSource = StaffelnDB;
-                comboBox1.DisplayMember = "Staffel";
+                    SeasonCombo.DataSource = StaffelnDB;
+                    SeasonCombo.DisplayMember = "SeasonNumber";
 
-                DataTable EpisodenDB;
-                EpisodenDB = SeasonData.DefaultView.ToTable(true, "Episode");
+                    setSeriesInfo(TVDBSeries.Tables[0]);
+                }
 
-                comboBox2.DataSource = EpisodenDB;
-                comboBox2.DisplayMember = "Episode";
             }
             /* }
              catch (Exception ex)
@@ -258,47 +308,76 @@ namespace mlc_series_search
 
         }
 
-        private void Season_Change(object sender, EventArgs e)
-        {
-            if (comboBox1.Text != "")
-            {
-               // setEpisodeSeason(EpisodenView, comboBox1.Text, checkBox1.Checked);
-
-                if (comboBox2.Text != "")
-                {
-                    if (!checkBox2.Checked)
-                    {
-                       // setEpisodeFilter(EpisodenView, comboBox1.Text, comboBox2.Text, checkBox2.Checked);
-                    }
-                }
-            }
-        }
-
         private void Episode_Change(object sender, EventArgs e)
         {
-            if (comboBox1.Text != "" && comboBox2.Text != "")
-            {
-               // checkBox1.Checked = false;
-               // setEpisodeFilter(EpisodenView, comboBox1.Text, comboBox2.Text, checkBox2.Checked);
-            }
+            EpisodeView = getDataView(TVDBSeries.Tables[1]);
+
+            setFilter(EpisodeView, SeasonCombo.Text, EpisodeCombo.Text, SeasonCheck.Checked, EpisodeCheck.Checked);
+
+            EpisodeList.DataSource = EpisodeView;
+            EpisodeList.DisplayMember = "Display";
+            EpisodeList.ValueMember = "Display";
         }
 
-        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        private void Season_Changed(object sender, EventArgs e)
         {
+            EpisodeView = getDataView(TVDBSeries.Tables[1]);
+            DataTable EpisodenDB;
 
-            if (listBox1.SelectedValue != null && listBox1.SelectedValue.ToString() != "System.Data.DataRowView")
+            setFilter(EpisodeView, SeasonCombo.Text, "", false, true);
+
+            EpisodenDB = EpisodeView.ToTable(true, "EpisodeNumber");
+
+            setFilter(EpisodeView, SeasonCombo.Text, EpisodeCombo.Text, SeasonCheck.Checked, EpisodeCheck.Checked);
+
+            EpisodeList.DataSource = EpisodeView;
+            EpisodeList.DisplayMember = "Display";
+            EpisodeList.ValueMember = "Display";
+
+
+            EpisodeCombo.DataSource = EpisodenDB;
+            EpisodeCombo.DisplayMember = "EpisodeNumber";
+        }
+
+        private void EpisodeList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (EpisodeList.SelectedValue != null && EpisodeList.SelectedValue.ToString() != "System.Data.DataRowView")
             {
+                string episode = Int32.Parse(EpisodeList.Text.Split(new char[] { ' ', '.' })[1]).ToString("D2");
+                string staffel = Int32.Parse(EpisodeList.Text.Split(new char[] { ' ', '.' })[0]).ToString("D2");
+                string xRelURL_new = "https://api.xrel.to/v2/search/releases.xml?q=" + SearchResultList.Text + " S" + staffel + "E" + episode + "&scene=1";
 
-               string xmlString = HTTPtoString("https://api.xrel.to/v2/search/releases.xml?q="+ SearchResultList.Text +" "+ listBox1.Text.Substring(0,6) + "&scene=1");
+                if (this.xRelURL != xRelURL_new)
+                {
+                    this.xRelURL = xRelURL_new;
 
-                xmltodataset(xRel1, xmlString);
-               if (xRel1.Tables.Count >= 2) { 
-                listBox2.DataSource = xRel1.Tables[2].DefaultView;
-                listBox2.DisplayMember = "dirname";
+                    sw.Start();
+                    progressBar1.Maximum = 6000;
+                    progressBar1.Step = 1;
+
+                    while (sw.Elapsed < TimeSpan.FromSeconds(6))
+                    {
+                        progressBar1.PerformStep();
+                    }
+                    sw.Stop();
+                    sw.Reset();
+                    sw.Start();
+                    //MessageBox.Show("https://api.xrel.to/v2/search/releases.xml?q=" + SearchResultList.Text + " S" + staffel + "E" + episode + "&scene=1");
+                    string xRelXML = HTTPtoString("https://api.xrel.to/v2/search/releases.xml?q=" + SearchResultList.Text + " S" + staffel + "E" + episode + "&scene=1");
+
+
+                    ClearDataSet(xRel1);
+                    xmltodataset(xRel1, xRelXML);
+                    if (xRel1.Tables.Count >= 2)
+                    {
+                        xRelList.DataSource = xRel1.Tables[2].DefaultView;
+                        xRelList.DisplayMember = "dirname";
+                    }
+
                 }
-
             }
         }
     }
+
 }
 
