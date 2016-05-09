@@ -22,6 +22,18 @@ namespace mlc_series_search
         public mlcseriessearch()
         {
             InitializeComponent();
+            
+            string mydocpath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
+            if (File.Exists(mydocpath + @"\AboData.xml")) { 
+                AboData.ReadXml(mydocpath + @"\AboData.xml");
+            }else {
+                InitAboTable(AboData);
+            }
+         
+            abolist.DataSource = AboData.Tables[0].DefaultView;
+            abolist.DisplayMember = "Display";
+            abolist.ValueMember = "Serie";
         }
 
         Stopwatch sw = new Stopwatch();
@@ -30,10 +42,23 @@ namespace mlc_series_search
         DataSet TVDBSeries = new DataSet();
         DataSet xRel1 = new DataSet();
         DataView EpisodeView = new DataView();
+        DataView RelView = new DataView();
+        DataSet AboData = new DataSet();
+        StringWriter AboWrite = new StringWriter();
 
         string xRelURL;
-        bool xRel_Timeout = false;
 
+        private void InitAboTable(DataSet table)
+        {
+            table.Tables.Add("AboData");
+            table.Tables[0].Columns.Add("Serie", typeof(string));
+            table.Tables[0].Columns.Add("Staffel", typeof(string));
+            table.Tables[0].Columns.Add("Episode", typeof(string));
+            table.Tables[0].Columns.Add("abStaffel", typeof(bool));
+            table.Tables[0].Columns.Add("abEpisode", typeof(bool));
+            table.Tables[0].Columns.Add("Filter", typeof(string));
+            table.Tables[0].Columns.Add("Display", typeof(string));
+        }
 
         private void ClearTable(DataTable table)
         {
@@ -170,6 +195,14 @@ namespace mlc_series_search
             }
         }
 
+        public void setRELFilter(DataView dv, string filter)
+        {
+            if (filter != "System.Data.DataRowView" && filter != "")
+            {
+                dv.RowFilter = "dirname LIKE '*" + filter +"*'";
+            }
+        }
+
         public void setSeriesInfo(DataTable data)
         {
             DataView Series = getDataView(data);
@@ -250,20 +283,20 @@ namespace mlc_series_search
         {
             try
             {
-
+                if (this.SearchText.Text != "") { 
                 string xmlString = HTTPtoString("http://thetvdb.com/api/GetSeries.php?language=DE&seriesname=" + this.SearchText.Text);
 
                 ClearDataSet(TVDBSearch);
                 xmltodataset(TVDBSearch, xmlString);
 
-                if (TVDBSearch.Tables.Count >= 0)
+                if (TVDBSearch.Tables.Count >= 1)
                 {
                     TVDBSearch.Tables[0].DefaultView.RowFilter = "Language = 'DE'";
                     SearchResultList.DataSource = TVDBSearch.Tables[0].DefaultView;
                     SearchResultList.DisplayMember = "SeriesName";
                     SearchResultList.ValueMember = "seriesid";
                 }
-
+                }
             }
             catch (Exception ex)
             {
@@ -351,18 +384,15 @@ namespace mlc_series_search
                 {
                     this.xRelURL = xRelURL_new;
 
-                    sw.Start();
-                    progressBar1.Maximum = 6000;
-                    progressBar1.Step = 1;
-
-                    while (sw.Elapsed < TimeSpan.FromSeconds(6))
-                    {
-                        progressBar1.PerformStep();
+                    while (sw.Elapsed < TimeSpan.FromSeconds(6) && sw.IsRunning)
+                    {  
+                        //Warte
                     }
+
                     sw.Stop();
                     sw.Reset();
                     sw.Start();
-                    //MessageBox.Show("https://api.xrel.to/v2/search/releases.xml?q=" + SearchResultList.Text + " S" + staffel + "E" + episode + "&scene=1");
+
                     string xRelXML = HTTPtoString("https://api.xrel.to/v2/search/releases.xml?q=" + SearchResultList.Text + " S" + staffel + "E" + episode + "&scene=1");
 
 
@@ -370,11 +400,87 @@ namespace mlc_series_search
                     xmltodataset(xRel1, xRelXML);
                     if (xRel1.Tables.Count >= 2)
                     {
-                        xRelList.DataSource = xRel1.Tables[2].DefaultView;
+                        RelView = getDataView(xRel1.Tables[2]);
+
+                        setRELFilter(RelView, filter.Text);
+
+                        xRelList.DataSource = RelView;
                         xRelList.DisplayMember = "dirname";
                     }
 
                 }
+            }
+        }
+
+        private void Filter_TextChanged(object sender, EventArgs e)
+        {
+            if (xRel1.Tables.Count >= 2) { 
+                RelView = getDataView(xRel1.Tables[2]);
+
+                setRELFilter(RelView, filter.Text);
+
+                xRelList.DataSource = RelView;
+                xRelList.DisplayMember = "dirname";
+            }
+    }
+
+        private void Abo_Click(object sender, EventArgs e)
+        {
+
+            AboData.Tables[0].Select("Serie = '" + SearchResultList.Text + "'");
+            if (AboData.Tables[0].Rows[0]["Serie"].ToString() == SearchResultList.Text) {
+                AboData.Tables[0].Rows[0]["Serie"] = SearchResultList.Text;
+                AboData.Tables[0].Rows[0]["Staffel"] = SeasonCombo.Text;
+                AboData.Tables[0].Rows[0]["Episode"] = EpisodeCombo.Text;
+                AboData.Tables[0].Rows[0]["abStaffel"] = SeasonCheck.Checked;
+                AboData.Tables[0].Rows[0]["abEpisode"] = EpisodeCheck.Checked;
+                AboData.Tables[0].Rows[0]["Filter"] = filter.Text;
+                AboData.Tables[0].Rows[0]["Display"] = SearchResultList.Text + " > " + SeasonCombo.Text + "." + EpisodeCombo.Text + " (" + filter.Text + ")";
+            }
+            else
+            {
+                AboData.Tables[0].Rows.Add(SearchResultList.Text, SeasonCombo.Text, EpisodeCombo.Text, SeasonCheck.Checked, EpisodeCheck.Checked, filter.Text, SearchResultList.Text + " > " + SeasonCombo.Text + "." + EpisodeCombo.Text + " (" + filter.Text + ")");
+            }
+            string mydocpath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
+            AboData.WriteXml(mydocpath+ @"\AboData.xml");
+
+        }
+
+        private void del_abo_Click(object sender, EventArgs e)
+        {
+            AboData.Tables[0].Select("Serie = '" + abolist.SelectedValue.ToString() + "'");
+            if (AboData.Tables[0].Rows[0]["Serie"].ToString() == abolist.SelectedValue.ToString())
+            {
+                AboData.Tables[0].Rows[0].Delete();
+            }
+            string mydocpath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
+            AboData.WriteXml(mydocpath + @"\AboData.xml");
+        }
+
+
+        private void abolist_Click(object sender, EventArgs e)
+        {
+            AboData.Tables[0].Select("Serie = '" + abolist.SelectedValue.ToString() + "'");
+            if (AboData.Tables[0].Rows[0]["Serie"].ToString() == abolist.SelectedValue.ToString())
+            {
+                SearchText.Text = AboData.Tables[0].Rows[0]["Serie"].ToString();
+                SearchText_Validated(sender, e);
+                SearchResultList_Click(sender, e);
+
+                SeasonCombo.Text = AboData.Tables[0].Rows[0]["Staffel"].ToString();
+                SeasonCheck.Checked = Boolean.Parse(AboData.Tables[0].Rows[0]["abStaffel"].ToString());
+                Season_Changed(sender, e);
+
+                EpisodeCombo.Text = AboData.Tables[0].Rows[0]["Episode"].ToString();
+                EpisodeCheck.Checked = Boolean.Parse(AboData.Tables[0].Rows[0]["abEpisode"].ToString());
+                Episode_Change(sender, e);
+
+                
+
+                filter.Text = AboData.Tables[0].Rows[0]["Filter"].ToString();
+
             }
         }
     }

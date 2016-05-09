@@ -30,17 +30,16 @@
         {
             this.SearchText = new System.Windows.Forms.TextBox();
             this.SeasonCombo = new System.Windows.Forms.ComboBox();
-            this.checkedListBox2 = new System.Windows.Forms.CheckedListBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.EpisodeCombo = new System.Windows.Forms.ComboBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.filter = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.SearchResultList = new System.Windows.Forms.ListBox();
-            this.button2 = new System.Windows.Forms.Button();
+            this.json_test = new System.Windows.Forms.Button();
             this.EpisodeList = new System.Windows.Forms.ListBox();
             this.SeasonCheck = new System.Windows.Forms.CheckBox();
             this.EpisodeCheck = new System.Windows.Forms.CheckBox();
@@ -61,6 +60,8 @@
             this.BeschreibungText = new System.Windows.Forms.RichTextBox();
             this.SeriesPic = new System.Windows.Forms.PictureBox();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.abolist = new System.Windows.Forms.ListBox();
+            this.del_abo = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SeriesPic)).BeginInit();
             this.SuspendLayout();
@@ -83,14 +84,6 @@
             this.SeasonCombo.TabIndex = 2;
             this.SeasonCombo.SelectedIndexChanged += new System.EventHandler(this.Season_Changed);
             this.SeasonCombo.SelectionChangeCommitted += new System.EventHandler(this.Season_Changed);
-            // 
-            // checkedListBox2
-            // 
-            this.checkedListBox2.FormattingEnabled = true;
-            this.checkedListBox2.Location = new System.Drawing.Point(12, 247);
-            this.checkedListBox2.Name = "checkedListBox2";
-            this.checkedListBox2.Size = new System.Drawing.Size(317, 349);
-            this.checkedListBox2.TabIndex = 3;
             // 
             // label1
             // 
@@ -138,12 +131,13 @@
             this.EpisodeCombo.SelectedIndexChanged += new System.EventHandler(this.Episode_Change);
             this.EpisodeCombo.SelectionChangeCommitted += new System.EventHandler(this.Episode_Change);
             // 
-            // textBox2
+            // filter
             // 
-            this.textBox2.Location = new System.Drawing.Point(597, 32);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(199, 20);
-            this.textBox2.TabIndex = 15;
+            this.filter.Location = new System.Drawing.Point(597, 32);
+            this.filter.Name = "filter";
+            this.filter.Size = new System.Drawing.Size(126, 20);
+            this.filter.TabIndex = 15;
+            this.filter.TextChanged += new System.EventHandler(this.Filter_TextChanged);
             // 
             // label6
             // 
@@ -156,12 +150,13 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(932, 30);
+            this.button1.Location = new System.Drawing.Point(729, 32);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(108, 23);
             this.button1.TabIndex = 18;
             this.button1.Text = "Abonieren";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.Abo_Click);
             // 
             // SearchResultList
             // 
@@ -172,15 +167,15 @@
             this.SearchResultList.TabIndex = 19;
             this.SearchResultList.Click += new System.EventHandler(this.SearchResultList_Click);
             // 
-            // button2
+            // json_test
             // 
-            this.button2.Location = new System.Drawing.Point(897, 2);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(144, 24);
-            this.button2.TabIndex = 20;
-            this.button2.Text = "JSON TEST";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.json_test.Location = new System.Drawing.Point(897, 2);
+            this.json_test.Name = "json_test";
+            this.json_test.Size = new System.Drawing.Size(144, 24);
+            this.json_test.TabIndex = 20;
+            this.json_test.Text = "JSON TEST";
+            this.json_test.UseVisualStyleBackColor = true;
+            this.json_test.Click += new System.EventHandler(this.button2_Click);
             // 
             // EpisodeList
             // 
@@ -369,16 +364,38 @@
             // 
             // progressBar1
             // 
-            this.progressBar1.Location = new System.Drawing.Point(88, 5);
+            this.progressBar1.Location = new System.Drawing.Point(63, 5);
             this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(241, 10);
+            this.progressBar1.Size = new System.Drawing.Size(269, 10);
+            this.progressBar1.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
             this.progressBar1.TabIndex = 28;
+            // 
+            // abolist
+            // 
+            this.abolist.FormattingEnabled = true;
+            this.abolist.Location = new System.Drawing.Point(12, 247);
+            this.abolist.Name = "abolist";
+            this.abolist.Size = new System.Drawing.Size(317, 342);
+            this.abolist.TabIndex = 29;
+            this.abolist.Click += new System.EventHandler(this.abolist_Click);
+            // 
+            // del_abo
+            // 
+            this.del_abo.Location = new System.Drawing.Point(843, 32);
+            this.del_abo.Name = "del_abo";
+            this.del_abo.Size = new System.Drawing.Size(28, 23);
+            this.del_abo.TabIndex = 30;
+            this.del_abo.Text = "X";
+            this.del_abo.UseVisualStyleBackColor = true;
+            this.del_abo.Click += new System.EventHandler(this.del_abo_Click);
             // 
             // mlcseriessearch
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1053, 607);
+            this.Controls.Add(this.del_abo);
+            this.Controls.Add(this.abolist);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.label7);
@@ -387,17 +404,16 @@
             this.Controls.Add(this.EpisodeCheck);
             this.Controls.Add(this.SeasonCheck);
             this.Controls.Add(this.EpisodeList);
-            this.Controls.Add(this.button2);
+            this.Controls.Add(this.json_test);
             this.Controls.Add(this.SearchResultList);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label6);
-            this.Controls.Add(this.textBox2);
+            this.Controls.Add(this.filter);
             this.Controls.Add(this.EpisodeCombo);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.checkedListBox2);
             this.Controls.Add(this.SeasonCombo);
             this.Controls.Add(this.SearchText);
             this.Name = "mlcseriessearch";
@@ -414,17 +430,16 @@
 
         private System.Windows.Forms.TextBox SearchText;
         private System.Windows.Forms.ComboBox SeasonCombo;
-        private System.Windows.Forms.CheckedListBox checkedListBox2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ComboBox EpisodeCombo;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox filter;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.ListBox SearchResultList;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button json_test;
         private System.Windows.Forms.ListBox EpisodeList;
         private System.Windows.Forms.CheckBox SeasonCheck;
         private System.Windows.Forms.CheckBox EpisodeCheck;
@@ -445,6 +460,8 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.ListBox abolist;
+        private System.Windows.Forms.Button del_abo;
     }
 }
 
