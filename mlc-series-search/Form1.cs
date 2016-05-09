@@ -428,18 +428,18 @@ namespace mlc_series_search
         {
 
             AboData.Tables[0].Select("Serie = '" + SearchResultList.Text + "'");
-            if (AboData.Tables[0].Rows[0]["Serie"].ToString() == SearchResultList.Text) {
+            if (AboData.Tables[0].Rows.Count >=1 && AboData.Tables[0].Rows[0]["Serie"].ToString() == SearchResultList.Text) {
                 AboData.Tables[0].Rows[0]["Serie"] = SearchResultList.Text;
                 AboData.Tables[0].Rows[0]["Staffel"] = SeasonCombo.Text;
                 AboData.Tables[0].Rows[0]["Episode"] = EpisodeCombo.Text;
                 AboData.Tables[0].Rows[0]["abStaffel"] = SeasonCheck.Checked;
                 AboData.Tables[0].Rows[0]["abEpisode"] = EpisodeCheck.Checked;
                 AboData.Tables[0].Rows[0]["Filter"] = filter.Text;
-                AboData.Tables[0].Rows[0]["Display"] = SearchResultList.Text + " > " + SeasonCombo.Text + "." + EpisodeCombo.Text + " (" + filter.Text + ")";
+                AboData.Tables[0].Rows[0]["Display"] = SearchResultList.Text + " > " + SeasonCombo.Text + "." + EpisodeCombo.Text + " " + filter.Text;
             }
             else
             {
-                AboData.Tables[0].Rows.Add(SearchResultList.Text, SeasonCombo.Text, EpisodeCombo.Text, SeasonCheck.Checked, EpisodeCheck.Checked, filter.Text, SearchResultList.Text + " > " + SeasonCombo.Text + "." + EpisodeCombo.Text + " (" + filter.Text + ")");
+                AboData.Tables[0].Rows.Add(SearchResultList.Text, SeasonCombo.Text, EpisodeCombo.Text, SeasonCheck.Checked, EpisodeCheck.Checked, filter.Text, SearchResultList.Text + " > " + SeasonCombo.Text + "." + EpisodeCombo.Text + " " + filter.Text);
             }
             string mydocpath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
@@ -456,8 +456,13 @@ namespace mlc_series_search
             }
             string mydocpath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
+            if (AboData.Tables[0].Rows.Count == 0)
+            {
+                File.Delete(mydocpath + @"\AboData.xml");
+            }else { 
             AboData.WriteXml(mydocpath + @"\AboData.xml");
         }
+    }
 
 
         private void abolist_Click(object sender, EventArgs e)
