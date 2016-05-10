@@ -20,6 +20,30 @@ namespace mlc_series_search
     public partial class mlcseriessearch : Form
     {
 
+        Stopwatch sw = new Stopwatch();
+        DataSet TVDBSearch = new DataSet();
+        DataSet TVDBSeries = new DataSet();
+        DataSet xRel1 = new DataSet();
+        DataView EpisodeView = new DataView();
+        DataView RelView = new DataView();
+        DataSet AboData = new DataSet();
+        StringWriter AboWrite = new StringWriter();
+        DataTable MLCresults = new DataTable();
+        DataRow workRow;
+
+        string appname = "MLC Serien Manager";
+
+        string mydocpath = Environment.CurrentDirectory;
+       
+        string myMLCURL = "https://mlcboard.com";
+        string myXRELURL = "https://api.xrel.to/v2/search/releases.xml?q=";
+
+        string myTVDBAPI = "http://thetvdb.com/api/GetSeries.php?language=DE&seriesname=";
+        string myTVDBAPI2 = "http://thetvdb.com/api/1D62F2F90030C444/series/";
+        string myTVDBBAN = "http://thetvdb.com/banners/";
+
+        string xRelURL;
+
         public mlcseriessearch()
         {
             AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
@@ -27,9 +51,8 @@ namespace mlc_series_search
             InitializeComponent();
 
             string version = Application.ProductVersion;
-            this.Text = "MLC Serien Manager "+ version;
 
-            string mydocpath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            this.Text = appname + " "+ version;
 
             if (File.Exists(mydocpath + @"\AboData.xml"))
             {
@@ -48,19 +71,6 @@ namespace mlc_series_search
             
         }
 
-        Stopwatch sw = new Stopwatch();
-
-        DataSet TVDBSearch = new DataSet();
-        DataSet TVDBSeries = new DataSet();
-        DataSet xRel1 = new DataSet();
-        DataView EpisodeView = new DataView();
-        DataView RelView = new DataView();
-        DataSet AboData = new DataSet();
-        StringWriter AboWrite = new StringWriter();
-        DataTable MLCresults = new DataTable();
-        DataRow workRow;
-
-        string xRelURL;
 
         System.Reflection.Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
         {
@@ -320,7 +330,7 @@ namespace mlc_series_search
         public void setSeriesInfo(DataTable data)
         {
             DataView Series = getDataView(data);
-            SeriesPic.Load("http://thetvdb.com/banners/" + Series.Table.Rows[0]["poster"].ToString());
+            SeriesPic.Load(myTVDBBAN + Series.Table.Rows[0]["poster"].ToString());
             BeschreibungText.Text = Series.Table.Rows[0]["overview"].ToString();
             SeriesNameLabel.Text = Series.Table.Rows[0]["SeriesName"].ToString();
             AirDateLabel.Text = Series.Table.Rows[0]["FirstAired"].ToString();
@@ -337,7 +347,7 @@ namespace mlc_series_search
             {
                 if (this.SearchText.Text != "")
                 {
-                    string xmlString = HTTPtoString("http://thetvdb.com/api/GetSeries.php?language=DE&seriesname=" + this.SearchText.Text);
+                    string xmlString = HTTPtoString(myTVDBAPI + this.SearchText.Text);
 
                     ClearDataSet(TVDBSearch);
                     xmltodataset(TVDBSearch, xmlString);
@@ -368,7 +378,7 @@ namespace mlc_series_search
            
             if (SearchResultList.SelectedValue != null)
             {
-                string xmlString = HTTPtoString("http://thetvdb.com/api/1D62F2F90030C444/series/" + SearchResultList.SelectedValue.ToString() + "/all/de.xml");
+                string xmlString = HTTPtoString(myTVDBAPI2 + SearchResultList.SelectedValue.ToString() + "/all/de.xml");
 
                 ClearDataSet(TVDBSeries);
                 xmltodataset(TVDBSeries, xmlString);
@@ -435,7 +445,7 @@ namespace mlc_series_search
                 string episode = Int32.Parse(EpisodeList.Text.Split(new char[] { ' ', '.' })[1]).ToString("D2");
                 string staffel = Int32.Parse(EpisodeList.Text.Split(new char[] { ' ', '.' })[0]).ToString("D2");
                
-                string xRelURL_new = "https://api.xrel.to/v2/search/releases.xml?q=" + SearchResultList.Text + " S" + staffel + "E" + episode + "&scene=1";
+                string xRelURL_new = myXRELURL + SearchResultList.Text + " S" + staffel + "E" + episode + "&scene=1";
 
                 if (this.xRelURL != xRelURL_new)
                 {
@@ -500,7 +510,7 @@ namespace mlc_series_search
             {
                 AboData.Tables[0].Rows.Add(SearchResultList.Text, SeasonCombo.Text, EpisodeCombo.Text, SeasonCheck.Checked, EpisodeCheck.Checked, filter.Text, SearchResultList.Text + " > " + SeasonCombo.Text + "." + EpisodeCombo.Text + " " + filter.Text);
             }
-            string mydocpath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            
 
             AboData.WriteXml(mydocpath + @"\AboData.xml");
 
@@ -513,7 +523,7 @@ namespace mlc_series_search
             {
                 AboData.Tables[0].Rows[0].Delete();
             }
-            string mydocpath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            
 
             if (AboData.Tables[0].Rows.Count == 0)
             {
@@ -527,6 +537,7 @@ namespace mlc_series_search
 
         private void abolist_Click(object sender, EventArgs e)
         {
+            if (abolist.SelectedItem != null) { 
             AboData.Tables[0].Select("Serie = '" + abolist.SelectedValue.ToString() + "'");
             if (AboData.Tables[0].Rows[0]["Serie"].ToString() == abolist.SelectedValue.ToString())
             {
@@ -547,6 +558,7 @@ namespace mlc_series_search
                 filter.Text = AboData.Tables[0].Rows[0]["Filter"].ToString();
 
             }
+            }
         }
 
         private void xRelList_SelectedIndexChanged(object sender, EventArgs e)
@@ -564,20 +576,20 @@ namespace mlc_series_search
 
         private void button3_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start("https://mlcboard.com/forum/forumdisplay.php?202-Spender-Suche");
+            System.Diagnostics.Process.Start(myMLCURL+"/forum/forumdisplay.php?202-Spender-Suche");
         }
 
         private void mlcupslist_DoubleClick(object sender, EventArgs e)
         {
             if (sender.ToString() != "System.Data.DataRowView" && sender.ToString() != "")
             {
-                System.Diagnostics.Process.Start("https://mlcboard.com/forum/showthread.php?" +mlcupslist.SelectedValue.ToString());
+                System.Diagnostics.Process.Start(myMLCURL+"/forum/showthread.php?" + mlcupslist.SelectedValue.ToString());
             }
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start("https://mlcboard.com/forum/forumdisplay.php?62-Suche");
+            System.Diagnostics.Process.Start(myMLCURL + "/forum/forumdisplay.php?62-Suche");
         }
     }
 
