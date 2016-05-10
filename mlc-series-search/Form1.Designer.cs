@@ -39,7 +39,6 @@
             this.label6 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.SearchResultList = new System.Windows.Forms.ListBox();
-            this.json_test = new System.Windows.Forms.Button();
             this.EpisodeList = new System.Windows.Forms.ListBox();
             this.SeasonCheck = new System.Windows.Forms.CheckBox();
             this.EpisodeCheck = new System.Windows.Forms.CheckBox();
@@ -62,6 +61,12 @@
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.abolist = new System.Windows.Forms.ListBox();
             this.del_abo = new System.Windows.Forms.Button();
+            this.mlcupslist = new System.Windows.Forms.ListBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.requesttext = new System.Windows.Forms.RichTextBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SeriesPic)).BeginInit();
             this.SuspendLayout();
@@ -167,22 +172,13 @@
             this.SearchResultList.TabIndex = 19;
             this.SearchResultList.Click += new System.EventHandler(this.SearchResultList_Click);
             // 
-            // json_test
-            // 
-            this.json_test.Location = new System.Drawing.Point(897, 2);
-            this.json_test.Name = "json_test";
-            this.json_test.Size = new System.Drawing.Size(144, 24);
-            this.json_test.TabIndex = 20;
-            this.json_test.Text = "JSON TEST";
-            this.json_test.UseVisualStyleBackColor = true;
-            this.json_test.Click += new System.EventHandler(this.button2_Click);
-            // 
             // EpisodeList
             // 
             this.EpisodeList.FormattingEnabled = true;
+            this.EpisodeList.HorizontalScrollbar = true;
             this.EpisodeList.Location = new System.Drawing.Point(338, 100);
             this.EpisodeList.Name = "EpisodeList";
-            this.EpisodeList.Size = new System.Drawing.Size(243, 290);
+            this.EpisodeList.Size = new System.Drawing.Size(241, 290);
             this.EpisodeList.TabIndex = 21;
             this.EpisodeList.SelectedIndexChanged += new System.EventHandler(this.EpisodeList_SelectedIndexChanged);
             // 
@@ -213,10 +209,13 @@
             // xRelList
             // 
             this.xRelList.FormattingEnabled = true;
+            this.xRelList.HorizontalScrollbar = true;
             this.xRelList.Location = new System.Drawing.Point(587, 100);
             this.xRelList.Name = "xRelList";
-            this.xRelList.Size = new System.Drawing.Size(453, 290);
+            this.xRelList.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.xRelList.Size = new System.Drawing.Size(227, 290);
             this.xRelList.TabIndex = 24;
+            this.xRelList.SelectedIndexChanged += new System.EventHandler(this.xRelList_SelectedIndexChanged);
             // 
             // label5
             // 
@@ -331,9 +330,8 @@
             this.SeriesNameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SeriesNameLabel.Location = new System.Drawing.Point(152, 19);
             this.SeriesNameLabel.Name = "SeriesNameLabel";
-            this.SeriesNameLabel.Size = new System.Drawing.Size(107, 20);
+            this.SeriesNameLabel.Size = new System.Drawing.Size(0, 20);
             this.SeriesNameLabel.TabIndex = 3;
-            this.SeriesNameLabel.Text = "SerienName";
             // 
             // label8
             // 
@@ -389,11 +387,73 @@
             this.del_abo.UseVisualStyleBackColor = true;
             this.del_abo.Click += new System.EventHandler(this.del_abo_Click);
             // 
+            // mlcupslist
+            // 
+            this.mlcupslist.FormattingEnabled = true;
+            this.mlcupslist.HorizontalScrollbar = true;
+            this.mlcupslist.Location = new System.Drawing.Point(820, 100);
+            this.mlcupslist.Name = "mlcupslist";
+            this.mlcupslist.Size = new System.Drawing.Size(227, 147);
+            this.mlcupslist.TabIndex = 31;
+            this.mlcupslist.DoubleClick += new System.EventHandler(this.mlcupslist_DoubleClick);
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(817, 84);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(46, 13);
+            this.label13.TabIndex = 32;
+            this.label13.Text = "Uploads";
+            // 
+            // requesttext
+            // 
+            this.requesttext.Location = new System.Drawing.Point(820, 277);
+            this.requesttext.Name = "requesttext";
+            this.requesttext.Size = new System.Drawing.Size(227, 76);
+            this.requesttext.TabIndex = 33;
+            this.requesttext.Text = "";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(819, 261);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(47, 13);
+            this.label14.TabIndex = 34;
+            this.label14.Text = "Request";
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(829, 359);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(98, 23);
+            this.button2.TabIndex = 35;
+            this.button2.Text = "Normal";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(944, 359);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(96, 23);
+            this.button3.TabIndex = 36;
+            this.button3.Text = "Spender";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
             // mlcseriessearch
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1053, 607);
+            this.Controls.Add(this.button3);
+            this.Controls.Add(this.button2);
+            this.Controls.Add(this.label14);
+            this.Controls.Add(this.requesttext);
+            this.Controls.Add(this.label13);
+            this.Controls.Add(this.mlcupslist);
             this.Controls.Add(this.del_abo);
             this.Controls.Add(this.abolist);
             this.Controls.Add(this.progressBar1);
@@ -404,7 +464,6 @@
             this.Controls.Add(this.EpisodeCheck);
             this.Controls.Add(this.SeasonCheck);
             this.Controls.Add(this.EpisodeList);
-            this.Controls.Add(this.json_test);
             this.Controls.Add(this.SearchResultList);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label6);
@@ -439,7 +498,6 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.ListBox SearchResultList;
-        private System.Windows.Forms.Button json_test;
         private System.Windows.Forms.ListBox EpisodeList;
         private System.Windows.Forms.CheckBox SeasonCheck;
         private System.Windows.Forms.CheckBox EpisodeCheck;
@@ -462,6 +520,12 @@
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.ListBox abolist;
         private System.Windows.Forms.Button del_abo;
+        private System.Windows.Forms.ListBox mlcupslist;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.RichTextBox requesttext;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button button3;
     }
 }
 
