@@ -563,6 +563,11 @@ namespace mlc_series_search
         {
             System.Diagnostics.Process.Start("https://mlcboard.com/forum/forumdisplay.php?62-Suche");
         }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://mlcboard.com/");
+        }
     }
 
 }
