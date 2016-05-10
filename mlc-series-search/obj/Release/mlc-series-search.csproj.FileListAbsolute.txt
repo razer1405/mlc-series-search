@@ -1,0 +1,16 @@
+E:\git\mlc-series-search\mlc-series-search\bin\Release\mlc-series-search.exe.config
+E:\git\mlc-series-search\mlc-series-search\bin\Release\mlc-series-search.exe
+E:\git\mlc-series-search\mlc-series-search\bin\Release\mlc-series-search.pdb
+E:\git\mlc-series-search\mlc-series-search\bin\Release\Newtonsoft.Json.dll
+E:\git\mlc-series-search\mlc-series-search\bin\Release\Newtonsoft.Json.xml
+E:\git\mlc-series-search\mlc-series-search\obj\Release\mlc_series_search.mlcseriessearch.resources
+E:\git\mlc-series-search\mlc-series-search\obj\Release\mlc_series_search.Properties.Resources.resources
+E:\git\mlc-series-search\mlc-series-search\obj\Release\mlc-series-search.csproj.GenerateResource.Cache
+E:\git\mlc-series-search\mlc-series-search\obj\Release\mlc-series-search.exe
+E:\git\mlc-series-search\mlc-series-search\obj\Release\mlc-series-search.pdb
+E:\git\mlc-series-search\mlc-series-search\bin\Release\mlc-series-search.exe.manifest
+E:\git\mlc-series-search\mlc-series-search\bin\Release\mlc-series-search.application
+E:\git\mlc-series-search\mlc-series-search\obj\Release\mlc-series-search.TrustInfo.xml
+E:\git\mlc-series-search\mlc-series-search\obj\Release\mlc-series-search.exe.manifest
+E:\git\mlc-series-search\mlc-series-search\obj\Release\mlc-series-search.application
+E:\git\mlc-series-search\mlc-series-search\obj\Release\mlc-series-search.csprojResolveAssemblyReference.cache

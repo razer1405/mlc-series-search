@@ -24,6 +24,9 @@ namespace mlc_series_search
         {
             InitializeComponent();
 
+            string version = Application.ProductVersion;
+            this.Text = "MLC Serien Manager "+ version;
+
             string mydocpath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
             if (File.Exists(mydocpath + @"\AboData.xml"))
