@@ -41,6 +41,7 @@ namespace mlc_series_search
         string myTVDBAPI = "http://thetvdb.com/api/GetSeries.php?language=DE&seriesname=";
         string myTVDBAPI2 = "http://thetvdb.com/api/1D62F2F90030C444/series/";
         string myTVDBBAN = "http://thetvdb.com/banners/";
+        string myReqmask = "Name:\r\nSprache:\r\nQualität:\r\nReleasetitel:";
 
         string xRelURL;
 
@@ -68,9 +69,15 @@ namespace mlc_series_search
             abolist.ValueMember = "Serie";
 
             InitMLCTable(MLCresults);
-            
+
+            requesttext.Text = myReqmask;
+
         }
 
+        public string clean(string input)
+        {
+            return Regex.Replace(input, @"['*!§$%&/()=?]", "");
+        }
 
         System.Reflection.Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
         {
@@ -439,7 +446,7 @@ namespace mlc_series_search
 
         private void EpisodeList_SelectedIndexChanged(object sender, EventArgs e)
         {
-           
+            requesttext.Text = myReqmask;
             if (EpisodeList.SelectedValue != null && EpisodeList.SelectedValue.ToString() != "System.Data.DataRowView" && sender.ToString() != "System.Data.DataRowView")
             {
                 string episode = Int32.Parse(EpisodeList.Text.Split(new char[] { ' ', '.' })[1]).ToString("D2");
@@ -495,10 +502,10 @@ namespace mlc_series_search
         private void Abo_Click(object sender, EventArgs e)
         {
 
-            AboData.Tables[0].Select("Serie = '" + SearchResultList.Text + "'");
-            if (AboData.Tables[0].Rows.Count >= 1 && AboData.Tables[0].Rows[0]["Serie"].ToString() == SearchResultList.Text)
+            AboData.Tables[0].Select("Serie = '" + clean(SearchResultList.Text) + "'");
+            if (AboData.Tables[0].Rows.Count >= 1 && AboData.Tables[0].Rows[0]["Serie"].ToString() == clean(SearchResultList.Text))
             {
-                AboData.Tables[0].Rows[0]["Serie"] = SearchResultList.Text;
+                AboData.Tables[0].Rows[0]["Serie"] = clean(SearchResultList.Text);
                 AboData.Tables[0].Rows[0]["Staffel"] = SeasonCombo.Text;
                 AboData.Tables[0].Rows[0]["Episode"] = EpisodeCombo.Text;
                 AboData.Tables[0].Rows[0]["abStaffel"] = SeasonCheck.Checked;
@@ -508,7 +515,7 @@ namespace mlc_series_search
             }
             else
             {
-                AboData.Tables[0].Rows.Add(SearchResultList.Text, SeasonCombo.Text, EpisodeCombo.Text, SeasonCheck.Checked, EpisodeCheck.Checked, filter.Text, SearchResultList.Text + " > " + SeasonCombo.Text + "." + EpisodeCombo.Text + " " + filter.Text);
+                AboData.Tables[0].Rows.Add(clean(SearchResultList.Text), SeasonCombo.Text, EpisodeCombo.Text, SeasonCheck.Checked, EpisodeCheck.Checked, filter.Text, SearchResultList.Text + " > " + SeasonCombo.Text + "." + EpisodeCombo.Text + " " + filter.Text);
             }
             
 
@@ -562,7 +569,7 @@ namespace mlc_series_search
         }
 
         private void xRelList_SelectedIndexChanged(object sender, EventArgs e)
-        {
+        {    
             if (xRelList.Text != "System.Data.DataRowView" && sender.ToString() != "System.Data.DataRowView" && xRelList.Text != "") { 
                 MLCSearch(MLCresults, xRelList.Text);
 
@@ -570,13 +577,12 @@ namespace mlc_series_search
                 mlcupslist.DisplayMember = "Release";
                 mlcupslist.ValueMember = "ID";
 
-                requesttext.Text = "Name:\r\nSprache:\r\nQualität:\r\nReleasetitel:" + xRelList.Text;
+                requesttext.Text = myReqmask + xRelList.Text;
+            }else
+            {
+                ClearTable(MLCresults);
+                requesttext.Text = myReqmask;
             }
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            System.Diagnostics.Process.Start(myMLCURL+"/forum/forumdisplay.php?202-Spender-Suche");
         }
 
         private void mlcupslist_DoubleClick(object sender, EventArgs e)
@@ -585,6 +591,11 @@ namespace mlc_series_search
             {
                 System.Diagnostics.Process.Start(myMLCURL+"/forum/showthread.php?" + mlcupslist.SelectedValue.ToString());
             }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start(myMLCURL + "/forum/forumdisplay.php?202-Spender-Suche");
         }
 
         private void button2_Click(object sender, EventArgs e)
