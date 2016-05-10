@@ -22,6 +22,8 @@ namespace mlc_series_search
 
         public mlcseriessearch()
         {
+            AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
+
             InitializeComponent();
 
             string version = Application.ProductVersion;
@@ -43,7 +45,6 @@ namespace mlc_series_search
             abolist.ValueMember = "Serie";
 
             InitMLCTable(MLCresults);
-
             
         }
 
@@ -59,10 +60,22 @@ namespace mlc_series_search
         DataTable MLCresults = new DataTable();
         DataRow workRow;
 
-
-
-
         string xRelURL;
+
+        System.Reflection.Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            string dllName = args.Name.Contains(',') ? args.Name.Substring(0, args.Name.IndexOf(',')) : args.Name.Replace(".dll", "");
+
+            dllName = dllName.Replace(".", "_");
+
+            if (dllName.EndsWith("_resources")) return null;
+
+            System.Resources.ResourceManager rm = new System.Resources.ResourceManager(GetType().Namespace + ".Properties.Resources", System.Reflection.Assembly.GetExecutingAssembly());
+
+            byte[] bytes = (byte[])rm.GetObject(dllName);
+
+            return System.Reflection.Assembly.Load(bytes);
+        }
 
         private void InitMLCTable(DataTable table) { 
             MLCresults.Columns.Add("ID", typeof(string));
@@ -348,9 +361,9 @@ namespace mlc_series_search
         private void SearchResultList_Click(object sender, EventArgs e)
         {
 
-            /*try
+            try
             {
-            */
+            
             SearchResultList.Refresh();
            
             if (SearchResultList.SelectedValue != null)
@@ -375,11 +388,11 @@ namespace mlc_series_search
                 }
 
             }
-            /* }
+             }
              catch (Exception ex)
              {
                  MessageBox.Show(ex.Message, "ERROR");
-             } */
+             } 
 
         }
 
@@ -565,11 +578,6 @@ namespace mlc_series_search
         private void button2_Click(object sender, EventArgs e)
         {
             System.Diagnostics.Process.Start("https://mlcboard.com/forum/forumdisplay.php?62-Suche");
-        }
-
-        private void pictureBox1_Click(object sender, EventArgs e)
-        {
-            System.Diagnostics.Process.Start("https://mlcboard.com/");
         }
     }
 
