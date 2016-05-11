@@ -80,7 +80,7 @@ namespace mlc_series_search
 
 
             // GET DLL's
-           // AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
+            AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
 
         }
 
