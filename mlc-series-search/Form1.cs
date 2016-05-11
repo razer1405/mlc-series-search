@@ -47,7 +47,7 @@ namespace mlc_series_search
 
         public mlcseriessearch()
         {
-            AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
+           
 
             InitializeComponent();
 
@@ -71,6 +71,8 @@ namespace mlc_series_search
             InitMLCTable(MLCresults);
 
             requesttext.Text = myReqmask;
+
+            AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
 
         }
 
@@ -511,11 +513,11 @@ namespace mlc_series_search
                 AboData.Tables[0].Rows[0]["abStaffel"] = SeasonCheck.Checked;
                 AboData.Tables[0].Rows[0]["abEpisode"] = EpisodeCheck.Checked;
                 AboData.Tables[0].Rows[0]["Filter"] = filter.Text;
-                AboData.Tables[0].Rows[0]["Display"] = SearchResultList.Text + " > " + SeasonCombo.Text + "." + EpisodeCombo.Text + " " + filter.Text;
+                AboData.Tables[0].Rows[0]["Display"] = clean(SearchResultList.Text) + " > " + SeasonCombo.Text + "." + EpisodeCombo.Text + " " + filter.Text;
             }
             else
             {
-                AboData.Tables[0].Rows.Add(clean(SearchResultList.Text), SeasonCombo.Text, EpisodeCombo.Text, SeasonCheck.Checked, EpisodeCheck.Checked, filter.Text, SearchResultList.Text + " > " + SeasonCombo.Text + "." + EpisodeCombo.Text + " " + filter.Text);
+                AboData.Tables[0].Rows.Add(clean(SearchResultList.Text), SeasonCombo.Text, EpisodeCombo.Text, SeasonCheck.Checked, EpisodeCheck.Checked, filter.Text, clean(SearchResultList.Text) + " > " + SeasonCombo.Text + "." + EpisodeCombo.Text + " " + filter.Text);
             }
             
 
@@ -544,25 +546,28 @@ namespace mlc_series_search
 
         private void abolist_Click(object sender, EventArgs e)
         {
-            if (abolist.SelectedItem != null) { 
-            AboData.Tables[0].Select("Serie = '" + abolist.SelectedValue.ToString() + "'");
-            if (AboData.Tables[0].Rows[0]["Serie"].ToString() == abolist.SelectedValue.ToString())
+            abolist.Refresh();
+            if (abolist.SelectedItem != null) {
+                DataRow[] foundRows;
+
+                foundRows = AboData.Tables[0].Select("Serie = '" + abolist.SelectedValue.ToString() + "'");
+
+            if (foundRows[0]["Serie"].ToString() == abolist.SelectedValue.ToString())
             {
-                SearchText.Text = AboData.Tables[0].Rows[0]["Serie"].ToString();
+
+                SearchText.Text = foundRows[0]["Serie"].ToString();
                 SearchText_Validated(sender, e);
                 SearchResultList_Click(sender, e);
 
-                SeasonCombo.Text = AboData.Tables[0].Rows[0]["Staffel"].ToString();
-                SeasonCheck.Checked = Boolean.Parse(AboData.Tables[0].Rows[0]["abStaffel"].ToString());
+                SeasonCombo.Text = foundRows[0]["Staffel"].ToString();
+                SeasonCheck.Checked = Boolean.Parse(foundRows[0]["abStaffel"].ToString());
                 Season_Changed(sender, e);
 
-                EpisodeCombo.Text = AboData.Tables[0].Rows[0]["Episode"].ToString();
-                EpisodeCheck.Checked = Boolean.Parse(AboData.Tables[0].Rows[0]["abEpisode"].ToString());
+                EpisodeCombo.Text = foundRows[0]["Episode"].ToString();
+                EpisodeCheck.Checked = Boolean.Parse(foundRows[0]["abEpisode"].ToString());
                 Episode_Change(sender, e);
 
-
-
-                filter.Text = AboData.Tables[0].Rows[0]["Filter"].ToString();
+                filter.Text = foundRows[0]["Filter"].ToString();
 
             }
             }
