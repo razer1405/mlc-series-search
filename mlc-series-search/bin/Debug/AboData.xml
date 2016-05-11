@@ -1,21 +1,12 @@
 <?xml version="1.0" standalone="yes"?>
 <NewDataSet>
   <AboData>
-    <Serie>How to Get Away with Murder</Serie>
-    <Staffel>2</Staffel>
-    <Episode>7</Episode>
-    <abStaffel>false</abStaffel>
-    <abEpisode>true</abEpisode>
-    <Filter>GERMAN</Filter>
-    <Display>How to Get Away with Murder &gt; 2.7 GERMAN</Display>
-  </AboData>
-  <AboData>
     <Serie>Greys Anatomy</Serie>
     <Staffel>12</Staffel>
-    <Episode>1</Episode>
+    <Episode>13</Episode>
     <abStaffel>False</abStaffel>
     <abEpisode>True</abEpisode>
     <Filter>GERMAN</Filter>
-    <Display>Greys Anatomy &gt; 12.1 GERMAN</Display>
+    <Display>Greys Anatomy &gt; 12.13 GERMAN</Display>
   </AboData>
 </NewDataSet>

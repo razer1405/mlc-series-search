@@ -38,7 +38,7 @@
             this.EpisodeCombo = new System.Windows.Forms.ComboBox();
             this.filter = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.abobtn = new System.Windows.Forms.Button();
             this.SearchResultList = new System.Windows.Forms.ListBox();
             this.EpisodeList = new System.Windows.Forms.ListBox();
             this.SeasonCheck = new System.Windows.Forms.CheckBox();
@@ -86,6 +86,7 @@
             // 
             // SeasonCombo
             // 
+            this.SeasonCombo.Enabled = false;
             this.SeasonCombo.FormattingEnabled = true;
             this.SeasonCombo.Location = new System.Drawing.Point(337, 32);
             this.SeasonCombo.Name = "SeasonCombo";
@@ -132,6 +133,7 @@
             // 
             // EpisodeCombo
             // 
+            this.EpisodeCombo.Enabled = false;
             this.EpisodeCombo.FormattingEnabled = true;
             this.EpisodeCombo.Location = new System.Drawing.Point(467, 32);
             this.EpisodeCombo.Name = "EpisodeCombo";
@@ -157,19 +159,20 @@
             this.label6.TabIndex = 16;
             this.label6.Text = "Zusatzfilter:";
             // 
-            // button1
+            // abobtn
             // 
-            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.button1.Location = new System.Drawing.Point(729, 32);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(108, 23);
-            this.button1.TabIndex = 18;
-            this.button1.Text = "Abonieren";
-            this.button1.UseVisualStyleBackColor = false;
-            this.button1.Click += new System.EventHandler(this.Abo_Click);
+            this.abobtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.abobtn.Location = new System.Drawing.Point(729, 32);
+            this.abobtn.Name = "abobtn";
+            this.abobtn.Size = new System.Drawing.Size(108, 23);
+            this.abobtn.TabIndex = 18;
+            this.abobtn.Text = "Abonieren";
+            this.abobtn.UseVisualStyleBackColor = false;
+            this.abobtn.Click += new System.EventHandler(this.Abo_Click);
             // 
             // SearchResultList
             // 
+            this.SearchResultList.Enabled = false;
             this.SearchResultList.FormattingEnabled = true;
             this.SearchResultList.Location = new System.Drawing.Point(12, 44);
             this.SearchResultList.Name = "SearchResultList";
@@ -179,6 +182,7 @@
             // 
             // EpisodeList
             // 
+            this.EpisodeList.Enabled = false;
             this.EpisodeList.FormattingEnabled = true;
             this.EpisodeList.HorizontalScrollbar = true;
             this.EpisodeList.Location = new System.Drawing.Point(338, 100);
@@ -213,6 +217,7 @@
             // 
             // xRelList
             // 
+            this.xRelList.Enabled = false;
             this.xRelList.FormattingEnabled = true;
             this.xRelList.HorizontalScrollbar = true;
             this.xRelList.Location = new System.Drawing.Point(587, 100);
@@ -395,6 +400,7 @@
             // 
             // mlcupslist
             // 
+            this.mlcupslist.Enabled = false;
             this.mlcupslist.FormattingEnabled = true;
             this.mlcupslist.HorizontalScrollbar = true;
             this.mlcupslist.Location = new System.Drawing.Point(820, 100);
@@ -502,7 +508,7 @@
             this.Controls.Add(this.SeasonCheck);
             this.Controls.Add(this.EpisodeList);
             this.Controls.Add(this.SearchResultList);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.abobtn);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.filter);
             this.Controls.Add(this.EpisodeCombo);
@@ -534,7 +540,7 @@
         private System.Windows.Forms.ComboBox EpisodeCombo;
         private System.Windows.Forms.TextBox filter;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button abobtn;
         private System.Windows.Forms.ListBox SearchResultList;
         private System.Windows.Forms.ListBox EpisodeList;
         private System.Windows.Forms.CheckBox SeasonCheck;

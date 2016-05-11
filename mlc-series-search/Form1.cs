@@ -30,6 +30,8 @@ namespace mlc_series_search
         StringWriter AboWrite = new StringWriter();
         DataTable MLCresults = new DataTable();
         DataRow workRow;
+        DataTable StaffelnDB;
+        DataTable EpisodenDB;
 
         string appname = "MLC Serien Manager";
 
@@ -53,10 +55,7 @@ namespace mlc_series_search
 
             string version = Application.ProductVersion;
 
-            this.Text = appname + " "+ version;
-            versionlabel.Text = "Version: " + version;
-
-
+            //  INTI OR GET ABO-DATA //
             if (File.Exists(mydocpath + @"\AboData.xml"))
             {
                 AboData.ReadXml(mydocpath + @"\AboData.xml");
@@ -69,33 +68,26 @@ namespace mlc_series_search
             abolist.DataSource = AboData.Tables[0].DefaultView;
             abolist.DisplayMember = "Display";
             abolist.ValueMember = "Serie";
+           
 
+            // SET DATATABLES
             InitMLCTable(MLCresults);
 
+            // SET TEXTS 
             requesttext.Text = myReqmask;
+            this.Text = appname + " " + version;
+            versionlabel.Text = "Version: " + version;
 
-            AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
+
+            // GET DLL's
+           // AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
 
         }
 
+        // *********************FUNCTIONS************************* //
         public string clean(string input)
         {
             return Regex.Replace(input, @"['*!§$%&/()=?]", "");
-        }
-
-        System.Reflection.Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
-        {
-            string dllName = args.Name.Contains(',') ? args.Name.Substring(0, args.Name.IndexOf(',')) : args.Name.Replace(".dll", "");
-
-            dllName = dllName.Replace(".", "_");
-
-            if (dllName.EndsWith("_resources")) return null;
-
-            System.Resources.ResourceManager rm = new System.Resources.ResourceManager(GetType().Namespace + ".Properties.Resources", System.Reflection.Assembly.GetExecutingAssembly());
-
-            byte[] bytes = (byte[])rm.GetObject(dllName);
-
-            return System.Reflection.Assembly.Load(bytes);
         }
 
         private void InitMLCTable(DataTable table) { 
@@ -352,6 +344,52 @@ namespace mlc_series_search
 
         }
 
+        public void checkContent()
+        {
+            SearchResultList.Refresh();
+            EpisodeList.Refresh();
+            xRelList.Refresh();
+            mlcupslist.Refresh();
+            
+            if (SearchResultList != null) { SearchResultList.Enabled = true; } else{
+                SearchResultList.Enabled = false;
+                ClearDataSet(TVDBSeries);
+                ClearDataSet(xRel1);
+                ClearTable(MLCresults);
+            }
+            if (EpisodeList != null) { EpisodeList.Enabled = true; } else {
+                EpisodeList.Enabled = false;
+                ClearDataSet(xRel1);
+                ClearTable(MLCresults);
+            }
+            if (xRelList != null) { xRelList.Enabled = true; } else {
+                xRelList.Enabled = false;
+                ClearTable(MLCresults);
+            }
+            if (mlcupslist!= null) { mlcupslist.Enabled = true; } else { mlcupslist.Enabled = false; }
+            if (SeasonCombo != null) { SeasonCombo.Enabled = true; } else { SeasonCombo.Enabled = false; }
+            if (EpisodeCombo!= null) { EpisodeCombo.Enabled = true; } else { EpisodeCombo.Enabled = false; }
+
+        }
+
+        System.Reflection.Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            string dllName = args.Name.Contains(',') ? args.Name.Substring(0, args.Name.IndexOf(',')) : args.Name.Replace(".dll", "");
+
+            dllName = dllName.Replace(".", "_");
+
+            if (dllName.EndsWith("_resources")) return null;
+
+            System.Resources.ResourceManager rm = new System.Resources.ResourceManager(GetType().Namespace + ".Properties.Resources", System.Reflection.Assembly.GetExecutingAssembly());
+
+            byte[] bytes = (byte[])rm.GetObject(dllName);
+
+            return System.Reflection.Assembly.Load(bytes);
+        }
+
+        // ******************Form Events******************************* //
+
+            // VALID Sucheeingabe
         private void SearchText_Validated(object sender, EventArgs e)
         {
             try
@@ -370,7 +408,11 @@ namespace mlc_series_search
                         SearchResultList.DisplayMember = "SeriesName";
                         SearchResultList.ValueMember = "seriesid";
                     }
-                }
+                } else { ClearDataSet(TVDBSearch); }
+                checkContent();
+
+
+
             }
             catch (Exception ex)
             {
@@ -379,6 +421,7 @@ namespace mlc_series_search
 
         }
 
+            // Click auf Suchergebniss -> Hole SerienInfo
         private void SearchResultList_Click(object sender, EventArgs e)
         {
 
@@ -398,8 +441,6 @@ namespace mlc_series_search
                 {
                     TVDBSeries.Tables[1].Columns.Add("Display", typeof(string), "SeasonNumber+'.'+EpisodeNumber + ' ' + EpisodeName");
 
-
-                    DataTable StaffelnDB;
                     StaffelnDB = TVDBSeries.Tables[1].DefaultView.ToTable(true, "SeasonNumber");
 
                     SeasonCombo.DataSource = StaffelnDB;
@@ -409,6 +450,7 @@ namespace mlc_series_search
                 }
 
             }
+                checkContent();
              }
              catch (Exception ex)
              {
@@ -417,6 +459,7 @@ namespace mlc_series_search
 
         }
 
+            // COMBO CHANGE 
         private void Episode_Change(object sender, EventArgs e)
         {
             EpisodeView = getDataView(TVDBSeries.Tables[1]);
@@ -426,12 +469,12 @@ namespace mlc_series_search
             EpisodeList.DataSource = EpisodeView;
             EpisodeList.DisplayMember = "Display";
             EpisodeList.ValueMember = "Display";
+            checkContent();
         }
 
         private void Season_Changed(object sender, EventArgs e)
         {
             EpisodeView = getDataView(TVDBSeries.Tables[1]);
-            DataTable EpisodenDB;
 
             setFilter(EpisodeView, SeasonCombo.Text, "", false, true);
 
@@ -446,8 +489,10 @@ namespace mlc_series_search
 
             EpisodeCombo.DataSource = EpisodenDB;
             EpisodeCombo.DisplayMember = "EpisodeNumber";
+            checkContent();
         }
 
+            // Wähle andere Episode
         private void EpisodeList_SelectedIndexChanged(object sender, EventArgs e)
         {
             requesttext.Text = myReqmask;
@@ -488,8 +533,10 @@ namespace mlc_series_search
 
                 }
             }
+            checkContent();
         }
-
+            
+            // Eingabe Filter
         private void Filter_TextChanged(object sender, EventArgs e)
         {
             if (xRel1.Tables.Count >= 2)
@@ -501,11 +548,13 @@ namespace mlc_series_search
                 xRelList.DataSource = RelView;
                 xRelList.DisplayMember = "dirname";
             }
+            checkContent();
         }
 
+            //ABO ADD oder Akt
         private void Abo_Click(object sender, EventArgs e)
         {
-
+            abolist.Refresh();
             AboData.Tables[0].Select("Serie = '" + clean(SearchResultList.Text) + "'");
             if (AboData.Tables[0].Rows.Count >= 1 && AboData.Tables[0].Rows[0]["Serie"].ToString() == clean(SearchResultList.Text))
             {
@@ -527,8 +576,10 @@ namespace mlc_series_search
 
         }
 
+            // ABO Löschen
         private void del_abo_Click(object sender, EventArgs e)
         {
+            abolist.Refresh();
             AboData.Tables[0].Select("Serie = '" + abolist.SelectedValue.ToString() + "'");
             if (AboData.Tables[0].Rows[0]["Serie"].ToString() == abolist.SelectedValue.ToString())
             {
@@ -546,6 +597,7 @@ namespace mlc_series_search
             }
         }
 
+            // ABO in Ansicht laden
         private void abolist_Click(object sender, EventArgs e)
         {
             abolist.Refresh();
@@ -574,7 +626,8 @@ namespace mlc_series_search
             }
             }
         }
-
+            
+            // xRel Release -> Foreneintrag suchen 
         private void xRelList_SelectedIndexChanged(object sender, EventArgs e)
         {    
             if (xRelList.Text != "System.Data.DataRowView" && sender.ToString() != "System.Data.DataRowView" && xRelList.Text != "") { 
@@ -590,8 +643,10 @@ namespace mlc_series_search
                 ClearTable(MLCresults);
                 requesttext.Text = myReqmask;
             }
+            checkContent();
         }
 
+            // Öffne Forenbeitrag
         private void mlcupslist_DoubleClick(object sender, EventArgs e)
         {
             if (sender.ToString() != "System.Data.DataRowView" && sender.ToString() != "")
@@ -599,7 +654,8 @@ namespace mlc_series_search
                 System.Diagnostics.Process.Start(myMLCURL+"/forum/showthread.php?" + mlcupslist.SelectedValue.ToString());
             }
         }
-
+            
+        // MLC Suche Button
         private void button3_Click(object sender, EventArgs e)
         {
             System.Diagnostics.Process.Start(myMLCURL + "/forum/forumdisplay.php?202-Spender-Suche");
