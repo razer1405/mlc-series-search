@@ -54,6 +54,8 @@ namespace mlc_series_search
             string version = Application.ProductVersion;
 
             this.Text = appname + " "+ version;
+            versionlabel.Text = "Version: " + version;
+
 
             if (File.Exists(mydocpath + @"\AboData.xml"))
             {

@@ -68,6 +68,9 @@
             this.label14 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
+            this.bylabel = new System.Windows.Forms.Label();
+            this.proglabel = new System.Windows.Forms.Label();
+            this.versionlabel = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SeriesPic)).BeginInit();
             this.SuspendLayout();
@@ -447,11 +450,41 @@
             this.button3.UseVisualStyleBackColor = false;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
+            // bylabel
+            // 
+            this.bylabel.AutoSize = true;
+            this.bylabel.Location = new System.Drawing.Point(990, 37);
+            this.bylabel.Name = "bylabel";
+            this.bylabel.Size = new System.Drawing.Size(44, 13);
+            this.bylabel.TabIndex = 37;
+            this.bylabel.Text = "by raz3r";
+            // 
+            // proglabel
+            // 
+            this.proglabel.AutoSize = true;
+            this.proglabel.Location = new System.Drawing.Point(927, 5);
+            this.proglabel.Name = "proglabel";
+            this.proglabel.Size = new System.Drawing.Size(107, 13);
+            this.proglabel.TabIndex = 38;
+            this.proglabel.Text = "MLC Serien Manager";
+            // 
+            // versionlabel
+            // 
+            this.versionlabel.AutoSize = true;
+            this.versionlabel.Location = new System.Drawing.Point(953, 21);
+            this.versionlabel.Name = "versionlabel";
+            this.versionlabel.Size = new System.Drawing.Size(81, 13);
+            this.versionlabel.TabIndex = 39;
+            this.versionlabel.Text = "Version: 0.0.0.1";
+            // 
             // mlcseriessearch
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1053, 607);
+            this.Controls.Add(this.versionlabel);
+            this.Controls.Add(this.proglabel);
+            this.Controls.Add(this.bylabel);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.label14);
@@ -531,6 +564,9 @@
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Label bylabel;
+        private System.Windows.Forms.Label proglabel;
+        private System.Windows.Forms.Label versionlabel;
     }
 }
 
