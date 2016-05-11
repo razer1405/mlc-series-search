@@ -46,6 +46,7 @@ namespace mlc_series_search
         string myReqmask = "Name:\r\nSprache:\r\nQualität:\r\nReleasetitel:";
 
         string xRelURL;
+        int index;
 
         public mlcseriessearch()
         {
@@ -80,7 +81,7 @@ namespace mlc_series_search
 
 
             // GET DLL's
-            AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
+            //AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
 
         }
 
@@ -344,34 +345,6 @@ namespace mlc_series_search
 
         }
 
-        public void checkContent()
-        {
-            SearchResultList.Refresh();
-            EpisodeList.Refresh();
-            xRelList.Refresh();
-            mlcupslist.Refresh();
-            
-            if (SearchResultList != null) { SearchResultList.Enabled = true; } else{
-                SearchResultList.Enabled = false;
-                ClearDataSet(TVDBSeries);
-                ClearDataSet(xRel1);
-                ClearTable(MLCresults);
-            }
-            if (EpisodeList != null) { EpisodeList.Enabled = true; } else {
-                EpisodeList.Enabled = false;
-                ClearDataSet(xRel1);
-                ClearTable(MLCresults);
-            }
-            if (xRelList != null) { xRelList.Enabled = true; } else {
-                xRelList.Enabled = false;
-                ClearTable(MLCresults);
-            }
-            if (mlcupslist!= null) { mlcupslist.Enabled = true; } else { mlcupslist.Enabled = false; }
-            if (SeasonCombo != null) { SeasonCombo.Enabled = true; } else { SeasonCombo.Enabled = false; }
-            if (EpisodeCombo!= null) { EpisodeCombo.Enabled = true; } else { EpisodeCombo.Enabled = false; }
-
-        }
-
         System.Reflection.Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
         {
             string dllName = args.Name.Contains(',') ? args.Name.Substring(0, args.Name.IndexOf(',')) : args.Name.Replace(".dll", "");
@@ -409,7 +382,7 @@ namespace mlc_series_search
                         SearchResultList.ValueMember = "seriesid";
                     }
                 } else { ClearDataSet(TVDBSearch); }
-                checkContent();
+              
 
 
 
@@ -450,7 +423,7 @@ namespace mlc_series_search
                 }
 
             }
-                checkContent();
+               
              }
              catch (Exception ex)
              {
@@ -469,7 +442,7 @@ namespace mlc_series_search
             EpisodeList.DataSource = EpisodeView;
             EpisodeList.DisplayMember = "Display";
             EpisodeList.ValueMember = "Display";
-            checkContent();
+           
         }
 
         private void Season_Changed(object sender, EventArgs e)
@@ -489,19 +462,26 @@ namespace mlc_series_search
 
             EpisodeCombo.DataSource = EpisodenDB;
             EpisodeCombo.DisplayMember = "EpisodeNumber";
-            checkContent();
+           
         }
 
             // Wähle andere Episode
-        private void EpisodeList_SelectedIndexChanged(object sender, EventArgs e)
+        private void EpisodeList_Click(object sender, EventArgs e)
         {
             requesttext.Text = myReqmask;
+
+
             if (EpisodeList.SelectedValue != null && EpisodeList.SelectedValue.ToString() != "System.Data.DataRowView" && sender.ToString() != "System.Data.DataRowView")
             {
+                SearchResultList.Refresh();
+                EpisodeList.Refresh();
+
                 string episode = Int32.Parse(EpisodeList.Text.Split(new char[] { ' ', '.' })[1]).ToString("D2");
                 string staffel = Int32.Parse(EpisodeList.Text.Split(new char[] { ' ', '.' })[0]).ToString("D2");
-               
-                string xRelURL_new = myXRELURL + SearchResultList.Text + " S" + staffel + "E" + episode + "&scene=1";
+                
+                string serie = SearchResultList.GetItemText(SearchResultList.SelectedItem);
+
+                string xRelURL_new = myXRELURL + serie + " S" + staffel + "E" + episode + "&scene=1";
 
                 if (this.xRelURL != xRelURL_new)
                 {
@@ -533,7 +513,7 @@ namespace mlc_series_search
 
                 }
             }
-            checkContent();
+            
         }
             
             // Eingabe Filter
@@ -548,23 +528,32 @@ namespace mlc_series_search
                 xRelList.DataSource = RelView;
                 xRelList.DisplayMember = "dirname";
             }
-            checkContent();
+            
         }
 
-            //ABO ADD oder Akt
+        //ABO ADD oder Akt
         private void Abo_Click(object sender, EventArgs e)
         {
+            
             abolist.Refresh();
-            AboData.Tables[0].Select("Serie = '" + clean(SearchResultList.Text) + "'");
-            if (AboData.Tables[0].Rows.Count >= 1 && AboData.Tables[0].Rows[0]["Serie"].ToString() == clean(SearchResultList.Text))
+            index = 0;
+            DataTable dt = AboData.Tables[0];
+            foreach (DataRow row in dt.Rows) {
+                if (row["Serie"].ToString() == clean(SearchResultList.Text))
+                {
+                   index = dt.Rows.IndexOf(row);
+                }
+            }
+
+            if (AboData.Tables[0].Rows.Count >= 1 && AboData.Tables[0].Rows[index]["Serie"].ToString() == clean(SearchResultList.Text))
             {
-                AboData.Tables[0].Rows[0]["Serie"] = clean(SearchResultList.Text);
-                AboData.Tables[0].Rows[0]["Staffel"] = SeasonCombo.Text;
-                AboData.Tables[0].Rows[0]["Episode"] = EpisodeCombo.Text;
-                AboData.Tables[0].Rows[0]["abStaffel"] = SeasonCheck.Checked;
-                AboData.Tables[0].Rows[0]["abEpisode"] = EpisodeCheck.Checked;
-                AboData.Tables[0].Rows[0]["Filter"] = filter.Text;
-                AboData.Tables[0].Rows[0]["Display"] = clean(SearchResultList.Text) + " > " + SeasonCombo.Text + "." + EpisodeCombo.Text + " " + filter.Text;
+                AboData.Tables[0].Rows[index]["Serie"] = clean(SearchResultList.Text);
+                AboData.Tables[0].Rows[index]["Staffel"] = SeasonCombo.Text;
+                AboData.Tables[0].Rows[index]["Episode"] = EpisodeCombo.Text;
+                AboData.Tables[0].Rows[index]["abStaffel"] = SeasonCheck.Checked;
+                AboData.Tables[0].Rows[index]["abEpisode"] = EpisodeCheck.Checked;
+                AboData.Tables[0].Rows[index]["Filter"] = filter.Text;
+                AboData.Tables[0].Rows[index]["Display"] = clean(SearchResultList.Text) + " > " + SeasonCombo.Text + "." + EpisodeCombo.Text + " " + filter.Text;
             }
             else
             {
@@ -580,10 +569,22 @@ namespace mlc_series_search
         private void del_abo_Click(object sender, EventArgs e)
         {
             abolist.Refresh();
-            AboData.Tables[0].Select("Serie = '" + abolist.SelectedValue.ToString() + "'");
-            if (AboData.Tables[0].Rows[0]["Serie"].ToString() == abolist.SelectedValue.ToString())
+
+            index = 0;
+            abolist.Refresh();
+            DataTable dt = AboData.Tables[0];
+            foreach (DataRow row in dt.Rows)
             {
-                AboData.Tables[0].Rows[0].Delete();
+                if (row["Serie"].ToString() == clean(SearchResultList.Text))
+                {
+                    index = dt.Rows.IndexOf(row);
+                }
+            }
+
+            
+            if (AboData.Tables[0].Rows[index]["Serie"].ToString() == clean(SearchResultList.Text))
+            {
+                AboData.Tables[0].Rows[index].Delete();
             }
             
 
@@ -620,6 +621,7 @@ namespace mlc_series_search
                 EpisodeCombo.Text = foundRows[0]["Episode"].ToString();
                 EpisodeCheck.Checked = Boolean.Parse(foundRows[0]["abEpisode"].ToString());
                 Episode_Change(sender, e);
+                EpisodeList_Click(sender, e);
 
                 filter.Text = foundRows[0]["Filter"].ToString();
 
@@ -643,7 +645,7 @@ namespace mlc_series_search
                 ClearTable(MLCresults);
                 requesttext.Text = myReqmask;
             }
-            checkContent();
+           
         }
 
             // Öffne Forenbeitrag

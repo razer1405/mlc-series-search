@@ -1,12 +1,21 @@
 <?xml version="1.0" standalone="yes"?>
 <NewDataSet>
   <AboData>
-    <Serie>Greys Anatomy</Serie>
-    <Staffel>12</Staffel>
-    <Episode>13</Episode>
-    <abStaffel>False</abStaffel>
-    <abEpisode>True</abEpisode>
-    <Filter>GERMAN</Filter>
-    <Display>Greys Anatomy &gt; 12.13 GERMAN</Display>
+    <Serie>How to breed Kappa</Serie>
+    <Staffel>1</Staffel>
+    <Episode>1</Episode>
+    <abStaffel>false</abStaffel>
+    <abEpisode>true</abEpisode>
+    <Filter />
+    <Display>How to breed Kappa &gt; 1.1 </Display>
+  </AboData>
+  <AboData>
+    <Serie>How to Get Away with Murder</Serie>
+    <Staffel>1</Staffel>
+    <Episode>12</Episode>
+    <abStaffel>false</abStaffel>
+    <abEpisode>true</abEpisode>
+    <Filter />
+    <Display>How to Get Away with Murder &gt; 1.12 </Display>
   </AboData>
 </NewDataSet>

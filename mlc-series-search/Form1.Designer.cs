@@ -86,7 +86,6 @@
             // 
             // SeasonCombo
             // 
-            this.SeasonCombo.Enabled = false;
             this.SeasonCombo.FormattingEnabled = true;
             this.SeasonCombo.Location = new System.Drawing.Point(337, 32);
             this.SeasonCombo.Name = "SeasonCombo";
@@ -133,7 +132,6 @@
             // 
             // EpisodeCombo
             // 
-            this.EpisodeCombo.Enabled = false;
             this.EpisodeCombo.FormattingEnabled = true;
             this.EpisodeCombo.Location = new System.Drawing.Point(467, 32);
             this.EpisodeCombo.Name = "EpisodeCombo";
@@ -172,7 +170,6 @@
             // 
             // SearchResultList
             // 
-            this.SearchResultList.Enabled = false;
             this.SearchResultList.FormattingEnabled = true;
             this.SearchResultList.Location = new System.Drawing.Point(12, 44);
             this.SearchResultList.Name = "SearchResultList";
@@ -182,14 +179,12 @@
             // 
             // EpisodeList
             // 
-            this.EpisodeList.Enabled = false;
             this.EpisodeList.FormattingEnabled = true;
-            this.EpisodeList.HorizontalScrollbar = true;
             this.EpisodeList.Location = new System.Drawing.Point(338, 100);
             this.EpisodeList.Name = "EpisodeList";
             this.EpisodeList.Size = new System.Drawing.Size(241, 290);
             this.EpisodeList.TabIndex = 21;
-            this.EpisodeList.SelectedIndexChanged += new System.EventHandler(this.EpisodeList_SelectedIndexChanged);
+            this.EpisodeList.Click += new System.EventHandler(this.EpisodeList_Click);
             // 
             // SeasonCheck
             // 
@@ -217,9 +212,7 @@
             // 
             // xRelList
             // 
-            this.xRelList.Enabled = false;
             this.xRelList.FormattingEnabled = true;
-            this.xRelList.HorizontalScrollbar = true;
             this.xRelList.Location = new System.Drawing.Point(587, 100);
             this.xRelList.Name = "xRelList";
             this.xRelList.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -400,9 +393,7 @@
             // 
             // mlcupslist
             // 
-            this.mlcupslist.Enabled = false;
             this.mlcupslist.FormattingEnabled = true;
-            this.mlcupslist.HorizontalScrollbar = true;
             this.mlcupslist.Location = new System.Drawing.Point(820, 100);
             this.mlcupslist.Name = "mlcupslist";
             this.mlcupslist.Size = new System.Drawing.Size(227, 147);
@@ -519,6 +510,7 @@
             this.Controls.Add(this.SeasonCombo);
             this.Controls.Add(this.SearchText);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
             this.Name = "mlcseriessearch";
             this.Text = "MLC Series Search";
             this.groupBox1.ResumeLayout(false);
