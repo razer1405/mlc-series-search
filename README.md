@@ -1,1 +1,1 @@
-# mlc-series-search
+# MLC Serien Manager
