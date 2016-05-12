@@ -88,7 +88,7 @@ namespace mlc_series_search
         // *********************FUNCTIONS************************* //
         public string clean(string input)
         {
-            return Regex.Replace(input, @"['*!§$%&/()=?]", "");
+            return Regex.Replace(input, @"['*$%/()=?]", "");
         }
 
         private void InitMLCTable(DataTable table)
@@ -489,6 +489,7 @@ namespace mlc_series_search
                 string staffel = Int32.Parse(EpisodeList.Text.Split(new char[] { ' ', '.' })[0]).ToString("D2");
 
                 string serie = SearchResultList.GetItemText(SearchResultList.SelectedItem);
+                serie = serie.Replace("&","und");
 
                 string xRelURL_new = myXRELURL + serie + " S" + staffel + "E" + episode + "&scene=1";
 
