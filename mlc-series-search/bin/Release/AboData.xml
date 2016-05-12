@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<NewDataSet>
+  <AboData>
+    <Serie>How to Get Away with Murder</Serie>
+    <Staffel>1</Staffel>
+    <Episode>1</Episode>
+    <abStaffel>false</abStaffel>
+    <abEpisode>true</abEpisode>
+    <Filter />
+    <Display>How to Get Away with Murder &gt; 1.1 </Display>
+  </AboData>
+</NewDataSet>

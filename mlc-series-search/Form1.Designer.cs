@@ -213,6 +213,7 @@
             // xRelList
             // 
             this.xRelList.FormattingEnabled = true;
+            this.xRelList.HorizontalScrollbar = true;
             this.xRelList.Location = new System.Drawing.Point(587, 100);
             this.xRelList.Name = "xRelList";
             this.xRelList.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -394,6 +395,7 @@
             // mlcupslist
             // 
             this.mlcupslist.FormattingEnabled = true;
+            this.mlcupslist.HorizontalScrollbar = true;
             this.mlcupslist.Location = new System.Drawing.Point(820, 100);
             this.mlcupslist.Name = "mlcupslist";
             this.mlcupslist.Size = new System.Drawing.Size(227, 147);

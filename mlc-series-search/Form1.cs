@@ -363,7 +363,7 @@ namespace mlc_series_search
             return System.Reflection.Assembly.Load(bytes);
         }
 
-        // ******************Form Events******************************* //
+        // ******************Form Events*******************************//
 
         // VALID Sucheeingabe
         private void SearchText_Validated(object sender, EventArgs e)
@@ -536,6 +536,8 @@ namespace mlc_series_search
 
                 xRelList.DataSource = RelView;
                 xRelList.DisplayMember = "dirname";
+
+                if (xRelList.Text == "") { requesttext.Text = myReqmask; }
             }
 
         }
@@ -620,7 +622,7 @@ namespace mlc_series_search
 
                 if (foundRows[0]["Serie"].ToString() == abolist.SelectedValue.ToString())
                 {
-
+                    
                     SearchText.Text = foundRows[0]["Serie"].ToString();
                     SearchText_Validated(sender, e);
                     SearchResultList_Click(sender, e);
@@ -631,7 +633,8 @@ namespace mlc_series_search
 
                     EpisodeCombo.Text = foundRows[0]["Episode"].ToString();
                     EpisodeCheck.Checked = Boolean.Parse(foundRows[0]["abEpisode"].ToString());
-                    Episode_Change(sender, e);
+
+                    Episode_Change(sender, e);           
                     EpisodeList_Click(sender, e);
 
                     filter.Text = foundRows[0]["Filter"].ToString();
@@ -643,6 +646,7 @@ namespace mlc_series_search
         // xRel Release -> Foreneintrag suchen 
         private void xRelList_SelectedIndexChanged(object sender, EventArgs e)
         {
+            requesttext.Text = myReqmask;
             if (xRelList.Text != "System.Data.DataRowView" && sender.ToString() != "System.Data.DataRowView" && xRelList.Text != "")
             {
                 MLCSearch(MLCresults, xRelList.Text);
@@ -651,14 +655,13 @@ namespace mlc_series_search
                 mlcupslist.DisplayMember = "Release";
                 mlcupslist.ValueMember = "ID";
 
-                requesttext.Text = myReqmask + xRelList.Text;
+                requesttext.Text = myReqmask + xRelList.Text;         
             }
             else
             {
                 ClearTable(MLCresults);
-                requesttext.Text = myReqmask;
-            }
-
+                requesttext.Text = myReqmask;         
+            }          
         }
 
         // Öffne Forenbeitrag
