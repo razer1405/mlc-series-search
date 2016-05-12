@@ -36,7 +36,7 @@ namespace mlc_series_search
         string appname = "MLC Serien Manager";
 
         string mydocpath = Environment.CurrentDirectory;
-       
+
         string myMLCURL = "https://mlcboard.com";
         string myXRELURL = "https://api.xrel.to/v2/search/releases.xml?q=";
 
@@ -50,7 +50,7 @@ namespace mlc_series_search
 
         public mlcseriessearch()
         {
-           
+
 
             InitializeComponent();
 
@@ -69,7 +69,7 @@ namespace mlc_series_search
             abolist.DataSource = AboData.Tables[0].DefaultView;
             abolist.DisplayMember = "Display";
             abolist.ValueMember = "Serie";
-           
+
 
             // SET DATATABLES
             InitMLCTable(MLCresults);
@@ -91,7 +91,8 @@ namespace mlc_series_search
             return Regex.Replace(input, @"['*!§$%&/()=?]", "");
         }
 
-        private void InitMLCTable(DataTable table) { 
+        private void InitMLCTable(DataTable table)
+        {
             MLCresults.Columns.Add("ID", typeof(string));
             MLCresults.Columns.Add("Release", typeof(string));
             MLCresults.Columns.Add("Gewicht", typeof(string));
@@ -212,80 +213,82 @@ namespace mlc_series_search
         private void MLCSearch(DataTable Data, String SearchString)
         {
 
-             try
-             { 
-            if (SearchString != null && SearchString != "") {
-                    ClearTable(MLCresults);     
-                string jsonText = HTTPtoString("https://searchapi.mlc.to/search?q=" + SearchString);
-                var o = JObject.Parse(jsonText);
-
-                foreach (JToken Child1 in o.Children())
+            try
+            {
+                if (SearchString != null && SearchString != "")
                 {
-                    var property1 = Child1 as JProperty;
-                    if (property1 != null)
-                    {
-                        string serie = property1.Name;
+                    ClearTable(MLCresults);
+                    string jsonText = HTTPtoString("https://searchapi.mlc.to/search?q=" + SearchString);
+                    var o = JObject.Parse(jsonText);
 
-                    }
-                    foreach (JToken Child2 in Child1)
+                    foreach (JToken Child1 in o.Children())
                     {
-                        var property2 = Child2 as JProperty;
-
-                        if (property2 != null)
+                        var property1 = Child1 as JProperty;
+                        if (property1 != null)
                         {
-                            string Name = property2.Name;
+                            string serie = property1.Name;
+
                         }
-                        
-                        foreach (JToken Child3 in Child2)
+                        foreach (JToken Child2 in Child1)
                         {
-                            var property3 = Child3 as JProperty;
+                            var property2 = Child2 as JProperty;
 
-                            if (property3 != null)
+                            if (property2 != null)
                             {
-                                string Name = property3.Name;
+                                string Name = property2.Name;
                             }
 
-                            workRow = Data.NewRow();
-
-                            foreach (JToken Child4 in Child3)
+                            foreach (JToken Child3 in Child2)
                             {
-                                var property4 = Child4 as JProperty;
+                                var property3 = Child3 as JProperty;
 
-                                if (property4 != null)
+                                if (property3 != null)
                                 {
-                                    string Name = property4.Name;
-                                    if (property4.Name == "id")
+                                    string Name = property3.Name;
+                                }
+
+                                workRow = Data.NewRow();
+
+                                foreach (JToken Child4 in Child3)
+                                {
+                                    var property4 = Child4 as JProperty;
+
+                                    if (property4 != null)
                                     {
-                                        string id = property4.Value.ToString();
-                                        workRow["ID"] = id;
-                                    }
-                                    if (property4.Name == "title")
-                                    {
-                                        string release = property4.Value.ToString();
-                                        workRow["Release"] = release;
-                                    }
-                                    if (property4.Name == "weight")
-                                    {
-                                        string weight = property4.Value.ToString();
-                                        workRow["Gewicht"] = weight;
+                                        string Name = property4.Name;
+                                        if (property4.Name == "id")
+                                        {
+                                            string id = property4.Value.ToString();
+                                            workRow["ID"] = id;
+                                        }
+                                        if (property4.Name == "title")
+                                        {
+                                            string release = property4.Value.ToString();
+                                            workRow["Release"] = release;
+                                        }
+                                        if (property4.Name == "weight")
+                                        {
+                                            string weight = property4.Value.ToString();
+                                            workRow["Gewicht"] = weight;
+                                        }
+
                                     }
 
                                 }
-
+                                Data.Rows.Add(workRow);
                             }
-                            Data.Rows.Add(workRow);
+
                         }
-                        
                     }
                 }
-            }
 
-            
-               }catch (Exception ex)
+
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "ERROR");
             }
-            
+
         }
 
         public DataView getDataView(DataTable data)
@@ -327,7 +330,7 @@ namespace mlc_series_search
         {
             if (filter != "System.Data.DataRowView" && filter != "")
             {
-                dv.RowFilter = "dirname LIKE '*" + Regex.Replace(filter,@"[*]"," ") + "*'";
+                dv.RowFilter = "dirname LIKE '*" + Regex.Replace(filter, @"[*]", " ") + "*'";
             }
         }
 
@@ -362,7 +365,7 @@ namespace mlc_series_search
 
         // ******************Form Events******************************* //
 
-            // VALID Sucheeingabe
+        // VALID Sucheeingabe
         private void SearchText_Validated(object sender, EventArgs e)
         {
             try
@@ -381,8 +384,13 @@ namespace mlc_series_search
                         SearchResultList.DisplayMember = "SeriesName";
                         SearchResultList.ValueMember = "seriesid";
                     }
-                } else { ClearDataSet(TVDBSearch); }
-              
+                }
+                else
+                {
+                    ClearDataSet(TVDBSearch);
+                    ClearDataSet(xRel1);
+                }
+
 
 
 
@@ -394,45 +402,46 @@ namespace mlc_series_search
 
         }
 
-            // Click auf Suchergebniss -> Hole SerienInfo
+        // Click auf Suchergebniss -> Hole SerienInfo
         private void SearchResultList_Click(object sender, EventArgs e)
         {
 
             try
             {
-            
-            SearchResultList.Refresh();
-           
-            if (SearchResultList.SelectedValue != null)
-            {
-                string xmlString = HTTPtoString(myTVDBAPI2 + SearchResultList.SelectedValue.ToString() + "/all/de.xml");
 
-                ClearDataSet(TVDBSeries);
-                xmltodataset(TVDBSeries, xmlString);
+                SearchResultList.Refresh();
+                ClearDataSet(xRel1);
 
-                if (TVDBSeries.Tables.Count >= 1)
+                if (SearchResultList.SelectedValue != null)
                 {
-                    TVDBSeries.Tables[1].Columns.Add("Display", typeof(string), "SeasonNumber+'.'+EpisodeNumber + ' ' + EpisodeName");
+                    string xmlString = HTTPtoString(myTVDBAPI2 + SearchResultList.SelectedValue.ToString() + "/all/de.xml");
 
-                    StaffelnDB = TVDBSeries.Tables[1].DefaultView.ToTable(true, "SeasonNumber");
+                    ClearDataSet(TVDBSeries);
+                    xmltodataset(TVDBSeries, xmlString);
 
-                    SeasonCombo.DataSource = StaffelnDB;
-                    SeasonCombo.DisplayMember = "SeasonNumber";
+                    if (TVDBSeries.Tables.Count >= 1)
+                    {
+                        TVDBSeries.Tables[1].Columns.Add("Display", typeof(string), "SeasonNumber+'.'+EpisodeNumber + ' ' + EpisodeName");
 
-                    setSeriesInfo(TVDBSeries.Tables[0]);
+                        StaffelnDB = TVDBSeries.Tables[1].DefaultView.ToTable(true, "SeasonNumber");
+
+                        SeasonCombo.DataSource = StaffelnDB;
+                        SeasonCombo.DisplayMember = "SeasonNumber";
+
+                        setSeriesInfo(TVDBSeries.Tables[0]);
+                    }
+
                 }
 
             }
-               
-             }
-             catch (Exception ex)
-             {
-                 MessageBox.Show(ex.Message, "ERROR");
-             } 
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "ERROR");
+            }
 
         }
 
-            // COMBO CHANGE 
+        // COMBO CHANGE 
         private void Episode_Change(object sender, EventArgs e)
         {
             EpisodeView = getDataView(TVDBSeries.Tables[1]);
@@ -442,7 +451,7 @@ namespace mlc_series_search
             EpisodeList.DataSource = EpisodeView;
             EpisodeList.DisplayMember = "Display";
             EpisodeList.ValueMember = "Display";
-           
+
         }
 
         private void Season_Changed(object sender, EventArgs e)
@@ -462,10 +471,10 @@ namespace mlc_series_search
 
             EpisodeCombo.DataSource = EpisodenDB;
             EpisodeCombo.DisplayMember = "EpisodeNumber";
-           
+
         }
 
-            // Wähle andere Episode
+        // Wähle andere Episode
         private void EpisodeList_Click(object sender, EventArgs e)
         {
             requesttext.Text = myReqmask;
@@ -478,7 +487,7 @@ namespace mlc_series_search
 
                 string episode = Int32.Parse(EpisodeList.Text.Split(new char[] { ' ', '.' })[1]).ToString("D2");
                 string staffel = Int32.Parse(EpisodeList.Text.Split(new char[] { ' ', '.' })[0]).ToString("D2");
-                
+
                 string serie = SearchResultList.GetItemText(SearchResultList.SelectedItem);
 
                 string xRelURL_new = myXRELURL + serie + " S" + staffel + "E" + episode + "&scene=1";
@@ -486,7 +495,7 @@ namespace mlc_series_search
                 if (this.xRelURL != xRelURL_new)
                 {
                     this.xRelURL = xRelURL_new;
-                    
+
                     while (sw.Elapsed < TimeSpan.FromSeconds(6) && sw.IsRunning)
                     {
                         //Warte
@@ -513,10 +522,10 @@ namespace mlc_series_search
 
                 }
             }
-            
+
         }
-            
-            // Eingabe Filter
+
+        // Eingabe Filter
         private void Filter_TextChanged(object sender, EventArgs e)
         {
             if (xRel1.Tables.Count >= 2)
@@ -528,20 +537,21 @@ namespace mlc_series_search
                 xRelList.DataSource = RelView;
                 xRelList.DisplayMember = "dirname";
             }
-            
+
         }
 
         //ABO ADD oder Akt
         private void Abo_Click(object sender, EventArgs e)
         {
-            
+
             abolist.Refresh();
             index = 0;
             DataTable dt = AboData.Tables[0];
-            foreach (DataRow row in dt.Rows) {
+            foreach (DataRow row in dt.Rows)
+            {
                 if (row["Serie"].ToString() == clean(SearchResultList.Text))
                 {
-                   index = dt.Rows.IndexOf(row);
+                    index = dt.Rows.IndexOf(row);
                 }
             }
 
@@ -559,13 +569,13 @@ namespace mlc_series_search
             {
                 AboData.Tables[0].Rows.Add(clean(SearchResultList.Text), SeasonCombo.Text, EpisodeCombo.Text, SeasonCheck.Checked, EpisodeCheck.Checked, filter.Text, clean(SearchResultList.Text) + " > " + SeasonCombo.Text + "." + EpisodeCombo.Text + " " + filter.Text);
             }
-            
+
 
             AboData.WriteXml(mydocpath + @"\AboData.xml");
 
         }
 
-            // ABO Löschen
+        // ABO Löschen
         private void del_abo_Click(object sender, EventArgs e)
         {
             abolist.Refresh();
@@ -581,12 +591,12 @@ namespace mlc_series_search
                 }
             }
 
-            
+
             if (AboData.Tables[0].Rows[index]["Serie"].ToString() == clean(SearchResultList.Text))
             {
                 AboData.Tables[0].Rows[index].Delete();
             }
-            
+
 
             if (AboData.Tables[0].Rows.Count == 0)
             {
@@ -598,41 +608,43 @@ namespace mlc_series_search
             }
         }
 
-            // ABO in Ansicht laden
+        // ABO in Ansicht laden
         private void abolist_Click(object sender, EventArgs e)
         {
             abolist.Refresh();
-            if (abolist.SelectedItem != null) {
+            if (abolist.SelectedItem != null)
+            {
                 DataRow[] foundRows;
 
                 foundRows = AboData.Tables[0].Select("Serie = '" + abolist.SelectedValue.ToString() + "'");
 
-            if (foundRows[0]["Serie"].ToString() == abolist.SelectedValue.ToString())
-            {
+                if (foundRows[0]["Serie"].ToString() == abolist.SelectedValue.ToString())
+                {
 
-                SearchText.Text = foundRows[0]["Serie"].ToString();
-                SearchText_Validated(sender, e);
-                SearchResultList_Click(sender, e);
+                    SearchText.Text = foundRows[0]["Serie"].ToString();
+                    SearchText_Validated(sender, e);
+                    SearchResultList_Click(sender, e);
 
-                SeasonCombo.Text = foundRows[0]["Staffel"].ToString();
-                SeasonCheck.Checked = Boolean.Parse(foundRows[0]["abStaffel"].ToString());
-                Season_Changed(sender, e);
+                    SeasonCombo.Text = foundRows[0]["Staffel"].ToString();
+                    SeasonCheck.Checked = Boolean.Parse(foundRows[0]["abStaffel"].ToString());
+                    Season_Changed(sender, e);
 
-                EpisodeCombo.Text = foundRows[0]["Episode"].ToString();
-                EpisodeCheck.Checked = Boolean.Parse(foundRows[0]["abEpisode"].ToString());
-                Episode_Change(sender, e);
-                EpisodeList_Click(sender, e);
+                    EpisodeCombo.Text = foundRows[0]["Episode"].ToString();
+                    EpisodeCheck.Checked = Boolean.Parse(foundRows[0]["abEpisode"].ToString());
+                    Episode_Change(sender, e);
+                    EpisodeList_Click(sender, e);
 
-                filter.Text = foundRows[0]["Filter"].ToString();
+                    filter.Text = foundRows[0]["Filter"].ToString();
 
-            }
+                }
             }
         }
-            
-            // xRel Release -> Foreneintrag suchen 
+
+        // xRel Release -> Foreneintrag suchen 
         private void xRelList_SelectedIndexChanged(object sender, EventArgs e)
-        {    
-            if (xRelList.Text != "System.Data.DataRowView" && sender.ToString() != "System.Data.DataRowView" && xRelList.Text != "") { 
+        {
+            if (xRelList.Text != "System.Data.DataRowView" && sender.ToString() != "System.Data.DataRowView" && xRelList.Text != "")
+            {
                 MLCSearch(MLCresults, xRelList.Text);
 
                 mlcupslist.DataSource = MLCresults;
@@ -640,23 +652,24 @@ namespace mlc_series_search
                 mlcupslist.ValueMember = "ID";
 
                 requesttext.Text = myReqmask + xRelList.Text;
-            }else
+            }
+            else
             {
                 ClearTable(MLCresults);
                 requesttext.Text = myReqmask;
             }
-           
+
         }
 
-            // Öffne Forenbeitrag
+        // Öffne Forenbeitrag
         private void mlcupslist_DoubleClick(object sender, EventArgs e)
         {
             if (sender.ToString() != "System.Data.DataRowView" && sender.ToString() != "")
             {
-                System.Diagnostics.Process.Start(myMLCURL+"/forum/showthread.php?" + mlcupslist.SelectedValue.ToString());
+                System.Diagnostics.Process.Start(myMLCURL + "/forum/showthread.php?" + mlcupslist.SelectedValue.ToString());
             }
         }
-            
+
         // MLC Suche Button
         private void button3_Click(object sender, EventArgs e)
         {
