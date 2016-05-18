@@ -1,12 +1,15 @@
 <?xml version="1.0" standalone="yes"?>
 <NewDataSet>
   <AboData>
-    <Serie>How to Get Away with Murder</Serie>
+    <Serie>Rizzoli &amp; Isles</Serie>
     <Staffel>2</Staffel>
-    <Episode>7</Episode>
-    <abStaffel>False</abStaffel>
-    <abEpisode>True</abEpisode>
-    <Filter>GERMAN</Filter>
-    <Display>How to Get Away with Murder &gt; 2.7 GERMAN</Display>
+    <Episode>1</Episode>
+    <abStaffel>false</abStaffel>
+    <abEpisode>true</abEpisode>
+    <Filter />
+    <Display>Rizzoli &amp; Isles &gt; 2.1    </Display>
+    <audio />
+    <video />
+    <eng>false</eng>
   </AboData>
 </NewDataSet>

@@ -4,7 +4,7 @@
   <description asmv2:iconFile="logo.ico" xmlns="urn:schemas-microsoft-com:asm.v1" />
   <application />
   <entryPoint>
-    <assemblyIdentity name="mlc-series-search" version="0.0.1.1" language="neutral" processorArchitecture="msil" />
+    <assemblyIdentity name="mlc-series-search" version="0.0.2.1" language="neutral" processorArchitecture="msil" />
     <commandLine file="mlc-series-search.exe" parameters="" />
   </entryPoint>
   <trustInfo>
@@ -43,14 +43,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="mlc-series-search.exe" size="1124352">
-      <assemblyIdentity name="mlc-series-search" version="0.0.1.1" language="neutral" processorArchitecture="msil" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="mlc-series-search.exe" size="1133056">
+      <assemblyIdentity name="mlc-series-search" version="0.0.2.1" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>ZsLVkOoLjdh2oj0SGpjjhiAwZsemGjkazuvQOZWGQ4c=</dsig:DigestValue>
+        <dsig:DigestValue>k3S0Ya3c94doijuIz39Kt9wiJy/wsTsSg3Lsv+N5rC8=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
