@@ -124,4 +124,10 @@
   <data name="Newtonsoft_Json1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
+  <data name="RestSharp" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\packages\xRelApiClient.v1.1.Release\RestSharp.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="XrelApiClient" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\packages\xRelApiClient.v1.1.Release\XrelApiClient.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

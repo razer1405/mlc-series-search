@@ -14,6 +14,8 @@ using System.Xml;
 using System.Net;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
+using XrelApiClient;
+using System.Threading;
 
 namespace mlc_series_search
 {
@@ -60,7 +62,7 @@ namespace mlc_series_search
 
             InitializeComponent();
 
-            string version = Application.ProductVersion;
+            string version = System.Windows.Forms.Application.ProductVersion;
 
             //  INTI OR GET ABO-DATA //
             if (File.Exists(mydocpath + @"\AboData.xml"))
@@ -574,8 +576,9 @@ namespace mlc_series_search
 
                 if (SearchResultList.SelectedValue != null)
                 {
+                    
                     SelSerieID = SearchResultList.SelectedValue.ToString();
-                    SelSerie = SearchResultList.GetItemText(SearchResultList.SelectedItem);
+                    
                     string xmlString = HTTPtoString(myTVDBAPI2 + SelSerieID  + "/all/de.xml");
 
                     ClearDataSet(TVDBSeries);
@@ -583,7 +586,8 @@ namespace mlc_series_search
 
                     if (TVDBSeries.Tables.Count >= 1)
                     {
-                        TVDBSeries.Tables[1].Columns.Add("Display", typeof(string), "SeasonNumber+'.'+EpisodeNumber + ' ' + EpisodeName");
+                        SelSerie = TVDBSeries.Tables["Series"].Rows[0]["SeriesName"].ToString();
+                        TVDBSeries.Tables["Episode"].Columns.Add("Display", typeof(string), "SeasonNumber+'.'+EpisodeNumber + ' ' + EpisodeName");
 
                         StaffelnDB = TVDBSeries.Tables[1].DefaultView.ToTable(true, "SeasonNumber");
 
@@ -650,7 +654,6 @@ namespace mlc_series_search
                 string episode = Int32.Parse(EpisodeList.Text.Split(new char[] { ' ', '.' })[1]).ToString("D2");
                 string staffel = Int32.Parse(EpisodeList.Text.Split(new char[] { ' ', '.' })[0]).ToString("D2");
 
-                //string serie = SearchResultList.GetItemText(SearchResultList.SelectedItem);
                 string serie = SelSerie;
                 serie = serie.Replace("&","und");
 

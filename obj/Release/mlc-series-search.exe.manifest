@@ -43,14 +43,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="mlc-series-search.exe" size="1133056">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="mlc-series-search.exe" size="1316352">
       <assemblyIdentity name="mlc-series-search" version="0.0.2.1" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>k3S0Ya3c94doijuIz39Kt9wiJy/wsTsSg3Lsv+N5rC8=</dsig:DigestValue>
+        <dsig:DigestValue>/0/p5JWjkLS9iLwUI077laDPhL2k2swi6iNPhYpPmyc=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -66,6 +66,30 @@
       </hash>
     </dependentAssembly>
   </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="RestSharp.dll" size="150016">
+      <assemblyIdentity name="RestSharp" version="104.1.0.0" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>rQMAB4y4tv6v4q2JXONCtGz+CanPZhXgbSw7S1U02TA=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="XrelApiClient.dll" size="33280">
+      <assemblyIdentity name="XrelApiClient" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>Zw87rZhvChHBJZY9hwjaUSbUFa+en2R5gjajPWm0TAU=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
   <file name="logo.ico" size="32038">
     <hash>
       <dsig:Transforms>
@@ -75,13 +99,13 @@
       <dsig:DigestValue>ZwcbkSCnB9GDD4cfBrFJuimkGikxOsF1BRkJg68SFzI=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="mlc-series-search.exe.config" size="184">
+  <file name="mlc-series-search.exe.config" size="533">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>jWVCngsqgsEdPtxOoE7SAK7f6h1++LmE6IqOl8/1R3A=</dsig:DigestValue>
+      <dsig:DigestValue>WfvtP0zinoBohZvOOT7VUTTOcxE4Dbf5VkKwmA0epUk=</dsig:DigestValue>
     </hash>
   </file>
   <compatibility xmlns="urn:schemas-microsoft-com:compatibility.v1">

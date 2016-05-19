@@ -95,5 +95,25 @@ namespace mlc_series_search.Properties {
                 return ResourceManager.GetString("Newtonsoft_Json1", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Byte[].
+        /// </summary>
+        internal static byte[] RestSharp {
+            get {
+                object obj = ResourceManager.GetObject("RestSharp", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Byte[].
+        /// </summary>
+        internal static byte[] XrelApiClient {
+            get {
+                object obj = ResourceManager.GetObject("XrelApiClient", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
     }
 }

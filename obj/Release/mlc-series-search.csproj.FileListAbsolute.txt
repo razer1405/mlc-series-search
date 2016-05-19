@@ -30,3 +30,6 @@ E:\git\mlc-series-search\obj\Release\mlc-series-search.csproj.GenerateResource.C
 E:\git\mlc-series-search\obj\Release\mlc-series-search.TrustInfo.xml
 E:\git\mlc-series-search\obj\Release\mlc-series-search.exe.manifest
 E:\git\mlc-series-search\obj\Release\mlc-series-search.application
+E:\git\mlc-series-search\bin\Release\RestSharp.dll
+E:\git\mlc-series-search\bin\Release\XrelApiClient.dll
+E:\git\mlc-series-search\obj\Release\mlc-series-search.csproj.mlc-series-search.exe.config
