@@ -44,15 +44,17 @@ namespace mlc_series_search
         string myMLCURL = "https://mlcboard.com";
         string myMLCAPI = "http://seriesapi.mlc.to/series.xml";
         string myXRELURL = "https://api.xrel.to/v2/search/releases.xml?q=";
-
         string myTVDBAPI = "http://thetvdb.com/api/GetSeries.php?language=DE&seriesname=";
         string myTVDBAPI2 = "http://thetvdb.com/api/1D62F2F90030C444/series/";
         string myTVDBBAN = "http://thetvdb.com/banners/";
         string myReqmask = "Name:\r\nSprache:\r\nQualität:\r\nReleasetitel:";
+
         string xRelRUrl = "";
         string xRelNFOUrl = "";
         string SelSerie = "";
         string SelSerieID = "";
+        string SelCoEpisode = "";
+        string SelCoStaffel = "";
 
         string xRelURL;
         int index;
@@ -77,7 +79,7 @@ namespace mlc_series_search
 
             // GET MLC DATA
 
-            getMLCData(MLCData,myMLCAPI);
+            getMLCData(MLCData, myMLCAPI);
 
             abolist.DataSource = AboData.Tables[0].DefaultView;
             abolist.DisplayMember = "Display";
@@ -216,19 +218,19 @@ namespace mlc_series_search
             newt.ReadXml(GenerateStreamFromString(xmlString));
         }
 
-        private void getMLCData(DataSet Data,string APIURL)
+        private void getMLCData(DataSet Data, string APIURL)
         {
-                string MLCXML = HTTPtoString(APIURL);
+            string MLCXML = HTTPtoString(APIURL);
 
-                ClearDataSet(Data);
-                xmltodataset(Data, MLCXML);
+            ClearDataSet(Data);
+            xmltodataset(Data, MLCXML);
         }
 
         private void setMLCFilter(DataView dv, string SearchString)
         {
             if (SearchString != "System.Data.DataRowView" && SearchString != "")
             {
-                dv.RowFilter = "name = '"+ SearchString + "'";
+                dv.RowFilter = "name = '" + SearchString + "'";
             }
         }
 
@@ -272,18 +274,21 @@ namespace mlc_series_search
             string myfilter = "";
             if (filter != "System.Data.DataRowView" && filter != "")
             {
-                if (myfilter == "") {
+                if (myfilter == "")
+                {
                     myfilter = "dirname LIKE '*" + Regex.Replace(filter, @"[*]", " ") + "*'";
-                } else {
+                }
+                else
+                {
                     myfilter = myfilter + "AND dirname LIKE '*" + Regex.Replace(filter, @"[*]", " ") + "*'";
-                }  
+                }
             }
 
             if (audio != "System.Data.DataRowView" && audio != "")
             {
                 if (myfilter == "")
                 {
-                    myfilter = "audio_type = '"+audio+"'";
+                    myfilter = "audio_type = '" + audio + "'";
                 }
                 else
                 {
@@ -307,7 +312,7 @@ namespace mlc_series_search
             {
                 dv.RowFilter = myfilter;
             }
-            
+
         }
 
         public void setSeriesInfo(DataTable data)
@@ -394,30 +399,31 @@ namespace mlc_series_search
             int relindex;
             List<DataRow> deletedRows = new List<DataRow>();
             DataTable dt = data.Tables["release"];
-            if(data.Tables["flags"] != null) { 
-            DataView dv = data.Tables["flags"].DefaultView;
-
-            foreach (DataRow row in dt.Rows)
+            if (data.Tables["flags"] != null)
             {
-                
-                dv.Sort = "release_id";
-                relindex = dv.Find(row["release_id"].ToString());
+                DataView dv = data.Tables["flags"].DefaultView;
 
-                if (row["release_id"].ToString() == dv[relindex]["release_id"].ToString() && dv[relindex]["english"].ToString() == "1")
+                foreach (DataRow row in dt.Rows)
                 {
-                    deletedRows.Add(data.Tables["release"].Rows[relindex]);
+
+                    dv.Sort = "release_id";
+                    relindex = dv.Find(row["release_id"].ToString());
+
+                    if (row["release_id"].ToString() == dv[relindex]["release_id"].ToString() && dv[relindex]["english"].ToString() == "1")
+                    {
+                        deletedRows.Add(data.Tables["release"].Rows[relindex]);
+                    }
                 }
-            }
 
-            foreach (DataRow dataRow in deletedRows)
-            {
-                dataRow.Delete();
+                foreach (DataRow dataRow in deletedRows)
+                {
+                    dataRow.Delete();
+                }
+                data.AcceptChanges();
             }
-            data.AcceptChanges();
-        }
         }
 
-        private void AddNewDataRowView(DataView view,string collum)
+        private void AddNewDataRowView(DataView view, string collum)
         {
             DataRowView rowView = view.AddNew();
 
@@ -426,7 +432,8 @@ namespace mlc_series_search
             rowView.EndEdit();
         }
 
-        private void changeRelFilter() {
+        private void changeRelFilter()
+        {
             if (xRel1.Tables.Count >= 2)
             {
                 RelView = getDataView(xRel1.Tables[2]);
@@ -506,10 +513,10 @@ namespace mlc_series_search
 
                 if (SearchResultList.SelectedValue != null)
                 {
-                    
+
                     SelSerieID = SearchResultList.SelectedValue.ToString();
-                    
-                    string xmlString = HTTPtoString(myTVDBAPI2 + SelSerieID  + "/all/de.xml");
+
+                    string xmlString = HTTPtoString(myTVDBAPI2 + SelSerieID + "/all/de.xml");
 
                     ClearDataSet(TVDBSeries);
                     xmltodataset(TVDBSeries, xmlString);
@@ -540,39 +547,52 @@ namespace mlc_series_search
         // COMBO CHANGE 
         private void Episode_Change(object sender, EventArgs e)
         {
-            EpisodeView = getDataView(TVDBSeries.Tables[1]);
+            if (EpisodeCombo.SelectedValue != null && SelCoEpisode != EpisodeCombo.Text && EpisodeCombo.Text != "System.Data.DataRowView")
+            {
+                SelCoEpisode = EpisodeCombo.Text;
+                EpisodeView = getDataView(TVDBSeries.Tables[1]);
+
+                EpisodeList.DataSource = EpisodeView;
+                EpisodeList.DisplayMember = "Display";
+                EpisodeList.ValueMember = "Display";
+            }
 
             setFilter(EpisodeView, SeasonCombo.Text, EpisodeCombo.Text, SeasonCheck.Checked, EpisodeCheck.Checked);
-
-            EpisodeList.DataSource = EpisodeView;
-            EpisodeList.DisplayMember = "Display";
-            EpisodeList.ValueMember = "Display";
-
         }
 
         private void Season_Changed(object sender, EventArgs e)
         {
-            EpisodeView = getDataView(TVDBSeries.Tables[1]);
+            if (SelCoStaffel != SeasonCombo.Text && SeasonCombo.Text != "" && SeasonCombo.Text != "System.Data.DataRowView")
+            {
+                SelCoStaffel = SeasonCombo.Text;
+                EpisodeView = getDataView(TVDBSeries.Tables[1]);
 
-            setFilter(EpisodeView, SeasonCombo.Text, "", false, true);
+                setFilter(EpisodeView, SeasonCombo.Text, "", false, true);
 
-            EpisodenDB = EpisodeView.ToTable(true, "EpisodeNumber");
+                EpisodenDB = EpisodeView.ToTable(true, "EpisodeNumber");
 
-            setFilter(EpisodeView, SeasonCombo.Text, EpisodeCombo.Text, SeasonCheck.Checked, EpisodeCheck.Checked);
+                // setFilter(EpisodeView, SeasonCombo.Text, EpisodeCombo.Text, SeasonCheck.Checked, EpisodeCheck.Checked);
 
-            EpisodeList.DataSource = EpisodeView;
-            EpisodeList.DisplayMember = "Display";
-            EpisodeList.ValueMember = "Display";
+                EpisodeList.DataSource = EpisodeView;
+                EpisodeList.DisplayMember = "Display";
+                EpisodeList.ValueMember = "Display";
 
 
-            EpisodeCombo.DataSource = EpisodenDB;
-            EpisodeCombo.DisplayMember = "EpisodeNumber";
+                EpisodeCombo.DataSource = EpisodenDB;
+                EpisodeCombo.DisplayMember = "EpisodeNumber";
+            }
+
+
 
         }
 
         // Wähle andere Episode
         private void EpisodeList_Click(object sender, EventArgs e)
         {
+            //if(EpisodeList.SelectedValue != null && SelEpisode != EpisodeList.SelectedValue.ToString())
+            // {
+            // SelEpisode = EpisodeList.SelectedValue.ToString();
+
             requesttext.Text = myReqmask;
 
 
@@ -585,7 +605,7 @@ namespace mlc_series_search
                 string staffel = Int32.Parse(EpisodeList.Text.Split(new char[] { ' ', '.' })[0]).ToString("D2");
 
                 string serie = SelSerie;
-                serie = serie.Replace("&","und");
+                serie = serie.Replace("&", "und");
 
                 string xRelURL_new = myXRELURL + serie + " S" + staffel + "E" + episode + "&scene=1";
 
@@ -621,23 +641,23 @@ namespace mlc_series_search
                         xRelList.DisplayMember = "dirname";
                         xRelList.ValueMember = "release_id";
 
-                       
+
                         VideoDB = xRel1.Tables["release"].DefaultView.ToTable(true, "video_type");
                         AddNewDataRowView(VideoDB.DefaultView, "video_type");
 
                         VideoCombo.DataSource = VideoDB;
                         VideoCombo.DisplayMember = "video_type";
-                        VideoCombo.SelectedIndex = VideoCombo.Items.Count-1;
+                        VideoCombo.SelectedIndex = VideoCombo.Items.Count - 1;
 
                         AudioDB = xRel1.Tables["release"].DefaultView.ToTable(true, "audio_type");
                         AddNewDataRowView(AudioDB.DefaultView, "audio_type");
 
                         AudioCombo.DataSource = AudioDB;
                         AudioCombo.DisplayMember = "audio_type";
-                        AudioCombo.SelectedIndex = AudioCombo.Items.Count-1;
+                        AudioCombo.SelectedIndex = AudioCombo.Items.Count - 1;
 
                     }
-
+                    //   }
                 }
             }
 
@@ -668,12 +688,13 @@ namespace mlc_series_search
             if (EngCheck.Checked)
             {
                 EngCH = "+ENG";
-            }else
+            }
+            else
             {
                 EngCH = "";
             }
 
-            string displaytext = clean(SelSerie) + " > " + SeasonCombo.Text + "." + EpisodeCombo.Text + " " + VideoCombo.Text + " " + AudioCombo.Text + " " + filter.Text +" " + EngCH;
+            string displaytext = clean(SelSerie) + " > " + SeasonCombo.Text + "." + EpisodeCombo.Text + " " + VideoCombo.Text + " " + AudioCombo.Text + " " + filter.Text + " " + EngCH;
 
             if (AboData.Tables[0].Rows.Count >= 1 && AboData.Tables[0].Rows[index]["Serie"].ToString() == clean(SelSerie))
             {
@@ -743,25 +764,26 @@ namespace mlc_series_search
 
                 if (foundRows[0]["Serie"].ToString() == abolist.SelectedValue.ToString())
                 {
-                    
+
                     SearchText.Text = foundRows[0]["Serie"].ToString();
                     SearchText_Validated(sender, e);
                     SearchResultList_Click(sender, e);
 
                     SeasonCombo.Text = foundRows[0]["Staffel"].ToString();
                     SeasonCheck.Checked = Boolean.Parse(foundRows[0]["abStaffel"].ToString());
-                    Season_Changed(sender, e);
+
 
                     EpisodeCombo.Text = foundRows[0]["Episode"].ToString();
                     EpisodeCheck.Checked = Boolean.Parse(foundRows[0]["abEpisode"].ToString());
                     EngCheck.Checked = Boolean.Parse(foundRows[0]["eng"].ToString());
 
-                    Episode_Change(sender, e);           
+                    Season_Changed(sender, e);
+                    Episode_Change(sender, e);
                     EpisodeList_Click(sender, e);
 
 
                     AudioCombo.Text = foundRows[0]["audio"].ToString();
-                    VideoCombo.Text = foundRows[0]["video"].ToString();   
+                    VideoCombo.Text = foundRows[0]["video"].ToString();
                     filter.Text = foundRows[0]["Filter"].ToString();
 
                 }
@@ -785,13 +807,13 @@ namespace mlc_series_search
                 mlcupslist.DisplayMember = "name";
                 mlcupslist.ValueMember = "link";
 
-                requesttext.Text = myReqmask + xRelList.Text;         
+                requesttext.Text = myReqmask + xRelList.Text;
             }
             else
             {
                 //ClearTable();
-                requesttext.Text = myReqmask;         
-            }          
+                requesttext.Text = myReqmask;
+            }
         }
 
         // Öffne Forenbeitrag
