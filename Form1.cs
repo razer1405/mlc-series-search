@@ -30,8 +30,8 @@ namespace mlc_series_search
         DataView RelView = new DataView();
         DataSet AboData = new DataSet();
         StringWriter AboWrite = new StringWriter();
-        DataTable MLCresults = new DataTable();
-        DataRow workRow;
+        DataSet MLCData = new DataSet();
+        DataView MLCView = new DataView();
         DataTable StaffelnDB;
         DataTable EpisodenDB;
         DataTable VideoDB;
@@ -42,6 +42,7 @@ namespace mlc_series_search
         string mydocpath = Environment.CurrentDirectory;
 
         string myMLCURL = "https://mlcboard.com";
+        string myMLCAPI = "http://seriesapi.mlc.to/series.xml";
         string myXRELURL = "https://api.xrel.to/v2/search/releases.xml?q=";
 
         string myTVDBAPI = "http://thetvdb.com/api/GetSeries.php?language=DE&seriesname=";
@@ -74,13 +75,14 @@ namespace mlc_series_search
                 InitAboTable(AboData);
             }
 
+            // GET MLC DATA
+
+            getMLCData(MLCData,myMLCAPI);
+
             abolist.DataSource = AboData.Tables[0].DefaultView;
             abolist.DisplayMember = "Display";
             abolist.ValueMember = "Serie";
 
-
-            // SET DATATABLES
-            InitMLCTable(MLCresults);
 
             // SET TEXTS 
             requesttext.Text = myReqmask;
@@ -97,13 +99,6 @@ namespace mlc_series_search
         public string clean(string input)
         {
             return Regex.Replace(input, @"['*$%/()=?]", "");
-        }
-
-        private void InitMLCTable(DataTable table)
-        {
-            MLCresults.Columns.Add("ID", typeof(string));
-            MLCresults.Columns.Add("Release", typeof(string));
-            MLCresults.Columns.Add("Gewicht", typeof(string));
         }
 
         private void InitAboTable(DataSet table)
@@ -221,85 +216,20 @@ namespace mlc_series_search
             newt.ReadXml(GenerateStreamFromString(xmlString));
         }
 
-        private void MLCSearch(DataTable Data, String SearchString)
+        private void getMLCData(DataSet Data,string APIURL)
         {
+                string MLCXML = HTTPtoString(APIURL);
 
-            try
+                ClearDataSet(Data);
+                xmltodataset(Data, MLCXML);
+        }
+
+        private void setMLCFilter(DataView dv, string SearchString)
+        {
+            if (SearchString != "System.Data.DataRowView" && SearchString != "")
             {
-                if (SearchString != null && SearchString != "")
-                {
-                    ClearTable(MLCresults);
-                    string jsonText = HTTPtoString("https://searchapi.mlc.to/search?q=" + SearchString);
-                    var o = JObject.Parse(jsonText);
-
-                    foreach (JToken Child1 in o.Children())
-                    {
-                        var property1 = Child1 as JProperty;
-                        if (property1 != null)
-                        {
-                            string serie = property1.Name;
-
-                        }
-                        foreach (JToken Child2 in Child1)
-                        {
-                            var property2 = Child2 as JProperty;
-
-                            if (property2 != null)
-                            {
-                                string Name = property2.Name;
-                            }
-
-                            foreach (JToken Child3 in Child2)
-                            {
-                                var property3 = Child3 as JProperty;
-
-                                if (property3 != null)
-                                {
-                                    string Name = property3.Name;
-                                }
-
-                                workRow = Data.NewRow();
-
-                                foreach (JToken Child4 in Child3)
-                                {
-                                    var property4 = Child4 as JProperty;
-
-                                    if (property4 != null)
-                                    {
-                                        string Name = property4.Name;
-                                        if (property4.Name == "id")
-                                        {
-                                            string id = property4.Value.ToString();
-                                            workRow["ID"] = id;
-                                        }
-                                        if (property4.Name == "title")
-                                        {
-                                            string release = property4.Value.ToString();
-                                            workRow["Release"] = release;
-                                        }
-                                        if (property4.Name == "weight")
-                                        {
-                                            string weight = property4.Value.ToString();
-                                            workRow["Gewicht"] = weight;
-                                        }
-
-                                    }
-
-                                }
-                                Data.Rows.Add(workRow);
-                            }
-
-                        }
-                    }
-                }
-
-
+                dv.RowFilter = "name = '"+ SearchString + "'";
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "ERROR");
-            }
-
         }
 
         public DataView getDataView(DataTable data)
@@ -846,18 +776,20 @@ namespace mlc_series_search
 
             if (xRelList.Text != "System.Data.DataRowView" && sender.ToString() != "System.Data.DataRowView" && xRelList.Text != "")
             {
-                
-                MLCSearch(MLCresults, xRelList.Text);
 
-                mlcupslist.DataSource = MLCresults;
-                mlcupslist.DisplayMember = "Release";
-                mlcupslist.ValueMember = "ID";
+                MLCView = getDataView(MLCData.Tables["upload"]);
+
+                setMLCFilter(MLCView, xRelList.Text);
+
+                mlcupslist.DataSource = MLCView;
+                mlcupslist.DisplayMember = "name";
+                mlcupslist.ValueMember = "link";
 
                 requesttext.Text = myReqmask + xRelList.Text;         
             }
             else
             {
-                ClearTable(MLCresults);
+                //ClearTable();
                 requesttext.Text = myReqmask;         
             }          
         }
@@ -867,7 +799,7 @@ namespace mlc_series_search
         {
             if (sender.ToString() != "System.Data.DataRowView" && sender.ToString() != "")
             {
-                System.Diagnostics.Process.Start(myMLCURL + "/forum/showthread.php?" + mlcupslist.SelectedValue.ToString());
+                System.Diagnostics.Process.Start(mlcupslist.SelectedValue.ToString());
             }
         }
 
