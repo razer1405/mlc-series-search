@@ -772,6 +772,7 @@ namespace mlc_series_search
             // xRelWorker
             // 
             this.xRelWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.xRelWorker_DoWork);
+            this.xRelWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.xRelWorker_RunWorkerCompleted);
             // 
             // mlcseriessearch
             // 

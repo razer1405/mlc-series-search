@@ -56,6 +56,9 @@ namespace mlc_series_search
         string SelSerieID = "";
         string SelCoEpisode = "";
         string SelCoStaffel = "";
+        string SelLiEpispde = "";
+        string SelLiStaffel = "";
+        string cleanserie = "";
         bool myMLCData = false;
 
         string xRelURL;
@@ -444,10 +447,11 @@ namespace mlc_series_search
 
                     dv.Sort = "release_id";
                     relindex = dv.Find(row["release_id"].ToString());
-
+                    if (dv.Table.Columns.Contains("english")) { 
                     if (row["release_id"].ToString() == dv[relindex]["release_id"].ToString() && dv[relindex]["english"].ToString() == "1")
                     {
                         deletedRows.Add(data.Tables["release"].Rows[relindex]);
+                    }
                     }
                 }
 
@@ -635,10 +639,6 @@ namespace mlc_series_search
         // Wähle andere Episode
         private void EpisodeList_Click(object sender, EventArgs e)
         {
-            //if(EpisodeList.SelectedValue != null && SelEpisode != EpisodeList.SelectedValue.ToString())
-            // {
-            // SelEpisode = EpisodeList.SelectedValue.ToString();
-
             requesttext.Text = myReqmask;
 
 
@@ -647,64 +647,13 @@ namespace mlc_series_search
                 SearchResultList.Refresh();
                 EpisodeList.Refresh();
 
-                string episode = Int32.Parse(EpisodeList.Text.Split(new char[] { ' ', '.' })[1]).ToString("D2");
-                string staffel = Int32.Parse(EpisodeList.Text.Split(new char[] { ' ', '.' })[0]).ToString("D2");
+                SelLiEpispde = Int32.Parse(EpisodeList.Text.Split(new char[] { ' ', '.' })[1]).ToString("D2");
+                SelLiStaffel = Int32.Parse(EpisodeList.Text.Split(new char[] { ' ', '.' })[0]).ToString("D2");
 
-                string serie = SelSerie;
-                serie = serie.Replace("&", "und");
-
-                string xRelURL_new = myXRELURL + serie + " S" + staffel + "E" + episode + "&scene=1";
-
-                if (this.xRelURL != xRelURL_new)
-                {
-                    this.xRelURL = xRelURL_new;
-
-                    while (sw.Elapsed < TimeSpan.FromSeconds(6) && sw.IsRunning)
-                    {
-                        //Warte
-                    }
-
-                    sw.Stop();
-                    sw.Reset();
-                    sw.Start();
-
-                    string xRelXML = HTTPtoString(this.xRelURL);
-
-
-                    ClearDataSet(xRel1);
-                    xmltodataset(xRel1, xRelXML);
-                    if (xRel1.Tables.Count >= 2)
-                    {
-                        if (!EngCheck.Checked)
-                        {
-                            noEngRel(xRel1);
-                        }
-                        RelView = getDataView(xRel1.Tables["release"]);
-
-                        setRELFilter(RelView, filter.Text, AudioCombo.Text, VideoCombo.Text);
-
-                        xRelList.DataSource = RelView;
-                        xRelList.DisplayMember = "dirname";
-                        xRelList.ValueMember = "release_id";
-
-
-                        VideoDB = xRel1.Tables["release"].DefaultView.ToTable(true, "video_type");
-                        AddNewDataRowView(VideoDB.DefaultView, "video_type");
-
-                        VideoCombo.DataSource = VideoDB;
-                        VideoCombo.DisplayMember = "video_type";
-                        VideoCombo.SelectedIndex = VideoCombo.Items.Count - 1;
-
-                        AudioDB = xRel1.Tables["release"].DefaultView.ToTable(true, "audio_type");
-                        AddNewDataRowView(AudioDB.DefaultView, "audio_type");
-
-                        AudioCombo.DataSource = AudioDB;
-                        AudioCombo.DisplayMember = "audio_type";
-                        AudioCombo.SelectedIndex = AudioCombo.Items.Count - 1;
-
-                    }
-                    //   }
-                }
+                cleanserie = SelSerie;
+                cleanserie = cleanserie.Replace("&", "und");
+                isloading(true);
+                xRelWorker.RunWorkerAsync();
             }
 
         }
@@ -923,6 +872,64 @@ namespace mlc_series_search
         private void xRelWorker_DoWork(object sender, DoWorkEventArgs e)
         {
 
+            string xRelURL_new = myXRELURL + cleanserie + " S" + SelLiStaffel + "E" + SelLiEpispde + "&scene=1";
+
+            if (this.xRelURL != xRelURL_new)
+            {
+                this.xRelURL = xRelURL_new;
+
+                while (sw.Elapsed < TimeSpan.FromSeconds(6) && sw.IsRunning)
+                {
+                    //Warte
+                }
+
+                sw.Stop();
+                sw.Reset();
+                sw.Start();
+
+                string xRelXML = HTTPtoString(this.xRelURL);
+
+
+                ClearDataSet(xRel1);
+                xmltodataset(xRel1, xRelXML);
+
+
+            }
+        }
+
+        private void xRelWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            if (xRel1.Tables.Count >= 2)
+            {
+                if (!EngCheck.Checked)
+                {
+                    noEngRel(xRel1);
+                }
+                RelView = getDataView(xRel1.Tables["release"]);
+
+                setRELFilter(RelView, filter.Text, AudioCombo.Text, VideoCombo.Text);
+
+                xRelList.DataSource = RelView;
+                xRelList.DisplayMember = "dirname";
+                xRelList.ValueMember = "release_id";
+
+
+                VideoDB = xRel1.Tables["release"].DefaultView.ToTable(true, "video_type");
+                AddNewDataRowView(VideoDB.DefaultView, "video_type");
+
+                VideoCombo.DataSource = VideoDB;
+                VideoCombo.DisplayMember = "video_type";
+                VideoCombo.SelectedIndex = VideoCombo.Items.Count - 1;
+
+                AudioDB = xRel1.Tables["release"].DefaultView.ToTable(true, "audio_type");
+                AddNewDataRowView(AudioDB.DefaultView, "audio_type");
+
+                AudioCombo.DataSource = AudioDB;
+                AudioCombo.DisplayMember = "audio_type";
+                AudioCombo.SelectedIndex = AudioCombo.Items.Count - 1;
+
+            }
+            isloading(false);
         }
     }
 
