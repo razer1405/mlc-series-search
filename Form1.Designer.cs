@@ -1,4 +1,6 @@
-﻿namespace mlc_series_search
+﻿using System.ComponentModel;
+
+namespace mlc_series_search
 {
     partial class mlcseriessearch
     {
@@ -96,6 +98,9 @@
             this.label15 = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
             this.EngCheck = new System.Windows.Forms.CheckBox();
+            this.MLCWorker = new System.ComponentModel.BackgroundWorker();
+            this.mlcwork = new System.Windows.Forms.Button();
+            this.xRelWorker = new System.ComponentModel.BackgroundWorker();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SeriesPic)).BeginInit();
             this.groupBox2.SuspendLayout();
@@ -398,6 +403,7 @@
             this.progressBar1.Size = new System.Drawing.Size(266, 10);
             this.progressBar1.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
             this.progressBar1.TabIndex = 28;
+            this.progressBar1.Visible = false;
             // 
             // abolist
             // 
@@ -745,11 +751,34 @@
             this.EngCheck.UseVisualStyleBackColor = true;
             this.EngCheck.CheckedChanged += new System.EventHandler(this.EngCheck_CheckedChanged);
             // 
+            // MLCWorker
+            // 
+            this.MLCWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.MLCWorker_DoWork);
+            this.MLCWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.MLCWorker_RunWorkerCompleted);
+            // 
+            // mlcwork
+            // 
+            this.mlcwork.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.mlcwork.BackgroundImage = global::mlc_series_search.Properties.Resources.refresh;
+            this.mlcwork.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.mlcwork.Cursor = System.Windows.Forms.Cursors.Default;
+            this.mlcwork.Location = new System.Drawing.Point(1013, 61);
+            this.mlcwork.Name = "mlcwork";
+            this.mlcwork.Size = new System.Drawing.Size(32, 29);
+            this.mlcwork.TabIndex = 46;
+            this.mlcwork.UseVisualStyleBackColor = false;
+            this.mlcwork.Click += new System.EventHandler(this.mlcwork_Click);
+            // 
+            // xRelWorker
+            // 
+            this.xRelWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.xRelWorker_DoWork);
+            // 
             // mlcseriessearch
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1053, 607);
+            this.Controls.Add(this.mlcwork);
             this.Controls.Add(this.EngCheck);
             this.Controls.Add(this.label16);
             this.Controls.Add(this.label15);
@@ -869,6 +898,9 @@
         private System.Windows.Forms.Label relname;
         private System.Windows.Forms.Button btnxRelNFO;
         private System.Windows.Forms.Button btnxRelRel;
+        private BackgroundWorker MLCWorker;
+        private System.Windows.Forms.Button mlcwork;
+        private BackgroundWorker xRelWorker;
     }
 }
 

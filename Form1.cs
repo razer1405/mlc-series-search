@@ -37,6 +37,7 @@ namespace mlc_series_search
         DataTable VideoDB;
         DataTable AudioDB;
 
+
         string appname = "MLC Serien Manager";
 
         string mydocpath = Environment.CurrentDirectory;
@@ -55,6 +56,7 @@ namespace mlc_series_search
         string SelSerieID = "";
         string SelCoEpisode = "";
         string SelCoStaffel = "";
+        bool myMLCData = false;
 
         string xRelURL;
         int index;
@@ -78,8 +80,10 @@ namespace mlc_series_search
             }
 
             // GET MLC DATA
-
-            getMLCData(MLCData, myMLCAPI);
+            isloading(true);
+            isMLCData(false);
+            MLCWorker.RunWorkerAsync();
+            
 
             abolist.DataSource = AboData.Tables[0].DefaultView;
             abolist.DisplayMember = "Display";
@@ -98,6 +102,38 @@ namespace mlc_series_search
         }
 
         // *********************FUNCTIONS************************* //
+        private void isloading(bool stat)
+        {
+            if (stat)
+            {
+                xRelList.Enabled = false;
+                abolist.Enabled = false;
+                EpisodeList.Enabled = false;
+                progressBar1.Visible = true;
+            }
+            else
+            {
+                xRelList.Enabled = true;
+                abolist.Enabled = true;
+                EpisodeList.Enabled = true;
+                progressBar1.Visible = false;
+            } 
+        }
+
+        private void isMLCData(bool stat)
+        {
+            myMLCData = stat;
+
+            if (stat)
+            {
+                mlcwork.BackColor = Color.FromArgb(192, 255, 192);
+            }
+            else
+            {
+                mlcwork.BackColor = Color.FromArgb(255, 128, 128);
+            }
+        }
+
         public string clean(string input)
         {
             return Regex.Replace(input, @"['*$%/()=?]", "");
@@ -462,6 +498,16 @@ namespace mlc_series_search
             return System.Reflection.Assembly.Load(bytes);
         }
 
+        private void MLCWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            getMLCData(MLCData, myMLCAPI);
+        }
+
+        private void MLCWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            isloading(false);
+            isMLCData(true);
+        }
         // ******************Form Events*******************************//
 
         // VALID Sucheeingabe
@@ -863,6 +909,20 @@ namespace mlc_series_search
         private void btnxRelNFO_Click(object sender, EventArgs e)
         {
             System.Diagnostics.Process.Start(xRelNFOUrl);
+        }
+
+        private void mlcwork_Click(object sender, EventArgs e)
+        {
+            if (myMLCData) {
+                isloading(true);
+                isMLCData(false);
+                MLCWorker.RunWorkerAsync();
+            }
+        }
+
+        private void xRelWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+
         }
     }
 

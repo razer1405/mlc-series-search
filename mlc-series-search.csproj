@@ -149,6 +149,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="logo.ico" />
+    <None Include="Resources\refresh.png" />
+    <None Include="Resources\reload.png" />
     <None Include="packages\xRelApiClient.v1.1.Release\XrelApiClient.dll" />
     <None Include="packages\xRelApiClient.v1.1.Release\RestSharp.dll" />
   </ItemGroup>
