@@ -100,7 +100,7 @@ namespace mlc_series_search
 
 
             // GET DLL's
-            AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
+            //AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
 
         }
 
@@ -621,7 +621,7 @@ namespace mlc_series_search
 
                 EpisodenDB = EpisodeView.ToTable(true, "EpisodeNumber");
 
-                // setFilter(EpisodeView, SeasonCombo.Text, EpisodeCombo.Text, SeasonCheck.Checked, EpisodeCheck.Checked);
+                setFilter(EpisodeView, SeasonCombo.Text, EpisodeCombo.Text, SeasonCheck.Checked, EpisodeCheck.Checked);
 
                 EpisodeList.DataSource = EpisodeView;
                 EpisodeList.DisplayMember = "Display";
@@ -806,7 +806,6 @@ namespace mlc_series_search
             }
             else
             {
-                //ClearTable();
                 requesttext.Text = myReqmask;
             }
         }
@@ -913,7 +912,6 @@ namespace mlc_series_search
                 xRelList.DisplayMember = "dirname";
                 xRelList.ValueMember = "release_id";
 
-
                 VideoDB = xRel1.Tables["release"].DefaultView.ToTable(true, "video_type");
                 AddNewDataRowView(VideoDB.DefaultView, "video_type");
 
@@ -928,9 +926,14 @@ namespace mlc_series_search
                 AudioCombo.DisplayMember = "audio_type";
                 AudioCombo.SelectedIndex = AudioCombo.Items.Count - 1;
 
+                if(xRelList.Text != null || xRelList.Text != "")
+                {
+                    xRelList_SelectedIndexChanged(sender, e);
+                }
             }
             isloading(false);
         }
+
     }
 
 }
