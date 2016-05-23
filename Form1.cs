@@ -711,32 +711,34 @@ namespace mlc_series_search
         private void del_abo_Click(object sender, EventArgs e)
         {
             abolist.Refresh();
-
-            index = 0;
-            abolist.Refresh();
-            DataTable dt = AboData.Tables[0];
-            foreach (DataRow row in dt.Rows)
+            if (sender != null && SelSerie != "")
             {
-                if (row["Serie"].ToString() == clean(SelSerie))
+                index = 0;
+                abolist.Refresh();
+                DataTable dt = AboData.Tables[0];
+                foreach (DataRow row in dt.Rows)
                 {
-                    index = dt.Rows.IndexOf(row);
+                    if (row["Serie"].ToString() == clean(SelSerie))
+                    {
+                        index = dt.Rows.IndexOf(row);
+                    }
                 }
-            }
 
 
-            if (AboData.Tables[0].Rows[index]["Serie"].ToString() == clean(SelSerie))
-            {
-                AboData.Tables[0].Rows[index].Delete();
-            }
+                if (AboData.Tables[0].Rows[index]["Serie"].ToString() == clean(SelSerie))
+                {
+                    AboData.Tables[0].Rows[index].Delete();
+                }
 
 
-            if (AboData.Tables[0].Rows.Count == 0)
-            {
-                File.Delete(mydocpath + @"\AboData.xml");
-            }
-            else
-            {
-                AboData.WriteXml(mydocpath + @"\AboData.xml");
+                if (AboData.Tables[0].Rows.Count == 0)
+                {
+                    File.Delete(mydocpath + @"\AboData.xml");
+                }
+                else
+                {
+                    AboData.WriteXml(mydocpath + @"\AboData.xml");
+                }
             }
         }
 
