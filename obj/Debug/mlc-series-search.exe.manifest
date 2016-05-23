@@ -43,14 +43,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="mlc-series-search.exe" size="118272">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="mlc-series-search.exe" size="118784">
       <assemblyIdentity name="mlc-series-search" version="0.0.2.7" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>D3SLQIKtV0eTozrWmIbq7vitxsGkyKss5bROFU1eF3Q=</dsig:DigestValue>
+        <dsig:DigestValue>xneH0Zw85dH09pBsWKaeHLEMnKO2qMloffpFM65Ff9Y=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -63,13 +63,13 @@
       <dsig:DigestValue>ZwcbkSCnB9GDD4cfBrFJuimkGikxOsF1BRkJg68SFzI=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="mlc-series-search.exe.config" size="533">
+  <file name="mlc-series-search.exe.config" size="184">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>WfvtP0zinoBohZvOOT7VUTTOcxE4Dbf5VkKwmA0epUk=</dsig:DigestValue>
+      <dsig:DigestValue>jWVCngsqgsEdPtxOoE7SAK7f6h1++LmE6IqOl8/1R3A=</dsig:DigestValue>
     </hash>
   </file>
   <compatibility xmlns="urn:schemas-microsoft-com:compatibility.v1">

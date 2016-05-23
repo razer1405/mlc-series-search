@@ -50,7 +50,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>PMXnsdp8FPMCdrD+p6CpT1iqN8Wmys0ap/aD8ZFY1uw=</dsig:DigestValue>
+        <dsig:DigestValue>G2Oe/nd0FGW2gkzNBSb4ZDWCEBzcXmoxCuVFYkAU5HI=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -63,13 +63,13 @@
       <dsig:DigestValue>ZwcbkSCnB9GDD4cfBrFJuimkGikxOsF1BRkJg68SFzI=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="mlc-series-search.exe.config" size="533">
+  <file name="mlc-series-search.exe.config" size="184">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>WfvtP0zinoBohZvOOT7VUTTOcxE4Dbf5VkKwmA0epUk=</dsig:DigestValue>
+      <dsig:DigestValue>jWVCngsqgsEdPtxOoE7SAK7f6h1++LmE6IqOl8/1R3A=</dsig:DigestValue>
     </hash>
   </file>
   <compatibility xmlns="urn:schemas-microsoft-com:compatibility.v1">

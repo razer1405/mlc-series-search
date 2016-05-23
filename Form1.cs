@@ -660,7 +660,7 @@ namespace mlc_series_search
         //ABO ADD oder Akt
         private void Abo_Click(object sender, EventArgs e)
         {
-
+            if (sender != null && SelSerie != "") { 
             abolist.Refresh();
             index = 0;
             DataTable dt = AboData.Tables[0];
@@ -704,7 +704,7 @@ namespace mlc_series_search
 
 
             AboData.WriteXml(mydocpath + @"\AboData.xml");
-
+            }
         }
 
         // ABO Löschen
