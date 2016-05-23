@@ -61,68 +61,12 @@ namespace mlc_series_search.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Byte[].
-        /// </summary>
-        internal static byte[] Newtonsoft_Json {
-            get {
-                object obj = ResourceManager.GetObject("Newtonsoft_Json", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die &lt;?xml version=&quot;1.0&quot;?&gt;
-        ///&lt;doc&gt;
-        ///    &lt;assembly&gt;
-        ///        &lt;name&gt;Newtonsoft.Json&lt;/name&gt;
-        ///    &lt;/assembly&gt;
-        ///    &lt;members&gt;
-        ///        &lt;member name=&quot;T:Newtonsoft.Json.Bson.BsonObjectId&quot;&gt;
-        ///            &lt;summary&gt;
-        ///            Represents a BSON Oid (object id).
-        ///            &lt;/summary&gt;
-        ///        &lt;/member&gt;
-        ///        &lt;member name=&quot;P:Newtonsoft.Json.Bson.BsonObjectId.Value&quot;&gt;
-        ///            &lt;summary&gt;
-        ///            Gets or sets the value of the Oid.
-        ///            &lt;/summary&gt;
-        ///            &lt;value&gt;The value of the Oid.&lt;/value&gt;
-        ///        &lt;/member&gt;
-        ///        [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
-        /// </summary>
-        internal static string Newtonsoft_Json1 {
-            get {
-                return ResourceManager.GetString("Newtonsoft_Json1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap refresh {
             get {
                 object obj = ResourceManager.GetObject("refresh", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Byte[].
-        /// </summary>
-        internal static byte[] RestSharp {
-            get {
-                object obj = ResourceManager.GetObject("RestSharp", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Byte[].
-        /// </summary>
-        internal static byte[] XrelApiClient {
-            get {
-                object obj = ResourceManager.GetObject("XrelApiClient", resourceCulture);
-                return ((byte[])(obj));
             }
         }
     }

@@ -118,19 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="Newtonsoft_Json" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="Newtonsoft_Json1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
   <data name="refresh" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\refresh.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="RestSharp" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\packages\xRelApiClient.v1.1.Release\RestSharp.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="XrelApiClient" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\packages\xRelApiClient.v1.1.Release\XrelApiClient.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

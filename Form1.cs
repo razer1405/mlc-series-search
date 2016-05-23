@@ -7,14 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Newtonsoft.Json;
 using System.IO;
-using Newtonsoft.Json.Linq;
 using System.Xml;
 using System.Net;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
-using XrelApiClient;
 using System.Threading;
 
 namespace mlc_series_search
@@ -97,10 +94,6 @@ namespace mlc_series_search
             requesttext.Text = myReqmask;
             this.Text = appname + " " + version;
             versionlabel.Text = "Version: " + version;
-
-
-            // GET DLL's
-            //AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
 
         }
 

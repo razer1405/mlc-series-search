@@ -4,7 +4,7 @@
   <description asmv2:iconFile="logo.ico" xmlns="urn:schemas-microsoft-com:asm.v1" />
   <application />
   <entryPoint>
-    <assemblyIdentity name="mlc-series-search" version="0.0.2.6" language="neutral" processorArchitecture="msil" />
+    <assemblyIdentity name="mlc-series-search" version="0.0.2.7" language="neutral" processorArchitecture="msil" />
     <commandLine file="mlc-series-search.exe" parameters="" />
   </entryPoint>
   <trustInfo>
@@ -43,50 +43,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="mlc-series-search.exe" size="1330688">
-      <assemblyIdentity name="mlc-series-search" version="0.0.2.6" language="neutral" processorArchitecture="msil" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="mlc-series-search.exe" size="116736">
+      <assemblyIdentity name="mlc-series-search" version="0.0.2.7" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>p3cEgTlZZ3IZzevZS6Vk6rbMwKTwqUJIR7PSNwCfJKA=</dsig:DigestValue>
-      </hash>
-    </dependentAssembly>
-  </dependency>
-  <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Newtonsoft.Json.dll" size="522752">
-      <assemblyIdentity name="Newtonsoft.Json" version="8.0.0.0" publicKeyToken="30AD4FE6B2A6AEED" language="neutral" processorArchitecture="msil" />
-      <hash>
-        <dsig:Transforms>
-          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
-        </dsig:Transforms>
-        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>347C4CRYKd3sW3nxkYw646P6VApaDjxBDitu8L68eSc=</dsig:DigestValue>
-      </hash>
-    </dependentAssembly>
-  </dependency>
-  <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="RestSharp.dll" size="150016">
-      <assemblyIdentity name="RestSharp" version="104.1.0.0" language="neutral" processorArchitecture="msil" />
-      <hash>
-        <dsig:Transforms>
-          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
-        </dsig:Transforms>
-        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>rQMAB4y4tv6v4q2JXONCtGz+CanPZhXgbSw7S1U02TA=</dsig:DigestValue>
-      </hash>
-    </dependentAssembly>
-  </dependency>
-  <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="XrelApiClient.dll" size="33280">
-      <assemblyIdentity name="XrelApiClient" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
-      <hash>
-        <dsig:Transforms>
-          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
-        </dsig:Transforms>
-        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>Zw87rZhvChHBJZY9hwjaUSbUFa+en2R5gjajPWm0TAU=</dsig:DigestValue>
+        <dsig:DigestValue>PMXnsdp8FPMCdrD+p6CpT1iqN8Wmys0ap/aD8ZFY1uw=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

@@ -32,8 +32,6 @@ E:\git\mlc-series-search\bin\Debug\mlc-series-search.exe.manifest
 E:\git\mlc-series-search\bin\Debug\mlc-series-search.application
 E:\git\mlc-series-search\bin\Debug\mlc-series-search.exe
 E:\git\mlc-series-search\bin\Debug\mlc-series-search.pdb
-E:\git\mlc-series-search\bin\Debug\Newtonsoft.Json.dll
-E:\git\mlc-series-search\bin\Debug\Newtonsoft.Json.xml
 E:\git\mlc-series-search\obj\Debug\mlc-series-search.csprojResolveAssemblyReference.cache
 E:\git\mlc-series-search\obj\Debug\mlc_series_search.mlcseriessearch.resources
 E:\git\mlc-series-search\obj\Debug\mlc_series_search.Properties.Resources.resources
@@ -41,6 +39,3 @@ E:\git\mlc-series-search\obj\Debug\mlc-series-search.csproj.GenerateResource.Cac
 E:\git\mlc-series-search\obj\Debug\mlc-series-search.TrustInfo.xml
 E:\git\mlc-series-search\obj\Debug\mlc-series-search.exe.manifest
 E:\git\mlc-series-search\obj\Debug\mlc-series-search.application
-E:\git\mlc-series-search\bin\Debug\RestSharp.dll
-E:\git\mlc-series-search\bin\Debug\XrelApiClient.dll
-E:\git\mlc-series-search\obj\Debug\mlc-series-search.csproj.mlc-series-search.exe.config
