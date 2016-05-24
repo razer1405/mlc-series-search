@@ -1,0 +1,27 @@
+<?xml version="1.0" standalone="yes"?>
+<NewDataSet>
+  <AboData>
+    <Serie>How to Get Away with Murder</Serie>
+    <Staffel>1</Staffel>
+    <Episode>1</Episode>
+    <abStaffel>False</abStaffel>
+    <abEpisode>True</abEpisode>
+    <Filter />
+    <Display>How to Get Away with Murder &gt; 1.1 </Display>
+    <audio>AC3</audio>
+    <video>HDTV</video>
+    <eng>False</eng>
+  </AboData>
+  <AboData>
+    <Serie>Rizzoli &amp; Isles</Serie>
+    <Staffel>1</Staffel>
+    <Episode>1</Episode>
+    <abStaffel>False</abStaffel>
+    <abEpisode>True</abEpisode>
+    <Filter />
+    <Display>Rizzoli &amp; Isles &gt; 1.1    </Display>
+    <audio />
+    <video />
+    <eng>False</eng>
+  </AboData>
+</NewDataSet>

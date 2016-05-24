@@ -57,6 +57,10 @@ namespace mlc_series_search
         string SelLiStaffel = "";
         string cleanserie = "";
         bool myMLCData = false;
+        string SetVideo = "";
+        string SetAudio = "";
+        string SetFilter = "";
+
 
         string xRelURL;
         int index;
@@ -556,7 +560,9 @@ namespace mlc_series_search
 
                 if (SearchResultList.SelectedValue != null)
                 {
-
+                    SelCoEpisode = "";
+                    SelCoStaffel = "";
+                    xRelURL = "";
                     SelSerieID = SearchResultList.SelectedValue.ToString();
 
                     string xmlString = HTTPtoString(myTVDBAPI2 + SelSerieID + "/all/de.xml");
@@ -682,7 +688,7 @@ namespace mlc_series_search
                 EngCH = "";
             }
 
-            string displaytext = clean(SelSerie) + " > " + SeasonCombo.Text + "." + EpisodeCombo.Text + " " + VideoCombo.Text + " " + AudioCombo.Text + " " + filter.Text + " " + EngCH;
+            string displaytext = clean(SelSerie) + " > " + SeasonCombo.Text + "." + EpisodeCombo.Text +" " + VideoCombo.Text + " " + AudioCombo.Text + " " + filter.Text + " " + EngCH;
 
             if (AboData.Tables[0].Rows.Count >= 1 && AboData.Tables[0].Rows[index]["Serie"].ToString() == clean(SelSerie))
             {
@@ -754,7 +760,9 @@ namespace mlc_series_search
 
                 if (foundRows[0]["Serie"].ToString() == abolist.SelectedValue.ToString())
                 {
-
+                    SelCoEpisode = "";
+                    SelCoStaffel = "";
+                    xRelURL = "";
                     SearchText.Text = foundRows[0]["Serie"].ToString();
                     SearchText_Validated(sender, e);
                     SearchResultList_Click(sender, e);
@@ -771,11 +779,10 @@ namespace mlc_series_search
                     Episode_Change(sender, e);
                     EpisodeList_Click(sender, e);
 
-
-                    AudioCombo.Text = foundRows[0]["audio"].ToString();
-                    VideoCombo.Text = foundRows[0]["video"].ToString();
-                    filter.Text = foundRows[0]["Filter"].ToString();
-
+                    SetVideo = foundRows[0]["video"].ToString();
+                    SetAudio = foundRows[0]["audio"].ToString();
+                    SetFilter = foundRows[0]["Filter"].ToString();
+                    
                 }
             }
         }
@@ -921,7 +928,15 @@ namespace mlc_series_search
                 AudioCombo.DisplayMember = "audio_type";
                 AudioCombo.SelectedIndex = AudioCombo.Items.Count - 1;
 
-                if(xRelList.Text != null || xRelList.Text != "")
+                if (SetAudio != "") { AudioCombo.Text = SetAudio; }
+                if (SetVideo != "") { VideoCombo.Text = SetVideo; }
+                if (SetFilter != "") { filter.Text = SetFilter; }
+
+                SetAudio = "";
+                SetVideo = "";
+                SetFilter = "";
+
+                if (xRelList.Text != null || xRelList.Text != "")
                 {
                     xRelList_SelectedIndexChanged(sender, e);
                 }

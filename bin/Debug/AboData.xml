@@ -2,13 +2,13 @@
 <NewDataSet>
   <AboData>
     <Serie>Rizzoli &amp; Isles</Serie>
-    <Staffel>2</Staffel>
-    <Episode>3</Episode>
+    <Staffel>6</Staffel>
+    <Episode>1</Episode>
     <abStaffel>False</abStaffel>
     <abEpisode>True</abEpisode>
     <Filter />
-    <Display>Rizzoli &amp; Isles &gt; 2.3    </Display>
-    <audio />
+    <Display>Rizzoli &amp; Isles &gt; 6.1 </Display>
+    <audio>AC3-Dubbed</audio>
     <video />
     <eng>False</eng>
   </AboData>
