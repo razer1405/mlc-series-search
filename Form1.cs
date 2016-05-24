@@ -501,13 +501,14 @@ namespace mlc_series_search
 
         private void MLCWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-            getMLCData(MLCData, myMLCAPI);
+            getMLCData(MLCData, myMLCAPI);         
         }
 
         private void MLCWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             isloading(false);
             isMLCData(true);
+            xRelList_SelectedIndexChanged(sender, e);
         }
         // ******************Form Events*******************************//
 
@@ -792,24 +793,22 @@ namespace mlc_series_search
         {
             requesttext.Text = myReqmask;
             setReleaseInfo(xRel1);
+            MLCView = getDataView(MLCData.Tables["upload"]);
 
             if (xRelList.Text != "System.Data.DataRowView" && sender.ToString() != "System.Data.DataRowView" && xRelList.Text != "")
             {
-
-                MLCView = getDataView(MLCData.Tables["upload"]);
-
                 setMLCFilter(MLCView, xRelList.Text);
-
-                mlcupslist.DataSource = MLCView;
-                mlcupslist.DisplayMember = "name";
-                mlcupslist.ValueMember = "link";
-
                 requesttext.Text = myReqmask + xRelList.Text;
             }
             else
-            {
+            {               
+                setMLCFilter(MLCView, "--_--");
                 requesttext.Text = myReqmask;
             }
+
+            mlcupslist.DataSource = MLCView;
+            mlcupslist.DisplayMember = "name";
+            mlcupslist.ValueMember = "link";
         }
 
         // Öffne Forenbeitrag
