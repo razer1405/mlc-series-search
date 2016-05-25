@@ -62,6 +62,7 @@ namespace mlc_series_search
         string SetVideo = "";
         string SetAudio = "";
         string SetFilter = "";
+        string SetENG = "";
         
 
 
@@ -113,6 +114,7 @@ namespace mlc_series_search
                 abolist.Enabled = false;
                 EpisodeList.Enabled = false;
                 progressBar1.Visible = true;
+                EngCheck.Enabled = false;
             }
             else
             {
@@ -120,6 +122,7 @@ namespace mlc_series_search
                 abolist.Enabled = true;
                 EpisodeList.Enabled = true;
                 progressBar1.Visible = false;
+                EngCheck.Enabled = true;
             } 
         }
 
@@ -615,10 +618,21 @@ namespace mlc_series_search
                 if (SetAudio != "") { AudioCombo.Text = SetAudio; }
                 if (SetVideo != "") { VideoCombo.Text = SetVideo; }
                 if (SetFilter != "") { filter.Text = SetFilter; }
-
+                if (SetENG != "")
+                {
+                    if (SetENG == "true")
+                    {
+                        EngCheck.Checked = true;
+                    }
+                    else
+                    {
+                        EngCheck.Checked = false;
+                    }
+                }
                 SetAudio = "";
                 SetVideo = "";
                 SetFilter = "";
+                SetENG = "";
 
                 if (xRelList.Text != null || xRelList.Text != "")
                 {
@@ -902,7 +916,6 @@ namespace mlc_series_search
 
                     EpisodeCombo.Text = foundRows[0]["Episode"].ToString();
                     EpisodeCheck.Checked = Boolean.Parse(foundRows[0]["abEpisode"].ToString());
-                    EngCheck.Checked = Boolean.Parse(foundRows[0]["eng"].ToString());
 
                     Season_Changed(sender, e);
                     Episode_Change(sender, e);
@@ -911,7 +924,9 @@ namespace mlc_series_search
                     SetVideo = foundRows[0]["video"].ToString();
                     SetAudio = foundRows[0]["audio"].ToString();
                     SetFilter = foundRows[0]["Filter"].ToString();
-                    
+                    SetENG = foundRows[0]["eng"].ToString();
+
+
                 }
             }
         }
