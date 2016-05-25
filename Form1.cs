@@ -51,6 +51,8 @@ namespace mlc_series_search
         string xRelNFOUrl = "";
         string SelSerie = "";
         string SelSerieID = "";
+        string SelIMDB = "";
+        string SelSerieAlias = "";
         string SelCoEpisode = "";
         string SelCoStaffel = "";
         string SelLiEpispde = "";
@@ -60,6 +62,7 @@ namespace mlc_series_search
         string SetVideo = "";
         string SetAudio = "";
         string SetFilter = "";
+        
 
 
         string xRelURL;
@@ -388,7 +391,13 @@ namespace mlc_series_search
                 relname.Text = dr[relindex]["dirname"].ToString();
                 reltime.Text = UnixTimeStampToDateTime(double.Parse(dr[relindex]["time"].ToString())).ToString("HH:mm");
                 reldate.Text = UnixTimeStampToDateTime(double.Parse(dr[relindex]["time"].ToString())).ToString("d");
-                relrating.Text = dei[relindex3]["rating"].ToString();
+                if (dei.Table.Columns.Contains("rating")) { 
+                    relrating.Text = dei[relindex3]["rating"].ToString();
+                }
+                else
+                {
+                    relrating.Text = "";
+                }
                 relaud.Text = dr[relindex]["audio_type"].ToString();
                 relvid.Text = dr[relindex]["video_type"].ToString();
                 relsize.Text = dsize[relindex2]["number"].ToString();
@@ -460,6 +469,37 @@ namespace mlc_series_search
             }
         }
 
+        public void checkIMDB(DataSet data)
+        {
+            int relindex;
+            List<DataRow> deletedRows = new List<DataRow>();
+            DataTable dt = data.Tables["release"];
+            if (data.Tables["uris"] != null)
+            {
+                DataView dv = data.Tables["uris"].DefaultView;
+
+                foreach (DataRow row in dt.Rows)
+                {
+
+                    dv.Sort = "ext_info_id";
+                    relindex = dv.Find(row["release_id"].ToString());
+                    if (dv.Table.Columns.Contains("uri"))
+                    {
+                        if (row["release_id"].ToString() == dv[relindex]["ext_info_id"].ToString() && dv[relindex]["uri"].ToString() != "imdb:"+SelIMDB)
+                        {
+                            deletedRows.Add(data.Tables["release"].Rows[relindex]);
+                        }
+                    }
+                }
+
+                foreach (DataRow dataRow in deletedRows)
+                {
+                    dataRow.Delete();
+                }
+                data.AcceptChanges();
+            }
+        }
+
         private void AddNewDataRowView(DataView view, string collum)
         {
             DataRowView rowView = view.AddNew();
@@ -509,6 +549,83 @@ namespace mlc_series_search
             isloading(false);
             isMLCData(true);
             xRelList_SelectedIndexChanged(sender, e);
+        }
+
+        private void xRelWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+
+            string xRelURL_new = myXRELURL + cleanserie + " S" + SelLiStaffel + "E" + SelLiEpispde + "&scene=1";
+
+            if (this.xRelURL != xRelURL_new)
+            {
+                this.xRelURL = xRelURL_new;
+
+                while (sw.Elapsed < TimeSpan.FromSeconds(6) && sw.IsRunning)
+                {
+                    //Warte
+                }
+
+                sw.Stop();
+                sw.Reset();
+                sw.Start();
+
+                string xRelXML = HTTPtoString(this.xRelURL);
+
+
+                ClearDataSet(xRel1);
+                xmltodataset(xRel1, xRelXML);
+
+
+            }
+        }
+
+        private void xRelWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            if (xRel1.Tables.Count >= 2)
+            {
+                if (!EngCheck.Checked)
+                {
+                    noEngRel(xRel1);
+                }
+
+                checkIMDB(xRel1);
+
+                RelView = getDataView(xRel1.Tables["release"]);
+
+                setRELFilter(RelView, filter.Text, AudioCombo.Text, VideoCombo.Text);
+
+                xRelList.DataSource = RelView;
+                xRelList.DisplayMember = "dirname";
+                xRelList.ValueMember = "release_id";
+
+                VideoDB = xRel1.Tables["release"].DefaultView.ToTable(true, "video_type");
+                AddNewDataRowView(VideoDB.DefaultView, "video_type");
+
+                VideoCombo.DataSource = VideoDB;
+                VideoCombo.DisplayMember = "video_type";
+                VideoCombo.SelectedIndex = VideoCombo.Items.Count - 1;
+
+                AudioDB = xRel1.Tables["release"].DefaultView.ToTable(true, "audio_type");
+                AddNewDataRowView(AudioDB.DefaultView, "audio_type");
+
+                AudioCombo.DataSource = AudioDB;
+                AudioCombo.DisplayMember = "audio_type";
+                AudioCombo.SelectedIndex = AudioCombo.Items.Count - 1;
+
+                if (SetAudio != "") { AudioCombo.Text = SetAudio; }
+                if (SetVideo != "") { VideoCombo.Text = SetVideo; }
+                if (SetFilter != "") { filter.Text = SetFilter; }
+
+                SetAudio = "";
+                SetVideo = "";
+                SetFilter = "";
+
+                if (xRelList.Text != null || xRelList.Text != "")
+                {
+                    xRelList_SelectedIndexChanged(sender, e);
+                }
+            }
+            isloading(false);
         }
         // ******************Form Events*******************************//
 
@@ -574,6 +691,14 @@ namespace mlc_series_search
                     if (TVDBSeries.Tables.Count >= 1)
                     {
                         SelSerie = TVDBSeries.Tables["Series"].Rows[0]["SeriesName"].ToString();
+                        if (TVDBSeries.Tables["Series"].Columns.Contains("AliasNames"))
+                        {
+                            SelSerieAlias = TVDBSeries.Tables["Series"].Rows[0]["AliasNames"].ToString();
+                        }else
+                        {
+                            SelSerieAlias = "";
+                        }
+                        SelIMDB = TVDBSeries.Tables["Series"].Rows[0]["IMDB_ID"].ToString();
                         TVDBSeries.Tables["Episode"].Columns.Add("Display", typeof(string), "SeasonNumber+'.'+EpisodeNumber + ' ' + EpisodeName");
 
                         StaffelnDB = TVDBSeries.Tables[1].DefaultView.ToTable(true, "SeasonNumber");
@@ -651,7 +776,10 @@ namespace mlc_series_search
                 SelLiStaffel = Int32.Parse(EpisodeList.Text.Split(new char[] { ' ', '.' })[0]).ToString("D2");
 
                 cleanserie = SelSerie;
+
                 cleanserie = cleanserie.Replace("&", "und");
+                cleanserie = cleanserie.Replace("(US)", "");
+
                 isloading(true);
                 xRelWorker.RunWorkerAsync();
             }
@@ -869,79 +997,7 @@ namespace mlc_series_search
             }
         }
 
-        private void xRelWorker_DoWork(object sender, DoWorkEventArgs e)
-        {
 
-            string xRelURL_new = myXRELURL + cleanserie + " S" + SelLiStaffel + "E" + SelLiEpispde + "&scene=1";
-
-            if (this.xRelURL != xRelURL_new)
-            {
-                this.xRelURL = xRelURL_new;
-
-                while (sw.Elapsed < TimeSpan.FromSeconds(6) && sw.IsRunning)
-                {
-                    //Warte
-                }
-
-                sw.Stop();
-                sw.Reset();
-                sw.Start();
-
-                string xRelXML = HTTPtoString(this.xRelURL);
-
-
-                ClearDataSet(xRel1);
-                xmltodataset(xRel1, xRelXML);
-
-
-            }
-        }
-
-        private void xRelWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            if (xRel1.Tables.Count >= 2)
-            {
-                if (!EngCheck.Checked)
-                {
-                    noEngRel(xRel1);
-                }
-                RelView = getDataView(xRel1.Tables["release"]);
-
-                setRELFilter(RelView, filter.Text, AudioCombo.Text, VideoCombo.Text);
-
-                xRelList.DataSource = RelView;
-                xRelList.DisplayMember = "dirname";
-                xRelList.ValueMember = "release_id";
-
-                VideoDB = xRel1.Tables["release"].DefaultView.ToTable(true, "video_type");
-                AddNewDataRowView(VideoDB.DefaultView, "video_type");
-
-                VideoCombo.DataSource = VideoDB;
-                VideoCombo.DisplayMember = "video_type";
-                VideoCombo.SelectedIndex = VideoCombo.Items.Count - 1;
-
-                AudioDB = xRel1.Tables["release"].DefaultView.ToTable(true, "audio_type");
-                AddNewDataRowView(AudioDB.DefaultView, "audio_type");
-
-                AudioCombo.DataSource = AudioDB;
-                AudioCombo.DisplayMember = "audio_type";
-                AudioCombo.SelectedIndex = AudioCombo.Items.Count - 1;
-
-                if (SetAudio != "") { AudioCombo.Text = SetAudio; }
-                if (SetVideo != "") { VideoCombo.Text = SetVideo; }
-                if (SetFilter != "") { filter.Text = SetFilter; }
-
-                SetAudio = "";
-                SetVideo = "";
-                SetFilter = "";
-
-                if (xRelList.Text != null || xRelList.Text != "")
-                {
-                    xRelList_SelectedIndexChanged(sender, e);
-                }
-            }
-            isloading(false);
-        }
 
     }
 
