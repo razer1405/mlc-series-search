@@ -451,6 +451,7 @@ namespace mlc_series_search
             this.requesttext.Size = new System.Drawing.Size(227, 76);
             this.requesttext.TabIndex = 33;
             this.requesttext.Text = "";
+            this.requesttext.Click += new System.EventHandler(this.requesttext_Click);
             // 
             // label14
             // 

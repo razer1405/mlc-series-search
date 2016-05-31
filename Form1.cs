@@ -967,11 +967,13 @@ namespace mlc_series_search
         // MLC Suche Button
         private void button3_Click(object sender, EventArgs e)
         {
+            Clipboard.SetText(requesttext.Text);
             System.Diagnostics.Process.Start(myMLCURL + "/forum/forumdisplay.php?202-Spender-Suche");
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
+            Clipboard.SetText(requesttext.Text);
             System.Diagnostics.Process.Start(myMLCURL + "/forum/forumdisplay.php?62-Suche");
         }
 
@@ -1013,6 +1015,13 @@ namespace mlc_series_search
             }
         }
 
+        private void requesttext_Click(object sender, EventArgs e)
+        {
+            if (requesttext.SelectionLength == 0) {
+                // Select all text in the text box.
+                requesttext.SelectAll();
+            }
+        }
     }
 
 }
