@@ -968,13 +968,13 @@ namespace mlc_series_search
         private void button3_Click(object sender, EventArgs e)
         {
             Clipboard.SetText(requesttext.Text);
-            System.Diagnostics.Process.Start(myMLCURL + "/forum/forumdisplay.php?202-Spender-Suche");
+            System.Diagnostics.Process.Start(myMLCURL + "/forum/forumdisplay.php?205-S-Movies");
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
             Clipboard.SetText(requesttext.Text);
-            System.Diagnostics.Process.Start(myMLCURL + "/forum/forumdisplay.php?62-Suche");
+            System.Diagnostics.Process.Start(myMLCURL + "/forum/forumdisplay.php?65-S-Movies");
         }
 
         //Video Filter

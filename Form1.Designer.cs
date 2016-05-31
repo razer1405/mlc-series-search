@@ -101,6 +101,7 @@ namespace mlc_series_search
             this.MLCWorker = new System.ComponentModel.BackgroundWorker();
             this.mlcwork = new System.Windows.Forms.Button();
             this.xRelWorker = new System.ComponentModel.BackgroundWorker();
+            this.label24 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SeriesPic)).BeginInit();
             this.groupBox2.SuspendLayout();
@@ -464,9 +465,9 @@ namespace mlc_series_search
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(829, 359);
+            this.button2.Location = new System.Drawing.Point(822, 367);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(98, 23);
+            this.button2.Size = new System.Drawing.Size(109, 23);
             this.button2.TabIndex = 35;
             this.button2.Text = "Normal";
             this.button2.UseVisualStyleBackColor = true;
@@ -475,9 +476,9 @@ namespace mlc_series_search
             // button3
             // 
             this.button3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.button3.Location = new System.Drawing.Point(944, 359);
+            this.button3.Location = new System.Drawing.Point(937, 367);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(96, 23);
+            this.button3.Size = new System.Drawing.Size(108, 23);
             this.button3.TabIndex = 36;
             this.button3.Text = "Spender";
             this.button3.UseVisualStyleBackColor = false;
@@ -775,11 +776,23 @@ namespace mlc_series_search
             this.xRelWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.xRelWorker_DoWork);
             this.xRelWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.xRelWorker_RunWorkerCompleted);
             // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.BackColor = System.Drawing.Color.Transparent;
+            this.label24.Location = new System.Drawing.Point(882, 353);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(90, 13);
+            this.label24.TabIndex = 47;
+            this.label24.Text = "kopieren & öffnen";
+            this.label24.UseMnemonic = false;
+            // 
             // mlcseriessearch
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1053, 607);
+            this.Controls.Add(this.label24);
             this.Controls.Add(this.mlcwork);
             this.Controls.Add(this.EngCheck);
             this.Controls.Add(this.label16);
@@ -903,6 +916,7 @@ namespace mlc_series_search
         private BackgroundWorker MLCWorker;
         private System.Windows.Forms.Button mlcwork;
         private BackgroundWorker xRelWorker;
+        private System.Windows.Forms.Label label24;
     }
 }
 
