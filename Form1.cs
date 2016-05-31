@@ -46,6 +46,7 @@ namespace mlc_series_search
         string myTVDBAPI2 = "http://thetvdb.com/api/1D62F2F90030C444/series/";
         string myTVDBBAN = "http://thetvdb.com/banners/";
         string myReqmask = "Name:\r\nSprache:\r\nQualität:\r\nReleasetitel:";
+        string myWerbung = "\r\n\r\n[SIZE=1]Erstellt mit dem [URL='https://mlcboard.com/forum/showthread.php?204438-WIN-MLC-Serien-Manager']MLC Serien Manager[/URL] by raz3r[/SIZE]";
 
         string xRelRUrl = "";
         string xRelNFOUrl = "";
@@ -99,7 +100,7 @@ namespace mlc_series_search
 
 
             // SET TEXTS 
-            requesttext.Text = myReqmask;
+            requesttext.Text = myReqmask + myWerbung;
             this.Text = appname + " " + version;
             versionlabel.Text = "Version: " + version;
 
@@ -523,7 +524,7 @@ namespace mlc_series_search
                 xRelList.DataSource = RelView;
                 xRelList.DisplayMember = "dirname";
 
-                if (xRelList.Text == "") { requesttext.Text = myReqmask; }
+                if (xRelList.Text == "") { requesttext.Text = myReqmask + myWerbung; }
             }
         }
 
@@ -778,7 +779,7 @@ namespace mlc_series_search
         // Wähle andere Episode
         private void EpisodeList_Click(object sender, EventArgs e)
         {
-            requesttext.Text = myReqmask;
+            requesttext.Text = myReqmask + myWerbung;
 
 
             if (EpisodeList.SelectedValue != null && EpisodeList.SelectedValue.ToString() != "System.Data.DataRowView" && sender.ToString() != "System.Data.DataRowView")
@@ -941,12 +942,12 @@ namespace mlc_series_search
             if (xRelList.Text != "System.Data.DataRowView" && sender.ToString() != "System.Data.DataRowView" && xRelList.Text != "")
             {
                 setMLCFilter(MLCView, xRelList.Text);
-                requesttext.Text = myReqmask + xRelList.Text;
+                requesttext.Text = myReqmask + xRelList.Text + myWerbung;
             }
             else
             {               
                 setMLCFilter(MLCView, "--_--");
-                requesttext.Text = myReqmask;
+                requesttext.Text = myReqmask + myWerbung;
             }
 
             mlcupslist.DataSource = MLCView;
@@ -1011,8 +1012,6 @@ namespace mlc_series_search
                 MLCWorker.RunWorkerAsync();
             }
         }
-
-
 
     }
 
