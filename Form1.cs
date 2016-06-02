@@ -13,6 +13,8 @@ using System.Net;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 using System.Threading;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace mlc_series_search
 {
@@ -33,6 +35,8 @@ namespace mlc_series_search
         DataTable EpisodenDB;
         DataTable VideoDB;
         DataTable AudioDB;
+        DataTable MLCresults = new DataTable();
+        DataRow workRow;
 
 
         string appname = "MLC Serien Manager";
@@ -88,6 +92,9 @@ namespace mlc_series_search
                 InitAboTable(AboData);
             }
 
+            // SET DATATABLES
+            InitMLCTable(MLCresults);
+
             // GET MLC DATA
             isloading(true);
             isMLCData(false);
@@ -103,6 +110,9 @@ namespace mlc_series_search
             requesttext.Text = myReqmask + myWerbung;
             this.Text = appname + " " + version;
             versionlabel.Text = "Version: " + version;
+
+            // GET DLL's
+            //AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
 
         }
 
@@ -159,6 +169,14 @@ namespace mlc_series_search
             table.Tables[0].Columns.Add("audio", typeof(string));
             table.Tables[0].Columns.Add("video", typeof(string));
             table.Tables[0].Columns.Add("eng", typeof(bool));
+        }
+
+        private void InitMLCTable(DataTable table)
+        {
+            MLCresults.Columns.Add("ID", typeof(string));
+            MLCresults.Columns.Add("name", typeof(string));
+            MLCresults.Columns.Add("Gewicht", typeof(string));
+            MLCresults.Columns.Add("link", typeof(string));
         }
 
         private void ClearTable(DataTable table)
@@ -267,6 +285,88 @@ namespace mlc_series_search
 
             ClearDataSet(Data);
             xmltodataset(Data, MLCXML);
+        }
+
+        private void MLCSearch(DataTable Data, String SearchString)
+        {
+
+            try
+            {
+                if (SearchString != null && SearchString != "")
+                {
+                    ClearTable(MLCresults);
+                    string jsonText = HTTPtoString("https://searchapi.mlc.to/search?q=" + SearchString);
+                    var o = JObject.Parse(jsonText);
+
+                    foreach (JToken Child1 in o.Children())
+                    {
+                        var property1 = Child1 as JProperty;
+                        if (property1 != null)
+                        {
+                            string serie = property1.Name;
+
+                        }
+                        foreach (JToken Child2 in Child1)
+                        {
+                            var property2 = Child2 as JProperty;
+
+                            if (property2 != null)
+                            {
+                                string Name = property2.Name;
+                            }
+
+                            foreach (JToken Child3 in Child2)
+                            {
+                                var property3 = Child3 as JProperty;
+
+                                if (property3 != null)
+                                {
+                                    string Name = property3.Name;
+                                }
+
+                                workRow = Data.NewRow();
+
+                                foreach (JToken Child4 in Child3)
+                                {
+                                    var property4 = Child4 as JProperty;
+
+                                    if (property4 != null)
+                                    {
+                                        string Name = property4.Name;
+                                        if (property4.Name == "id")
+                                        {
+                                            string id = property4.Value.ToString();
+                                            workRow["ID"] = id;
+                                            workRow["link"] = myMLCURL + "/forum/showthread.php?" +id;
+                                        }
+                                        if (property4.Name == "title")
+                                        {
+                                            string release = property4.Value.ToString();
+                                            workRow["name"] = release;
+                                        }
+                                        if (property4.Name == "weight")
+                                        {
+                                            string weight = property4.Value.ToString();
+                                            workRow["Gewicht"] = weight;
+                                        }
+
+                                    }
+
+                                }
+                                Data.Rows.Add(workRow);
+                            }
+
+                        }
+                    }
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "ERROR");
+            }
+
         }
 
         private void setMLCFilter(DataView dv, string SearchString)
@@ -621,7 +721,7 @@ namespace mlc_series_search
                 if (SetFilter != "") { filter.Text = SetFilter; }
                 if (SetENG != "")
                 {
-                    if (SetENG == "true")
+                    if (SetENG == "True")
                     {
                         EngCheck.Checked = true;
                     }
@@ -642,6 +742,7 @@ namespace mlc_series_search
             }
             isloading(false);
         }
+
         // ******************Form Events*******************************//
 
         // VALID Sucheeingabe
@@ -942,11 +1043,19 @@ namespace mlc_series_search
             if (xRelList.Text != "System.Data.DataRowView" && sender.ToString() != "System.Data.DataRowView" && xRelList.Text != "")
             {
                 setMLCFilter(MLCView, xRelList.Text);
+
+                if(MLCView.Count == 0) { 
+                MLCSearch(MLCresults, xRelList.Text);
+
+                    MLCView = MLCresults.DefaultView;          
+
+                }
                 requesttext.Text = myReqmask + xRelList.Text + myWerbung;
             }
             else
             {               
                 setMLCFilter(MLCView, "--_--");
+                ClearTable(MLCresults);
                 requesttext.Text = myReqmask + myWerbung;
             }
 
@@ -993,6 +1102,7 @@ namespace mlc_series_search
         private void EngCheck_CheckedChanged(object sender, EventArgs e)
         {
             xRelURL = ""; // HOLE xREL DATEN NEU
+            isloading(true);
             EpisodeList_Click(sender, e);
         }
 

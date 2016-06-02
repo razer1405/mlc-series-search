@@ -39,3 +39,5 @@ E:\git\mlc-series-search\obj\Debug\mlc-series-search.csproj.GenerateResource.Cac
 E:\git\mlc-series-search\obj\Debug\mlc-series-search.TrustInfo.xml
 E:\git\mlc-series-search\obj\Debug\mlc-series-search.exe.manifest
 E:\git\mlc-series-search\obj\Debug\mlc-series-search.application
+E:\git\mlc-series-search\bin\Debug\Newtonsoft.Json.dll
+E:\git\mlc-series-search\bin\Debug\Newtonsoft.Json.xml
