@@ -52,6 +52,7 @@ namespace mlc_series_search
         string myReqmask = "Name:\r\nSprache:\r\nQualität:\r\nReleasetitel:";
         string myWerbung = "\r\n\r\n[SIZE=1]Erstellt mit dem [URL='https://mlcboard.com/forum/showthread.php?204438-WIN-MLC-Serien-Manager']MLC Serien Manager[/URL] by raz3r[/SIZE]";
 
+
         string xRelRUrl = "";
         string xRelNFOUrl = "";
         string SelSerie = "";
@@ -91,6 +92,7 @@ namespace mlc_series_search
             {
                 InitAboTable(AboData);
             }
+
 
             // SET DATATABLES
             InitMLCTable(MLCresults);
@@ -748,6 +750,7 @@ namespace mlc_series_search
 
         // ******************Form Events*******************************//
 
+
         // VALID Sucheeingabe
         private void SearchText_Validated(object sender, EventArgs e)
         {
@@ -1047,10 +1050,15 @@ namespace mlc_series_search
                 
                 setMLCFilter(MLCView, xRelList.Text);
 
-                if(MLCView.Count == 0) { 
-                MLCSearch(MLCresults, xRelList.Text);
+                if(MLCView.Count == 0) {
+                    
+                    MLCSearch(MLCresults, xRelList.Text);
 
-                    MLCView = MLCresults.DefaultView;          
+                    if (MLCresults.DefaultView.Count > 0)
+                    {
+                        MLCView = MLCresults.DefaultView;
+                    }
+                            
 
                 }
                 requesttext.Text = myReqmask + xRelList.Text + myWerbung;
