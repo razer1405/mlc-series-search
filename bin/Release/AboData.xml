@@ -72,4 +72,16 @@
     <video />
     <eng>False</eng>
   </AboData>
+  <AboData>
+    <Serie>Outlander</Serie>
+    <Staffel>2</Staffel>
+    <Episode>3</Episode>
+    <abStaffel>False</abStaffel>
+    <abEpisode>True</abEpisode>
+    <Filter />
+    <Display>Outlander &gt; 2.3    +ENG</Display>
+    <audio />
+    <video />
+    <eng>True</eng>
+  </AboData>
 </NewDataSet>

@@ -112,7 +112,7 @@ namespace mlc_series_search
             versionlabel.Text = "Version: " + version;
 
             // GET DLL's
-            //AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
+            AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
 
         }
 
@@ -657,7 +657,7 @@ namespace mlc_series_search
 
         private void xRelWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-
+           
             string xRelURL_new = myXRELURL + cleanserie + " S" + SelLiStaffel + "E" + SelLiEpispde + "&scene=1";
 
             if (this.xRelURL != xRelURL_new)
@@ -734,13 +734,16 @@ namespace mlc_series_search
                 SetVideo = "";
                 SetFilter = "";
                 SetENG = "";
-
+                
                 if (xRelList.Text != null || xRelList.Text != "")
                 {
                     xRelList_SelectedIndexChanged(sender, e);
                 }
+                
             }
-            isloading(false);
+            if (xRelWorker.IsBusy != true) { 
+                isloading(false);
+            }
         }
 
         // ******************Form Events*******************************//
@@ -1019,15 +1022,14 @@ namespace mlc_series_search
                     EpisodeCombo.Text = foundRows[0]["Episode"].ToString();
                     EpisodeCheck.Checked = Boolean.Parse(foundRows[0]["abEpisode"].ToString());
 
-                    Season_Changed(sender, e);
-                    Episode_Change(sender, e);
-                    EpisodeList_Click(sender, e);
-
                     SetVideo = foundRows[0]["video"].ToString();
                     SetAudio = foundRows[0]["audio"].ToString();
                     SetFilter = foundRows[0]["Filter"].ToString();
                     SetENG = foundRows[0]["eng"].ToString();
 
+                    Season_Changed(sender, e);
+                    Episode_Change(sender, e);
+                    EpisodeList_Click(sender, e);
 
                 }
             }
@@ -1042,6 +1044,7 @@ namespace mlc_series_search
 
             if (xRelList.Text != "System.Data.DataRowView" && sender.ToString() != "System.Data.DataRowView" && xRelList.Text != "")
             {
+                
                 setMLCFilter(MLCView, xRelList.Text);
 
                 if(MLCView.Count == 0) { 
@@ -1101,8 +1104,9 @@ namespace mlc_series_search
         //inkl English Release Check
         private void EngCheck_CheckedChanged(object sender, EventArgs e)
         {
+            //MessageBox.Show("Change ENG");
+            isloading(false);
             xRelURL = ""; // HOLE xREL DATEN NEU
-            isloading(true);
             EpisodeList_Click(sender, e);
         }
 
