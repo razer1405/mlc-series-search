@@ -362,11 +362,10 @@ namespace mlc_series_search
             // 
             // SeriesNameLabel
             // 
-            this.SeriesNameLabel.AutoSize = true;
             this.SeriesNameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SeriesNameLabel.Location = new System.Drawing.Point(152, 19);
             this.SeriesNameLabel.Name = "SeriesNameLabel";
-            this.SeriesNameLabel.Size = new System.Drawing.Size(0, 20);
+            this.SeriesNameLabel.Size = new System.Drawing.Size(409, 20);
             this.SeriesNameLabel.TabIndex = 3;
             this.SeriesNameLabel.UseMnemonic = false;
             // 
@@ -699,12 +698,12 @@ namespace mlc_series_search
             // 
             // relname
             // 
-            this.relname.AutoSize = true;
             this.relname.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.relname.Location = new System.Drawing.Point(15, 29);
+            this.relname.Location = new System.Drawing.Point(6, 26);
             this.relname.Name = "relname";
-            this.relname.Size = new System.Drawing.Size(0, 13);
+            this.relname.Size = new System.Drawing.Size(437, 30);
             this.relname.TabIndex = 12;
+            this.relname.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // VideoCombo
             // 

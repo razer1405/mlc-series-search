@@ -69,6 +69,7 @@ namespace mlc_series_search
         string SetAudio = "";
         string SetFilter = "";
         string SetENG = "";
+        string OldSearch = "";
         
 
 
@@ -156,6 +157,19 @@ namespace mlc_series_search
         public string clean(string input)
         {
             return Regex.Replace(input, @"['*$%/()=?]", "");
+        }
+
+        public void setLabelFontsize(Label label1)
+        {
+            //Reset Fontsize
+            label1.Font = new Font(relname.Font.FontFamily, 12, relname.Font.Style);
+
+            //Recalc Fontsize
+            while (label1.Width < System.Windows.Forms.TextRenderer.MeasureText(label1.Text,
+             new Font(label1.Font.FontFamily, label1.Font.Size, label1.Font.Style)).Width)
+            {
+                label1.Font = new Font(label1.Font.FontFamily, label1.Font.Size - 0.1f, label1.Font.Style);
+            }
         }
 
         private void InitAboTable(DataSet table)
@@ -294,10 +308,11 @@ namespace mlc_series_search
 
             try
             {
-                if (SearchString != null && SearchString != "")
+                if (SearchString != null && SearchString != "" && SearchString != OldSearch)
                 {
                     ClearTable(MLCresults);
                     string jsonText = HTTPtoString("https://searchapi.mlc.to/search?q=" + SearchString);
+                    OldSearch = SearchString;
                     var o = JObject.Parse(jsonText);
 
                     foreach (JToken Child1 in o.Children())
@@ -470,6 +485,7 @@ namespace mlc_series_search
             GerneLabel.Text = Series.Table.Rows[0]["Genre"].ToString();
             LaufzeitLabel.Text = Series.Table.Rows[0]["Runtime"].ToString() + " min";
             StatusLabel.Text = Series.Table.Rows[0]["Status"].ToString();
+            setLabelFontsize(SeriesNameLabel);
         }
 
         public void setReleaseInfo(DataSet data)
@@ -514,6 +530,8 @@ namespace mlc_series_search
 
                 btnxRelNFO.Enabled = true;
                 btnxRelRel.Enabled = true;
+
+                setLabelFontsize(relname);
             }
             else
             {
