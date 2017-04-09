@@ -137,6 +137,7 @@ namespace mlc_series_search
             // 
             // label2
             // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(9, 201);
             this.label2.Name = "label2";
@@ -191,6 +192,7 @@ namespace mlc_series_search
             // 
             // abobtn
             // 
+            this.abobtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.abobtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.abobtn.Location = new System.Drawing.Point(903, 15);
             this.abobtn.Name = "abobtn";
@@ -202,6 +204,8 @@ namespace mlc_series_search
             // 
             // SearchResultList
             // 
+            this.SearchResultList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.SearchResultList.FormattingEnabled = true;
             this.SearchResultList.Location = new System.Drawing.Point(12, 44);
             this.SearchResultList.Name = "SearchResultList";
@@ -211,6 +215,8 @@ namespace mlc_series_search
             // 
             // EpisodeList
             // 
+            this.EpisodeList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.EpisodeList.FormattingEnabled = true;
             this.EpisodeList.Location = new System.Drawing.Point(338, 100);
             this.EpisodeList.Name = "EpisodeList";
@@ -244,6 +250,9 @@ namespace mlc_series_search
             // 
             // xRelList
             // 
+            this.xRelList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.xRelList.FormattingEnabled = true;
             this.xRelList.HorizontalScrollbar = true;
             this.xRelList.Location = new System.Drawing.Point(587, 100);
@@ -255,6 +264,9 @@ namespace mlc_series_search
             // 
             // label5
             // 
+            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(587, 84);
             this.label5.Name = "label5";
@@ -273,6 +285,7 @@ namespace mlc_series_search
             // 
             // groupBox1
             // 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.groupBox1.Controls.Add(this.LaufzeitLabel);
             this.groupBox1.Controls.Add(this.StatusLabel);
             this.groupBox1.Controls.Add(this.GerneLabel);
@@ -407,6 +420,7 @@ namespace mlc_series_search
             // 
             // abolist
             // 
+            this.abolist.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.abolist.FormattingEnabled = true;
             this.abolist.Location = new System.Drawing.Point(12, 217);
             this.abolist.Name = "abolist";
@@ -416,6 +430,7 @@ namespace mlc_series_search
             // 
             // del_abo
             // 
+            this.del_abo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.del_abo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
             this.del_abo.Location = new System.Drawing.Point(1017, 15);
             this.del_abo.Name = "del_abo";
@@ -427,6 +442,8 @@ namespace mlc_series_search
             // 
             // mlcupslist
             // 
+            this.mlcupslist.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.mlcupslist.FormattingEnabled = true;
             this.mlcupslist.HorizontalScrollbar = true;
             this.mlcupslist.Location = new System.Drawing.Point(820, 100);
@@ -437,6 +454,8 @@ namespace mlc_series_search
             // 
             // label13
             // 
+            this.label13.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.label13.AutoSize = true;
             this.label13.Location = new System.Drawing.Point(817, 84);
             this.label13.Name = "label13";
@@ -446,6 +465,7 @@ namespace mlc_series_search
             // 
             // requesttext
             // 
+            this.requesttext.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.requesttext.Location = new System.Drawing.Point(820, 277);
             this.requesttext.Name = "requesttext";
             this.requesttext.Size = new System.Drawing.Size(227, 76);
@@ -455,6 +475,7 @@ namespace mlc_series_search
             // 
             // label14
             // 
+            this.label14.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.label14.AutoSize = true;
             this.label14.Location = new System.Drawing.Point(819, 261);
             this.label14.Name = "label14";
@@ -464,6 +485,7 @@ namespace mlc_series_search
             // 
             // button2
             // 
+            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button2.Location = new System.Drawing.Point(822, 367);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(109, 23);
@@ -474,6 +496,7 @@ namespace mlc_series_search
             // 
             // button3
             // 
+            this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.button3.Location = new System.Drawing.Point(937, 367);
             this.button3.Name = "button3";
@@ -485,6 +508,7 @@ namespace mlc_series_search
             // 
             // bylabel
             // 
+            this.bylabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.bylabel.AutoSize = true;
             this.bylabel.Location = new System.Drawing.Point(1010, 594);
             this.bylabel.Name = "bylabel";
@@ -494,6 +518,7 @@ namespace mlc_series_search
             // 
             // proglabel
             // 
+            this.proglabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.proglabel.AutoSize = true;
             this.proglabel.Location = new System.Drawing.Point(810, 594);
             this.proglabel.Name = "proglabel";
@@ -503,6 +528,7 @@ namespace mlc_series_search
             // 
             // versionlabel
             // 
+            this.versionlabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.versionlabel.AutoSize = true;
             this.versionlabel.Location = new System.Drawing.Point(923, 594);
             this.versionlabel.Name = "versionlabel";
@@ -512,6 +538,8 @@ namespace mlc_series_search
             // 
             // groupBox2
             // 
+            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox2.Controls.Add(this.btnxRelNFO);
             this.groupBox2.Controls.Add(this.btnxRelRel);
             this.groupBox2.Controls.Add(this.releinheit);
@@ -540,6 +568,7 @@ namespace mlc_series_search
             // 
             // btnxRelNFO
             // 
+            this.btnxRelNFO.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnxRelNFO.Enabled = false;
             this.btnxRelNFO.Location = new System.Drawing.Point(254, 158);
             this.btnxRelNFO.Name = "btnxRelNFO";
@@ -551,6 +580,7 @@ namespace mlc_series_search
             // 
             // btnxRelRel
             // 
+            this.btnxRelRel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnxRelRel.Enabled = false;
             this.btnxRelRel.Location = new System.Drawing.Point(20, 158);
             this.btnxRelRel.Name = "btnxRelRel";
@@ -562,6 +592,7 @@ namespace mlc_series_search
             // 
             // releinheit
             // 
+            this.releinheit.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.releinheit.AutoSize = true;
             this.releinheit.Location = new System.Drawing.Point(310, 118);
             this.releinheit.Name = "releinheit";
@@ -570,6 +601,7 @@ namespace mlc_series_search
             // 
             // l
             // 
+            this.l.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.l.AutoSize = true;
             this.l.Location = new System.Drawing.Point(251, 118);
             this.l.Name = "l";
@@ -579,6 +611,7 @@ namespace mlc_series_search
             // 
             // relsize
             // 
+            this.relsize.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.relsize.AutoSize = true;
             this.relsize.Location = new System.Drawing.Point(310, 99);
             this.relsize.Name = "relsize";
@@ -587,6 +620,7 @@ namespace mlc_series_search
             // 
             // relaud
             // 
+            this.relaud.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.relaud.AutoSize = true;
             this.relaud.Location = new System.Drawing.Point(310, 80);
             this.relaud.Name = "relaud";
@@ -595,6 +629,7 @@ namespace mlc_series_search
             // 
             // relvid
             // 
+            this.relvid.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.relvid.AutoSize = true;
             this.relvid.Location = new System.Drawing.Point(310, 61);
             this.relvid.Name = "relvid";
@@ -603,6 +638,7 @@ namespace mlc_series_search
             // 
             // relrating
             // 
+            this.relrating.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.relrating.AutoSize = true;
             this.relrating.Location = new System.Drawing.Point(111, 118);
             this.relrating.Name = "relrating";
@@ -611,6 +647,7 @@ namespace mlc_series_search
             // 
             // relgroup
             // 
+            this.relgroup.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.relgroup.AutoSize = true;
             this.relgroup.Location = new System.Drawing.Point(111, 99);
             this.relgroup.Name = "relgroup";
@@ -619,6 +656,7 @@ namespace mlc_series_search
             // 
             // reltime
             // 
+            this.reltime.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.reltime.AutoSize = true;
             this.reltime.Location = new System.Drawing.Point(111, 80);
             this.reltime.Name = "reltime";
@@ -627,6 +665,7 @@ namespace mlc_series_search
             // 
             // reldate
             // 
+            this.reldate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.reldate.AutoSize = true;
             this.reldate.Location = new System.Drawing.Point(111, 61);
             this.reldate.Name = "reldate";
@@ -635,6 +674,7 @@ namespace mlc_series_search
             // 
             // label23
             // 
+            this.label23.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label23.AutoSize = true;
             this.label23.Location = new System.Drawing.Point(17, 80);
             this.label23.Name = "label23";
@@ -644,6 +684,7 @@ namespace mlc_series_search
             // 
             // label22
             // 
+            this.label22.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label22.AutoSize = true;
             this.label22.Location = new System.Drawing.Point(17, 99);
             this.label22.Name = "label22";
@@ -653,6 +694,7 @@ namespace mlc_series_search
             // 
             // label21
             // 
+            this.label21.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label21.AutoSize = true;
             this.label21.Location = new System.Drawing.Point(17, 118);
             this.label21.Name = "label21";
@@ -662,6 +704,7 @@ namespace mlc_series_search
             // 
             // label20
             // 
+            this.label20.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label20.AutoSize = true;
             this.label20.Location = new System.Drawing.Point(17, 61);
             this.label20.Name = "label20";
@@ -671,6 +714,7 @@ namespace mlc_series_search
             // 
             // label19
             // 
+            this.label19.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.label19.AutoSize = true;
             this.label19.Location = new System.Drawing.Point(251, 99);
             this.label19.Name = "label19";
@@ -680,6 +724,7 @@ namespace mlc_series_search
             // 
             // label18
             // 
+            this.label18.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.label18.AutoSize = true;
             this.label18.Location = new System.Drawing.Point(251, 80);
             this.label18.Name = "label18";
@@ -689,6 +734,7 @@ namespace mlc_series_search
             // 
             // label17
             // 
+            this.label17.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.label17.AutoSize = true;
             this.label17.Location = new System.Drawing.Point(251, 61);
             this.label17.Name = "label17";
@@ -698,6 +744,8 @@ namespace mlc_series_search
             // 
             // relname
             // 
+            this.relname.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.relname.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.relname.Location = new System.Drawing.Point(6, 26);
             this.relname.Name = "relname";
@@ -725,6 +773,8 @@ namespace mlc_series_search
             // 
             // label15
             // 
+            this.label15.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.label15.AutoSize = true;
             this.label15.Location = new System.Drawing.Point(584, 2);
             this.label15.Name = "label15";
@@ -759,6 +809,7 @@ namespace mlc_series_search
             // 
             // mlcwork
             // 
+            this.mlcwork.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.mlcwork.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
             this.mlcwork.BackgroundImage = global::mlc_series_search.Properties.Resources.refresh;
             this.mlcwork.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
@@ -777,6 +828,7 @@ namespace mlc_series_search
             // 
             // label24
             // 
+            this.label24.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.label24.AutoSize = true;
             this.label24.BackColor = System.Drawing.Color.Transparent;
             this.label24.Location = new System.Drawing.Point(882, 353);
@@ -830,7 +882,6 @@ namespace mlc_series_search
             this.Controls.Add(this.SeasonCombo);
             this.Controls.Add(this.SearchText);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MaximizeBox = false;
             this.Name = "mlcseriessearch";
             this.Text = "MLC Series Search";
             this.groupBox1.ResumeLayout(false);

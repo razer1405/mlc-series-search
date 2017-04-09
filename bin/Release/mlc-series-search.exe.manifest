@@ -43,14 +43,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="mlc-series-search.exe" size="1158144">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="mlc-series-search.exe" size="1158656">
       <assemblyIdentity name="mlc-series-search" version="0.0.2.14" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>2g9R24cqcitR2yuer3KaQVYJ3FoB+P4gKSrcIrC9U90=</dsig:DigestValue>
+        <dsig:DigestValue>LTTwCvVCL2uEH65a+WTPpkFYF9gq+tlcKBWUNFOvGh4=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
